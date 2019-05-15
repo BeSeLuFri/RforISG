@@ -10,7 +10,7 @@ output:
     self_contained: no
 output_dir: docs
 navbar:
-  title: Econometrics with R
+  title: R-Intro ISG
   left:
   - text: Introduction
     href: index.html
