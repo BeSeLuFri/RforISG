@@ -16,10 +16,6 @@ navbar:
     href: index.html
 #  - text: Objects and Data
 #    href: objectsndata.html
-#  - text: Data Management
-#    href: datamanagement.html
-#  - text: Applied Econometrics
-#    href: econometrics.html
   - text: About
     href: about.html
 
