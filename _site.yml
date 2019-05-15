@@ -14,8 +14,8 @@ navbar:
   left:
   - text: Introduction
     href: index.html
-#  - text: Objects and Data
-#    href: objectsndata.html
+  - text: Objects and Data
+    href: objectsndata.html
   - text: About
     href: about.html
 
