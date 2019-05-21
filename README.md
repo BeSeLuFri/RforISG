@@ -1,2 +1,2 @@
 # RforISG
-R Intro for ISG - June 2019
+R Intro for ISG - May/June 2019
