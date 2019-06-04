@@ -8,19 +8,54 @@ date: "01 June 2019"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ***
-# Hello
+# Intro and Agenda
 
-Welcome to this introductory **R Intro** tutorial. The following paragraphs shall get you familiar with R and hopefully make you full-fledged data scientists in no time. So let's get started. 
+Welcome to this introductory **R Intro** tutorial. The following paragraphs will get you familiar with R and hopefully make you full-fledged R users in no time. 
+
+By the end of tomorrow, everybody of you will not only understand the basic functionality of R(Studio) but also be able to 
+
+* efficiently manage data
+
+* write reproducible and easy to read code
+
+* produce beautiful data visualisations
+
+* generate straight forward regressions. 
+
+~75% of our class will be hands-on - e.g. we solve coding problems from real life data (which are relevant for ISG) together. All code and necessary data can be downloaded from this site. 
+
+With this 
+
+  
+
+Die Seite ist in Englisch, weil alle meine anderen R Tutorien/Kurse auch in Englisch waren - please forgive me.
+
+##  Agenda
+We have two days, 4 hours per day. 
+
+Day 1
+* R Basics, Workflow in R Studio and Objects (1h)
+* Data Management and tidyverse (1h)
+  + Eurostat Example: Two ways to load and install data
+  + Destatis Example
+* Data Visualisations and tidyverse (1h)
+
+Day 2 
+* Data Visualisations (1h)
+* Regressions (1h)
+* knitr, R Notebooks (1h)
+
+
 
 R is a powerful prgramming language that is expecially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Econometrics and Applied Statistics.
-It is free and constantly adjusted and extended by a large user community which is why it is always up to date when it comes to the latest statistical developments. dsd
+It is **free** and constantly adjusted and extended by a large user community which is why it is always up to date when it comes to the latest statistical developments. 
 
 
 *****
 # Technical Set-Up
 ***
 ## Installation
-R is the software executing your commands 
+R is the software executing your commands. 
 
 BUT: R itself is not quite userfriendly - the pane is inconvenient to maneuver. Therefore, there are various interfaces that can be added on top on the plain R. 
 The most common one is R-Studio. 
@@ -152,21 +187,32 @@ c(1,2,3,5) %>% mean()
 ```	
 
 # Style
+Arguably not the most imporant thing right now as we are just getting started. Nevertheless, it is important to have consistent and clean code. So you may want to circle back to this section once you get started writing your own code independently. 
 
-Maybe here short intro into R style or link to google style sheet. 
+All code you'll encounter in this 
+
+The basic shortcut for the RSutdio IDE to get tidy code is a) selecting code to be reformatted and b) pressing Ctrl+Shift+A. 
+
+A pretty exhaustive style guide by Hadley Wickham and the tidyverse team can be found [here](https://style.tidyverse.org/). This builds upon the still widely  referenced [Google's R Style guide](https://google.github.io/styleguide/Rguide.xml). 
 
 # Important Ressources
-[Stackoverflow](https://www.stackoverflow.com/))
+[Stackoverflow](https://www.stackoverflow.com/):
 A general discussion forum for programmers, including many R users.
 Just google your question and make sure to place an "R" in the beginning of your question. Most often you will be directed to stackoverflow.
 
-[Econometrics for R](http://www.urfie.net/)
+[Econometrics for R](http://www.urfie.net/):
 Great book - this class is mainly based upon it.
 Has some 60pages of introduction into R.
 
-[CodeSchool](http://tryr.codeschool.com/)
-A fun way to learn the basics of R. 
+[CodeSchool](http://tryr.codeschool.com/):
+A fun and free way to learn the basics of R. 
 
-[Cheat Sheet Base R](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)
-A concise overview over the base R logic.
+**Cheat Sheets**:
+Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples
+
+* [Cheat Sheet Base R](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)
+
+* [Cheat Sheet dplyr](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+* [Cheat Sheet ggplot](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 

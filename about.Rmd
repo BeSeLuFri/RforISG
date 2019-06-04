@@ -6,6 +6,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ***
 
-More about this website.
+The first half of this site heavily builds upon [Econometrics with R](https://schliebs.github.io/Applied_Econometrics_with_R) - a tutorial for students at Zeppelin University. Credits go to [Marcel Schliebs](https://github.com/schliebs) with whom I designed and lead this class. 
 
-And now add this
+"Objects and Data" examples are inspired by [Econometrics for R](http://www.urfie.net/).
+
+Most of the other subpages and scripts are of my own making. This is especially true for all errors and bugs. If you find one, shoot me an email at benedikt(at)fritz.re
+
