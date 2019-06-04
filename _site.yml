@@ -16,6 +16,11 @@ navbar:
     href: index.html
   - text: Objects and Data
     href: objectsndata.html
+  - text: Data Management
+    href: datamanagement.html
+  - text: Data Viz
+    href: dataviz.html
   - text: About
     href: about.html
+
 
