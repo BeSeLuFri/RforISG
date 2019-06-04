@@ -24,7 +24,7 @@ By the end of tomorrow, everybody of you will not only understand the basic func
 
 ~75% of our class will be hands-on - e.g. we solve coding problems from real life data (which are relevant for ISG) together. All code and necessary data can be downloaded from this site. 
 
-With this and thiS!!
+With this and thiS!! and now with jekyll
 
   
 
