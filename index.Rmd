@@ -46,9 +46,14 @@ Day 2
 * knitr, R Notebooks (1h)
 
 
+## Why R
+R is a powerful programming language that is expecially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Data Science and Applied Statistics.
 
-R is a powerful prgramming language that is expecially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Econometrics and Applied Statistics.
-It is **free** and constantly adjusted and extended by a large user community which is why it is always up to date when it comes to the latest statistical developments. 
+It is **free** and **constantly extended by a large user community** - guaranteeing that latest innovations from visualisations to machine learning are always up to date in the R universe. There are over 15.000 approved R packages (reusable R functions, see below) and the number is growing [exponentially](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368). At the same time, the R-Foundation (supported by Microsoft and Google) gives credibility to the continuance of base R itself.
+
+As it is free and extremely popular, the 
+
+Finally, this might be relevant in our context: Visualizations are way prettier and user friendlier than anything Stata or SPSS even remotely have to offer (see the [R-Graph Gallery](https://www.r-graph-gallery.com/) for a quick glimpse into what is possible).  
 
 
 *****
@@ -84,34 +89,36 @@ If you have any problems with the installation process follow these pages
 
 ***
 ## First Step
-After having succesfully installed R and R-Studio open RStudio (*never open R directly, always access it through RStudio*), you should see something like this: 
+After having succesfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), you should see something like this: 
 ![Test](Files/Screen1.png)
 
 The big one on the left is called *Console* and it is the plain R execution window: 
 You can type single lines of code in there and they are executed immediately after pressing Enter. 
 
-On the right hand side you see the *Envivonment*. The Environment  is just a place to store variables – a set of bindings between symbols and objects. If you start up R and make an assignment, you're adding an entry in the global environment (we'll come back to that shortly) 
+On the right hand side you see the *Envivonment*. The Environment  is just a place to store variables – a set of bindings between symbols and objects. If you open R and make an assignment, you're adding an entry in the global environment (we'll come back to that shortly). 
 
 On the lower lefthand side various informations about your current project can be retrieved (amongst them the Help section which explains functions). Also plots can be given a first view in that part. 
 
 
 ***
 ## Working Directories/PROJECTS
-Always use projects - they make your life much easier.
+**Always** use projects - they make your life much easier.
 RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.
 
 It is - espcecially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: **You need to designate one folder in your explorer system within which everything related to your very first project is safed.** 
 
 To create a new project use the Create Project command (available on the Projects menu and on the global toolbar). 
 Press: New Directory 
+
 ![Test](Files/projects_new.png)
+
 This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.
 
-When you simply quit a project by clsing RStudio or the project directly all files, code, .RData and RStudio settings are saved. 
+When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved. 
 
 ***
 # TaschenrechneR 1
-Ok - by now we have invested a lot of time potentially doing nothing else but setting up stuff we have no use for. Can't we get startetd right a way?
+Ok - by now we have invested a lot of time potentially doing nothing else but setting up stuff we have no use for. Can't we get startetd right away?
 
 Of course - let's do some calculations.
 Type the following into the Console:
@@ -126,35 +133,40 @@ If we would want to multiply 1+1 in a next step by two and then in a third step 
 There must be a better way around this.
 
 ***
-# R Scripts
-Of course there is - RScripts!
-An RRScript contains all commands including those for reading the reaw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some ot the commands listed in the R script at once. 
-This is key becaus the key feature of every scientific methods is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click. 
+# R Scripts and (plain) text
+Of course there is - R Scripts!
+An R Script contains all commands including those for reading the reaw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some ot the commands listed in the R script at once. 
+This is key because what we are interested in for every project is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click. 
 
 To open the editor for creating a new R script click on the symbol in the top left corner and choose open a new R script. Be sure to save it in the same folder where also your RProject is saved. 
 
-As discovered above, the # Symbol is extremely useful because thereby we can comment on stuff without our comments being evaluated by R. 
+As discovered above, the # Symbol is extremely useful because it allows you to comment on stuff without the comment itself being evaluated by R. 
 
-Given an R script, we can send lines of code to R to be evaluated. To run the line in which the cursor is, press **Ctrl+Enter**. To run several lines of code, mark them with the mouse and do the same. 
+From the R script we can "send" lines of code to R to be evaluated. To run the line in which the cursor is, press **Ctrl+Enter**. To run several lines of code, mark them with the mouse and do the same. 
 
-Try it out with running the following code at once:
+Try it out with running the following code:
 ```{r}
 1+1
 5+(4-1)^2
-# Let's try some Count Zeppelin
-# Man muß nur wollen und daran glauben, dann wird es gelingen. # This doesn't work because R doesn't know this text
-#But R does know text. Text which R knows is called a function. Very intuitive functions are:
+
+```
+
+Of course, R can read and evaluate plain text. We'll get into that on the next page. For an intuitive start, consider this:
+
+```{r}
 sqrt(4)
 log(10)
-
 ```
 
 
 ***
 # Packages
-One more thing...
-R itself can operate only very basic tasks. Even you as a novice will soon discover that you need extensions to run your stuff. This extensions are called packages. They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official "Comprehensive R Archive Network" (CRAN). 
-You only have to install packages once on your computer - all you need is a simple line of code. 
+One more thing... 
+
+R itself can operate only very basic tasks. Even within todays tutorial you will soon discover that you need extensions to run your stuff. This extensions are called packages: "Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data." ([R packages](http://r-pkgs.had.co.nz/)) They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official "Comprehensive R Archive Network" (CRAN). 
+
+You only have to install packages once on your computer - all you need is a simple line of code. After having installed it once, you have to "access" it every time you begin a new project/task.
+
 ```{r eval=FALSE}
 install.packages("package name")
 # But installing a project implies just that you have saved it on your computer.
@@ -163,17 +175,17 @@ library(packagename)
 ```
 
 Let's introduce only one small package for now to understand the package functionality. 
-The pipe %>% operator from the magrittr package (which in turn is part of the [tidyverse](https://www.tidyverse.org/))
+The pipe ```%>%``` operator from the magrittr package (which in turn is part of the [tidyverse](https://www.tidyverse.org/)).
 
 
-``` x %>% f(); x %<>% f() {magrittr}```	
-The Pipe operator from the magrittr package pipes the last element of something into the first one of the next.  
-```x %>% f()``` .
+The Pipe operator pipes the last element of something into the first one of the next: ```f(x)``` becomes ```x %>% f()``` 
+
+
 ```{r}
 # Lets say we want to collect many numbers, perhaps all numbers from 1 to 5.
 # How do we do that? With a vector.
 # You can tell R to collect numbers in a vector with c(number, number, number)
-c(1,2,3,4, 5)
+c(1, 2, 3, 4, 5)
 # A cooler way to write this is:
 c(1:5)
 
@@ -183,25 +195,26 @@ mean(c(1:5))
 # And here comes the power of the pipe:
 # install.packages(magrittr)
 library(magrittr)
-c(1,2,3,5) %>% mean()
+c(1, 2, 3, 5) %>% mean()
 ```	
 
 # Style
 Arguably not the most imporant thing right now as we are just getting started. Nevertheless, it is important to have consistent and clean code. So you may want to circle back to this section once you get started writing your own code independently. 
 
-All code you'll encounter in this 
+All code you'll encounter in this tutorial is written in tidy style (see link below). 
 
-The basic shortcut for the RSutdio IDE to get tidy code is a) selecting code to be reformatted and b) pressing Ctrl+Shift+A. 
+The basic shortcut for the RSutdio IDE to get tidy code is a) selecting code to be reformatted and b) pressing ```Ctrl+Shift+A```. 
 
-A pretty exhaustive style guide by Hadley Wickham and the tidyverse team can be found [here](https://style.tidyverse.org/). This builds upon the still widely  referenced [Google's R Style guide](https://google.github.io/styleguide/Rguide.xml). 
+A pretty exhaustive style guide by Hadley Wickham and the tidyverse team can be found [here](https://style.tidyverse.org/). This builds upon the still widely referenced [Google's R Style guide](https://google.github.io/styleguide/Rguide.xml). 
 
 # Important Ressources
 [Stackoverflow](https://www.stackoverflow.com/):
 A general discussion forum for programmers, including many R users.
-Just google your question and make sure to place an "R" in the beginning of your question. Most often you will be directed to stackoverflow.
+Just google your question and make sure to place an "R" in the beginning of your question. Most often you will be directed to stackoverflow. 
+
 
 [Econometrics for R](http://www.urfie.net/):
-Great book - this class is mainly based upon it.
+Great book - first half of this class is based upon it.
 Has some 60pages of introduction into R.
 
 [CodeSchool](http://tryr.codeschool.com/):

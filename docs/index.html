@@ -443,7 +443,13 @@ div.tocify {
 <p>We have two days, 4 hours per day.</p>
 <p>Day 1 * R Basics, Workflow in R Studio and Objects (1h) * Data Management and tidyverse (1h) + Eurostat Example: Two ways to load and install data + Destatis Example * Data Visualisations and tidyverse (1h)</p>
 <p>Day 2 * Data Visualisations (1h) * Regressions (1h) * knitr, R Notebooks (1h)</p>
-<p>R is a powerful prgramming language that is expecially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Econometrics and Applied Statistics. It is <strong>free</strong> and constantly adjusted and extended by a large user community which is why it is always up to date when it comes to the latest statistical developments.</p>
+</div>
+<div id="why-r" class="section level2">
+<h2><span class="header-section-number">1.2</span> Why R</h2>
+<p>R is a powerful programming language that is expecially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Data Science and Applied Statistics.</p>
+<p>It is <strong>free</strong> and <strong>constantly extended by a large user community</strong> - guaranteeing that latest innovations from visualisations to machine learning are always up to date in the R universe. There are over 15.000 approved R packages (reusable R functions, see below) and the number is growing <a href="https://gist.github.com/daroczig/3cf06d6db4be2bbe3368">exponentially</a>. At the same time, the R-Foundation (supported by Microsoft and Google) gives credibility to the continuance of base R itself.</p>
+<p>As it is free and extremely popular, the</p>
+<p>Finally, this might be relevant in our context: Visualizations are way prettier and user friendlier than anything Stata or SPSS even remotely have to offer (see the <a href="https://www.r-graph-gallery.com/">R-Graph Gallery</a> for a quick glimpse into what is possible).</p>
 <hr />
 </div>
 </div>
@@ -467,24 +473,29 @@ div.tocify {
 </div>
 <div id="first-step" class="section level2">
 <h2><span class="header-section-number">2.2</span> First Step</h2>
-<p>After having succesfully installed R and R-Studio open RStudio (<em>never open R directly, always access it through RStudio</em>), you should see something like this: <img src="Files/Screen1.png" alt="Test" /></p>
+<p>After having succesfully installed R and R-Studio open RStudio (<em>NEVER open R directly, always access it through RStudio</em>), you should see something like this: <img src="Files/Screen1.png" alt="Test" /></p>
 <p>The big one on the left is called <em>Console</em> and it is the plain R execution window: You can type single lines of code in there and they are executed immediately after pressing Enter.</p>
-<p>On the right hand side you see the <em>Envivonment</em>. The Environment is just a place to store variables – a set of bindings between symbols and objects. If you start up R and make an assignment, you’re adding an entry in the global environment (we’ll come back to that shortly)</p>
+<p>On the right hand side you see the <em>Envivonment</em>. The Environment is just a place to store variables – a set of bindings between symbols and objects. If you open R and make an assignment, you’re adding an entry in the global environment (we’ll come back to that shortly).</p>
 <p>On the lower lefthand side various informations about your current project can be retrieved (amongst them the Help section which explains functions). Also plots can be given a first view in that part.</p>
 <hr />
 </div>
 <div id="working-directoriesprojects" class="section level2">
 <h2><span class="header-section-number">2.3</span> Working Directories/PROJECTS</h2>
-<p>Always use projects - they make your life much easier. RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.</p>
+<p><strong>Always</strong> use projects - they make your life much easier. RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.</p>
 <p>It is - espcecially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: <strong>You need to designate one folder in your explorer system within which everything related to your very first project is safed.</strong></p>
-<p>To create a new project use the Create Project command (available on the Projects menu and on the global toolbar). Press: New Directory <img src="Files/projects_new.png" alt="Test" /> This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.</p>
-<p>When you simply quit a project by clsing RStudio or the project directly all files, code, .RData and RStudio settings are saved.</p>
+<p>To create a new project use the Create Project command (available on the Projects menu and on the global toolbar). Press: New Directory</p>
+<div class="figure">
+<img src="Files/projects_new.png" alt="Test" />
+<p class="caption">Test</p>
+</div>
+<p>This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.</p>
+<p>When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved.</p>
 <hr />
 </div>
 </div>
 <div id="taschenrechner-1" class="section level1">
 <h1><span class="header-section-number">3</span> TaschenrechneR 1</h1>
-<p>Ok - by now we have invested a lot of time potentially doing nothing else but setting up stuff we have no use for. Can’t we get startetd right a way?</p>
+<p>Ok - by now we have invested a lot of time potentially doing nothing else but setting up stuff we have no use for. Can’t we get startetd right away?</p>
 <p>Of course - let’s do some calculations. Type the following into the Console:</p>
 <pre class="r"><code>1+1 #What might be the result</code></pre>
 <pre><code>## [1] 2</code></pre>
@@ -492,21 +503,19 @@ div.tocify {
 <p>Wow - by now we know that R has the same power as a very simple calculator. As every simple calculator, you can write only one line of code at once and cannot save anything in a larger context. This is of course problematic because we will want R to execute larger chunks of code. If we would want to multiply 1+1 in a next step by two and then in a third step divide it by four, we would have to write everything in the only available calculator line. There must be a better way around this.</p>
 <hr />
 </div>
-<div id="r-scripts" class="section level1">
-<h1><span class="header-section-number">4</span> R Scripts</h1>
-<p>Of course there is - RScripts! An RRScript contains all commands including those for reading the reaw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some ot the commands listed in the R script at once. This is key becaus the key feature of every scientific methods is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click.</p>
+<div id="r-scripts-and-plain-text" class="section level1">
+<h1><span class="header-section-number">4</span> R Scripts and (plain) text</h1>
+<p>Of course there is - R Scripts! An R Script contains all commands including those for reading the reaw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some ot the commands listed in the R script at once. This is key because what we are interested in for every project is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click.</p>
 <p>To open the editor for creating a new R script click on the symbol in the top left corner and choose open a new R script. Be sure to save it in the same folder where also your RProject is saved.</p>
-<p>As discovered above, the # Symbol is extremely useful because thereby we can comment on stuff without our comments being evaluated by R.</p>
-<p>Given an R script, we can send lines of code to R to be evaluated. To run the line in which the cursor is, press <strong>Ctrl+Enter</strong>. To run several lines of code, mark them with the mouse and do the same.</p>
-<p>Try it out with running the following code at once:</p>
+<p>As discovered above, the # Symbol is extremely useful because it allows you to comment on stuff without the comment itself being evaluated by R.</p>
+<p>From the R script we can “send” lines of code to R to be evaluated. To run the line in which the cursor is, press <strong>Ctrl+Enter</strong>. To run several lines of code, mark them with the mouse and do the same.</p>
+<p>Try it out with running the following code:</p>
 <pre class="r"><code>1+1</code></pre>
 <pre><code>## [1] 2</code></pre>
 <pre class="r"><code>5+(4-1)^2</code></pre>
 <pre><code>## [1] 14</code></pre>
-<pre class="r"><code># Let&#39;s try some Count Zeppelin
-# Man muß nur wollen und daran glauben, dann wird es gelingen. # This doesn&#39;t work because R doesn&#39;t know this text
-#But R does know text. Text which R knows is called a function. Very intuitive functions are:
-sqrt(4)</code></pre>
+<p>Of course, R can read and evaluate plain text. We’ll get into that on the next page. For an intuitive start, consider this:</p>
+<pre class="r"><code>sqrt(4)</code></pre>
 <pre><code>## [1] 2</code></pre>
 <pre class="r"><code>log(10)</code></pre>
 <pre><code>## [1] 2.302585</code></pre>
@@ -514,18 +523,19 @@ sqrt(4)</code></pre>
 </div>
 <div id="packages" class="section level1">
 <h1><span class="header-section-number">5</span> Packages</h1>
-<p>One more thing… R itself can operate only very basic tasks. Even you as a novice will soon discover that you need extensions to run your stuff. This extensions are called packages. They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official “Comprehensive R Archive Network” (CRAN). You only have to install packages once on your computer - all you need is a simple line of code.</p>
+<p>One more thing…</p>
+<p>R itself can operate only very basic tasks. Even within todays tutorial you will soon discover that you need extensions to run your stuff. This extensions are called packages: “Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data.” (<a href="http://r-pkgs.had.co.nz/">R packages</a>) They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official “Comprehensive R Archive Network” (CRAN).</p>
+<p>You only have to install packages once on your computer - all you need is a simple line of code. After having installed it once, you have to “access” it every time you begin a new project/task.</p>
 <pre class="r"><code>install.packages(&quot;package name&quot;)
 # But installing a project implies just that you have saved it on your computer.
 # To make it useable for your session you still have to open it every time (e.g. you need the following line in your script:)
 library(packagename)</code></pre>
-<p>Let’s introduce only one small package for now to understand the package functionality. The pipe %&gt;% operator from the magrittr package (which in turn is part of the <a href="https://www.tidyverse.org/">tidyverse</a>)</p>
-<p><code>x %&gt;% f(); x %&lt;&gt;% f() {magrittr}</code> The Pipe operator from the magrittr package pipes the last element of something into the first one of the next.<br />
-<code>x %&gt;% f()</code> .</p>
+<p>Let’s introduce only one small package for now to understand the package functionality. The pipe <code>%&gt;%</code> operator from the magrittr package (which in turn is part of the <a href="https://www.tidyverse.org/">tidyverse</a>).</p>
+<p>The Pipe operator pipes the last element of something into the first one of the next: <code>f(x)</code> becomes <code>x %&gt;% f()</code></p>
 <pre class="r"><code># Lets say we want to collect many numbers, perhaps all numbers from 1 to 5.
 # How do we do that? With a vector.
 # You can tell R to collect numbers in a vector with c(number, number, number)
-c(1,2,3,4, 5)</code></pre>
+c(1, 2, 3, 4, 5)</code></pre>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
 <pre class="r"><code># A cooler way to write this is:
 c(1:5)</code></pre>
@@ -536,20 +546,20 @@ mean(c(1:5))</code></pre>
 <pre class="r"><code># And here comes the power of the pipe:
 # install.packages(magrittr)
 library(magrittr)
-c(1,2,3,5) %&gt;% mean()</code></pre>
+c(1, 2, 3, 5) %&gt;% mean()</code></pre>
 <pre><code>## [1] 2.75</code></pre>
 </div>
 <div id="style" class="section level1">
 <h1><span class="header-section-number">6</span> Style</h1>
 <p>Arguably not the most imporant thing right now as we are just getting started. Nevertheless, it is important to have consistent and clean code. So you may want to circle back to this section once you get started writing your own code independently.</p>
-<p>All code you’ll encounter in this</p>
-<p>The basic shortcut for the RSutdio IDE to get tidy code is a) selecting code to be reformatted and b) pressing Ctrl+Shift+A.</p>
+<p>All code you’ll encounter in this tutorial is written in tidy style (see link below).</p>
+<p>The basic shortcut for the RSutdio IDE to get tidy code is a) selecting code to be reformatted and b) pressing <code>Ctrl+Shift+A</code>.</p>
 <p>A pretty exhaustive style guide by Hadley Wickham and the tidyverse team can be found <a href="https://style.tidyverse.org/">here</a>. This builds upon the still widely referenced <a href="https://google.github.io/styleguide/Rguide.xml">Google’s R Style guide</a>.</p>
 </div>
 <div id="important-ressources" class="section level1">
 <h1><span class="header-section-number">7</span> Important Ressources</h1>
 <p><a href="https://www.stackoverflow.com/">Stackoverflow</a>: A general discussion forum for programmers, including many R users. Just google your question and make sure to place an “R” in the beginning of your question. Most often you will be directed to stackoverflow.</p>
-<p><a href="http://www.urfie.net/">Econometrics for R</a>: Great book - this class is mainly based upon it. Has some 60pages of introduction into R.</p>
+<p><a href="http://www.urfie.net/">Econometrics for R</a>: Great book - first half of this class is based upon it. Has some 60pages of introduction into R.</p>
 <p><a href="http://tryr.codeschool.com/">CodeSchool</a>: A fun and free way to learn the basics of R.</p>
 <p><strong>Cheat Sheets</strong>: Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples</p>
 <ul>
