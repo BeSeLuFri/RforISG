@@ -499,12 +499,12 @@ econ$netinc = recode(econ$tp7602,&quot;-3=NA;-2=NA;-1=NA&quot;)
 econ_data &lt;- econ[,c(&quot;netinc&quot;,&quot;alter&quot;,&quot;sex&quot;,&quot;contract&quot;,&quot;actual&quot;,&quot;trust&quot;,&quot;rely&quot;)]
 head(econ_data)</code></pre>
 <pre><code>##       netinc alter      sex contract actual trust rely
-## 12022     NA    18 weiblich       NA     NA     2    3
-## 2451    1100    36 weiblich       40     40     3    3
-## 3993      NA     4 weiblich       NA     NA    NA   NA
-## 10474     NA    59 männlich       NA     NA     3    2
-## 1919    1200    50 weiblich       37     37     3    1
-## 4612    1685    41 männlich       38     38     2    3</code></pre>
+## 3907      NA    12 männlich       NA     NA    NA   NA
+## 5437      NA    71 männlich       NA     NA     2    3
+## 9377      NA    78 weiblich       NA     NA     4    2
+## 12943     NA     1 weiblich       NA     NA    NA   NA
+## 9184    3000    36 männlich       40     40     2    3
+## 5383    1000    40 weiblich       19     19     4    1</code></pre>
 <pre class="r"><code># Delete NAs
 econ_data &lt;- na.omit(econ_data)
 
@@ -513,8 +513,8 @@ econ_data &lt;- na.omit(econ_data)
 hist(econ$netinc)</code></pre>
 <p><img src="datamanagement_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>quantile(econ_data$netinc)</code></pre>
-<pre><code>##   0%  25%  50%  75% 100% 
-##    0  810 1349 1950 8000</code></pre>
+<pre><code>##    0%   25%   50%   75%  100% 
+##     0   884  1392  1982 10388</code></pre>
 <pre class="r"><code>econ_data$inc_kat &lt;- NA
 econ_data$inc_kat [econ_data$netinc &lt; quantile(econ_data$netinc)[2]] &lt;- &quot;Q1&quot;
 econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc)[2] &amp; econ_data$netinc &lt; quantile(econ_data$netinc)[3]] &lt;- &quot;Q2&quot;
@@ -524,7 +524,7 @@ econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc)[4] ] &lt;- 
 table(econ_data$inc_kat)</code></pre>
 <pre><code>## 
 ##  Q1  Q2  Q3  Q4 
-## 419 422 419 422</code></pre>
+## 418 418 418 419</code></pre>
 </div>
 <div id="advanced-dm-the-tidyverse" class="section level1">
 <h1><span class="header-section-number">3</span> Advanced DM: The tidyverse</h1>
@@ -538,12 +538,12 @@ table(econ_data$inc_kat)</code></pre>
 
 head(econ_data)</code></pre>
 <pre><code>##   netinc alter      sex contract actual trust rely inc_kat alter_squared
-## 1   1100    36 weiblich     40.0     40     3    3      Q2          1296
-## 2   1200    50 weiblich     37.0     37     3    1      Q2          2500
-## 3   1685    41 männlich     38.0     38     2    3      Q3          1681
-## 4   1280    37 männlich     38.5     40     3    2      Q2          1369
-## 5   1150    47 weiblich     40.0     40     3    2      Q2          2209
-## 6    790    34 weiblich     38.0     38     3    2      Q1          1156</code></pre>
+## 1   3000    36 männlich       40     40     2    3      Q4          1296
+## 2   1000    40 weiblich       19     19     4    1      Q2          1600
+## 3   1200    48 weiblich       40     45     2    3      Q2          2304
+## 4    270    23 männlich       40     40     3    3      Q1           529
+## 5    434    19 weiblich       36     42     2    3      Q1           361
+## 6    930    61 weiblich       20     24     2    3      Q2          3721</code></pre>
 </div>
 <div id="summarise" class="section level2">
 <h2><span class="header-section-number">3.2</span> Summarise</h2>
@@ -552,7 +552,7 @@ head(econ_data)</code></pre>
   summarise(mean = mean(alter,na.rm = T),
             sd = sd(alter,na.rm = T))</code></pre>
 <pre><code>##       mean       sd
-## 1 40.72473 11.54196</code></pre>
+## 1 40.64913 11.62021</code></pre>
 </div>
 <div id="group_by" class="section level2">
 <h2><span class="header-section-number">3.3</span> group_by</h2>
@@ -564,7 +564,7 @@ head(econ_data)</code></pre>
 <pre><code>## # A tibble: 1 x 2
 ##    mean    sd
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1  40.7  11.5</code></pre>
+## 1  40.6  11.6</code></pre>
 </div>
 </div>
 
