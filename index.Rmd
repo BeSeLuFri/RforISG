@@ -18,38 +18,39 @@ By the end of tomorrow, everybody of you will not only understand the basic func
 
 * write reproducible and easy to read code
 
-* produce beautiful data visualisations
+* produce beautiful data visualizations
 
 * generate straight forward regressions. 
 
 ~75% of our class will be hands-on - e.g. we solve coding problems from real life data (which are relevant for ISG) together. All code and necessary data can be downloaded from this site. 
 
-With this and thiS!! and now with jekyll
-
-  
 
 Die Seite ist in Englisch, weil alle meine anderen R Tutorien/Kurse auch in Englisch waren - please forgive me.
 
 ##  Agenda
 We have two days, 4 hours per day. 
 
-Day 1
-* R Basics, Workflow in R Studio and Objects (1h)
-* Data Management and tidyverse (1h)
-  + Eurostat Example: Two ways to load and install data
+**Day 1**
+* R Basics, Workflow in R Studio and Objects (1.5h)
+* Data Management and tidyverse (2h)
+  + Quick Intro into the tidyverse and it's data management tools
+  + Eurostat Example
   + Destatis Example
-* Data Visualisations and tidyverse (1h)
 
-Day 2 
-* Data Visualisations (1h)
-* Regressions (1h)
+
+**Day 2** 
+* Data visualizationsand the tidyverse (2h)
+  + Quick intro into ggplot
+  + Eurostat Example
+  + Destatis Example
+* Regressions (.5h)
 * knitr, R Notebooks (1h)
 
 
 ## Why R
-R is a powerful programming language that is expecially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Data Science and Applied Statistics.
+R is a powerful programming language that is especially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Data Science and Applied Statistics.
 
-It is **free** and **constantly extended by a large user community** - guaranteeing that latest innovations from visualisations to machine learning are always up to date in the R universe. There are over 15.000 approved R packages (reusable R functions, see below) and the number is growing [exponentially](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368). At the same time, the R-Foundation (supported by Microsoft and Google) gives credibility to the continuance of base R itself.
+It is **free** and **constantly extended by a large user community** - guaranteeing that latest innovations from visualizationsto machine learning are always up to date in the R universe. There are over 15.000 approved R packages (reusable R functions, see below) and the number is growing [exponentially](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368). At the same time, the R-Foundation (supported by Microsoft and Google) gives credibility to the continuance of base R itself.
 
 As it is free and extremely popular, the 
 
@@ -62,7 +63,7 @@ Finally, this might be relevant in our context: Visualizations are way prettier 
 ## Installation
 R is the software executing your commands. 
 
-BUT: R itself is not quite userfriendly - the pane is inconvenient to maneuver. Therefore, there are various interfaces that can be added on top on the plain R. 
+BUT: R itself is not quite user-friendly - the pane is inconvenient to maneuver. Therefore, there are various interfaces that can be added on top on the plain R. 
 The most common one is R-Studio. 
 
 
@@ -89,15 +90,15 @@ If you have any problems with the installation process follow these pages
 
 ***
 ## First Step
-After having succesfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), you should see something like this: 
+After having successfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), you should see something like this: 
 ![Test](Files/Screen1.png)
 
 The big one on the left is called *Console* and it is the plain R execution window: 
 You can type single lines of code in there and they are executed immediately after pressing Enter. 
 
-On the right hand side you see the *Envivonment*. The Environment  is just a place to store variables – a set of bindings between symbols and objects. If you open R and make an assignment, you're adding an entry in the global environment (we'll come back to that shortly). 
+On the right hand side you see the *Environment*. The Environment is just a place to store variables – a set of bindings between symbols and objects. If you open R and make an assignment, you're adding an entry in the global environment (we'll come back to that shortly). 
 
-On the lower lefthand side various informations about your current project can be retrieved (amongst them the Help section which explains functions). Also plots can be given a first view in that part. 
+On the lower left hand side various information about your current project can be retrieved (amongst them the Help section which explains functions). Also, plots can be given a first view in that part. 
 
 
 ***
@@ -105,9 +106,9 @@ On the lower lefthand side various informations about your current project can b
 **Always** use projects - they make your life much easier.
 RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.
 
-It is - espcecially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: **You need to designate one folder in your explorer system within which everything related to your very first project is safed.** 
+It is - especially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: **You need to designate one folder in your explorer system within which everything related to your very first project is saved.** 
 
-To create a new project use the Create Project command (available on the Projects menu and on the global toolbar). 
+To create a new project, use the Create Project command (available on the Projects menu and on the global toolbar). 
 Press: New Directory 
 
 ![Test](Files/projects_new.png)
@@ -118,13 +119,13 @@ When you simply quit a project by closing RStudio or the project directly all fi
 
 ***
 # TaschenrechneR 1
-Ok - by now we have invested a lot of time potentially doing nothing else but setting up stuff we have no use for. Can't we get startetd right away?
+Ok - by now we have invested a lot of time potentially doing nothing else but setting up stuff we have no use for. Can't we get started right away?
 
 Of course - let's do some calculations.
 Type the following into the Console:
 ```{r}
 1+1 #What might be the result
-# Hashtags tell R that everything in the same line behind them should not be run by the programm.
+# Hashtags tell R that everything in the same line behind them should not be run by the program.
 ```
 
 Wow - by now we know that R has the same power as a very simple calculator. 
@@ -135,7 +136,7 @@ There must be a better way around this.
 ***
 # R Scripts and (plain) text
 Of course there is - R Scripts!
-An R Script contains all commands including those for reading the reaw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some ot the commands listed in the R script at once. 
+An R Script contains all commands including those for reading the raw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some of the commands listed in the R script at once. 
 This is key because what we are interested in for every project is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click. 
 
 To open the editor for creating a new R script click on the symbol in the top left corner and choose open a new R script. Be sure to save it in the same folder where also your RProject is saved. 
@@ -163,7 +164,7 @@ log(10)
 # Packages
 One more thing... 
 
-R itself can operate only very basic tasks. Even within todays tutorial you will soon discover that you need extensions to run your stuff. This extensions are called packages: "Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data." ([R packages](http://r-pkgs.had.co.nz/)) They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official "Comprehensive R Archive Network" (CRAN). 
+R itself can operate only very basic tasks. Even within todays tutorial you will soon discover that you need extensions to run your stuff. These extensions are called packages: "Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data." ([R packages](http://r-pkgs.had.co.nz/)) They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official "Comprehensive R Archive Network" (CRAN). 
 
 You only have to install packages once on your computer - all you need is a simple line of code. After having installed it once, you have to "access" it every time you begin a new project/task.
 
@@ -199,11 +200,11 @@ c(1, 2, 3, 5) %>% mean()
 ```	
 
 # Style
-Arguably not the most imporant thing right now as we are just getting started. Nevertheless, it is important to have consistent and clean code. So you may want to circle back to this section once you get started writing your own code independently. 
+Arguably not the most important thing right now as we are just getting started. Nevertheless, it is important to have consistent and clean code. So you may want to circle back to this section once you get started writing your own code independently. 
 
 All code you'll encounter in this tutorial is written in tidy style (see link below). 
 
-The basic shortcut for the RSutdio IDE to get tidy code is a) selecting code to be reformatted and b) pressing ```Ctrl+Shift+A```. 
+The basic shortcut for the RStudio IDE to get tidy code is a) selecting code to be reformatted and b) pressing ```Ctrl+Shift+A```. 
 
 A pretty exhaustive style guide by Hadley Wickham and the tidyverse team can be found [here](https://style.tidyverse.org/). This builds upon the still widely referenced [Google's R Style guide](https://google.github.io/styleguide/Rguide.xml). 
 
