@@ -6,6 +6,8 @@ title: "Objects and Data Frames"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/test1.R).
+
 ***
 # File names
 Be sure to save all your files (especially the data input) in the folders below where you have started your project.
