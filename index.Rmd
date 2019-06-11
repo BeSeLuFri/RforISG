@@ -203,7 +203,7 @@ c(1:5)
 mean(c(1:5))
 
 # And here comes the power of the pipe:
-# install.packages(magrittr)
+# install.packages(magrittr) # remove the hashtag in the beginning of the line
 library(magrittr)
 c(1, 2, 3, 5) %>% mean()
 ```	

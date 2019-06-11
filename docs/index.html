@@ -573,9 +573,17 @@ c(1:5)</code></pre>
 mean(c(1:5))</code></pre>
 <pre><code>## [1] 3</code></pre>
 <pre class="r"><code># And here comes the power of the pipe:
-# install.packages(magrittr)
-library(magrittr)
-c(1, 2, 3, 5) %&gt;% mean()</code></pre>
+# install.packages(magrittr) # remove the hashtag in the beginning of the line
+library(magrittr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;magrittr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     set_names</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     extract</code></pre>
+<pre class="r"><code>c(1, 2, 3, 5) %&gt;% mean()</code></pre>
 <pre><code>## [1] 2.75</code></pre>
 </div>
 <div id="style" class="section level1">

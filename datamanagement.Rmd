@@ -6,22 +6,99 @@ title: "Datamanagement"
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ```
 
+Download the script here [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R)
 
-# Loading Dataset
+# Preliminary:
 
+* We use an old (2003) randomly changed and subsetted SOEP dataset with 5.000 observations. 
+
+* Please, **download** the two csv files ([.soep_europ.csv](heute.de) and [soep_us.csv](heute.de)) and the [soep.dta](heute.de) file and save them locally within your R project directory.
+
+
+# Load the packages and set-up the script
+
+* To make sure that your R environment is clear, remember to use `rm(list=ls())` in the beginning. 
+
+* As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions. 
+
+  + Therefore, you should always load the packages you need in the beginning, too. 
+  
+  + When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.
+  
+  + Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages.
+
+This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages  
 ```{r}
-# Laden des Datensatzes
-library(readstata13)
+rm(list = ls())
+# install.packages("tidyverse")
 library(tidyverse)
-library(magrittr)
+```
+
+
+
+# Loading the Dataset
+
+Step 1 of Data Management is about "reading" the data into the R environment. 
+There are many different file types and with R you can open all of them.
+
+Here, we'll focus on two file types (csv and dta). Different data files require different approaches but  - **as always** - information can be easily accessed in the CRAN documentation/stackoverflow. 
+
+Let's first open the csv fiel "soep_europ.csv". 
+
+**Remember**: 
+
+* You have to write down the path where the file is saved relative to the root.directory of your RProject.
+
+* A good rule of thumb is to save all your data in a seperate "data" folder within your R environment: E.g. "data**/**soep_europ.csv"
+
+* Don't use the backslash but always the forward slash(/). 
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+data <- read.csv("_______") # Looks weird....
+
+```
+
+What happened: In (most) European countries the standard way to save csv/excel files is to seperate values by ";" and the decimals by ",".
+
+In the US and many other countries seperation is done by "," and the decimals are marked by ".". This is the default for read.csv. 
+
+To read the data correctly, we have to add the argument "sep" to the function.
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+data <- _____("data/soep_europ.csv", sep="_____") # 
+```
+
+2 Addenda: 
+
+<span style="color:red">Task</span> <u>**1. Try out to to read a US style csv with soep_us.csv**</u>
+```{r, eval=FALSE}
+data <- 
+```
+
+2. An easier way to read European style csv files is to use `read_csv2()` from the tidyverse. 
+
+<span style="color:red">Task</span> <u>**Use read_csv2() to read soep_europ.csv**</u>
+```{r, eval=FALSE}
+data <- 
+```
+
+# DTA
+* As a second data file type, we try to read dta (Stata's propietary file format)
+  
+  + If you only intend to use a package once, you can simply call the package with `packagename::function`.  
+
+```{r, eval=FALSE}
+# Laden des Datensatzes
+# install.packages("readstata13")
+library(readstata13)
 
 #Daten als Objekt importieren
-econ <- read.dta13(file="data/offline/econometrics.dta" ,
-                   convert.factors=F,
-                   nonint.factors = F)
+econ <- readstata13::read.dta13(file="Files/Data/soep.dta" ,
+                   convert.factors=FALSE, # default is TRUE, would create Stata value labels
+                   ) 
 
-# Subsample with 5000 Observations
-econ <- econ [sample(c(1:nrow(econ)),size = 5000,replace = FALSE),]
 
 
 ```
@@ -29,53 +106,65 @@ econ <- econ [sample(c(1:nrow(econ)),size = 5000,replace = FALSE),]
 
 # Recoding/Variable declaration
 
-!! Marcel here: not sure if we should stick with car::recode. I personally don't like it and prefer classic R with [], but its so much more code-intensive...
 
-```{r}
-
-library(car)
+```{r, eval=FALSE}
 
 # Variable Alter generieren
-econ$alter = 2003 - econ$gebjahr
+econ$alter <- 2003 - econ$gebjahr
 econ$alter [econ$alter == 2004] <- NA # entfernen der fehlerhaften
 
 #sex 
 econ$sex <- factor(econ$sex,levels = c(1,2),labels = c("männlich","weiblich"))
 
 # Ueberstunden recodieren 0=nein, 1=ja
-econ$over = recode(econ$tp72,"2=0;-2=NA;-1=NA; 3=NA")
+econ$over = dplyr::recode(
+  econ$tp72,
+  "2" = 0L,
+    "-2" = NA_integer_,
+  
+)
 
 # Vertragliche und tatsaechliche Wochenarbeitszeit
-# Missings bereinigen
-econ$contract = recode(econ$tp7001,"-3=NA;-2=NA;-1=NA")
-econ$actual = recode(econ$tp7003,"-3=NA;-2=NA;-1=NA")
-econ$contract = econ$contract/10
-econ$actual = econ$actual/10
+# Missings bereinigt
+
+econ <- econ %>%
+  mutate(
+    contr =
+      ifelse(tp7001 < 0, NA, tp7001),
+    actual =
+      ifelse(tp7003 < 0, NA, tp7003),
+    contr = contr / 10,
+    actual = actual / 10
+  )
+
 
 # Vertrauen 
 # "Trust in people" und "Can't rely on anybody" recodieren
-econ$trust = recode(econ$tp0301,"-1=NA")
-econ$rely = recode(econ$tp0302,"-1=NA")
+econ$trust = car::recode(econ$tp0301,"-1=NA")
+econ$rely = car::recode(econ$tp0302,"-1=NA")
 
-econ$netinc = recode(econ$tp7602,"-3=NA;-2=NA;-1=NA")
+econ$netinc = car::recode(econ$tp7602,"-3=NA;-2=NA;-1=NA")
 
 # Nur relevante Variablen werden übernommen
-econ_data <- econ[,c("netinc","alter","sex","contract","actual","trust","rely")]
+econ_data <- econ[,c("netinc","alter","sex","contr","actual","trust","rely")]
 head(econ_data)
 
-# Delete NAs
-econ_data <- na.omit(econ_data)
 
 # Einkommen Kategorisiert in Quartile
 
 hist(econ$netinc)
-quantile(econ_data$netinc)
+quantile(econ_data$netinc, na.rm = TRUE)
 
 econ_data$inc_kat <- NA
-econ_data$inc_kat [econ_data$netinc < quantile(econ_data$netinc)[2]] <- "Q1"
-econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc)[2] & econ_data$netinc < quantile(econ_data$netinc)[3]] <- "Q2"
-econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc)[3] & econ_data$netinc < quantile(econ_data$netinc)[4]] <- "Q3"
-econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc)[4] ] <- "Q4"
+econ_data$inc_kat [econ_data$netinc < quantile(econ_data$netinc, na.rm = TRUE)[2]] <-   "Q1"
+
+econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc, na.rm = TRUE)[2] &
+                     econ_data$netinc < quantile(econ_data$netinc, na.rm = TRUE)[3]] <- "Q2"
+
+econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc, na.rm = TRUE)[3] &
+                     econ_data$netinc < quantile(econ_data$netinc, na.rm = TRUE)[4]] <- "Q3"
+
+econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc, na.rm = TRUE)[4]] <-  "Q4"
 
 table(econ_data$inc_kat)
 ```
@@ -91,7 +180,7 @@ We can easily add variables (or transformed versions of others) to a knew datase
 
 For example, assume we wanted to add a squared age term: 
 
-```{r}
+```{r, eval=FALSE}
 
 econ_data <- 
   econ_data %>% mutate(alter_squared = alter^2)
@@ -104,7 +193,7 @@ head(econ_data)
 
 Summarise allows us to summarise certain variables, such as certain features of netincome. 
 
-```{r}
+```{r, eval=FALSE}
 
 econ_data %>% 
   summarise(mean = mean(alter,na.rm = T),
@@ -116,7 +205,7 @@ econ_data %>%
 
 The same is also possibled for grouped structures. Say, for example, you would want to calculate seperate values for different genders: 
 
-```{r}
+```{r, eval=FALSE}
 
 econ_data %>% 
   group_by() %>% 
