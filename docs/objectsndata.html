@@ -394,8 +394,23 @@ div.tocify {
 <li>
   <a href="objectsndata.html">Objects and Data</a>
 </li>
-<li>
-  <a href="datamanagement.html">Data Management</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Management
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datamanagement.html">Data Management Introduction</a>
+    </li>
+    <li>
+      <a href="datamanagement_eurostat.html">Eurostat Example</a>
+    </li>
+    <li>
+      <a href="datamanagement_destatis.html">Destatis Example</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="dataviz.html">Data Viz</a>
@@ -608,6 +623,7 @@ A * B
 
 # Inverse:
 solve(D)</code></pre>
+<hr />
 </div>
 <div id="lists" class="section level2">
 <h2><span class="header-section-number">1.5</span> Lists</h2>
@@ -676,7 +692,6 @@ presence
 
 # The same but using &quot;with&quot;:
 presence$total.presence2 &lt;- with(presence, Eugen+Julia+Lena)</code></pre>
-<hr />
 <p>Sometimes, we do not want to work with a whole data set but only with a subset. This can be easily achieved with the command `<code>subset(df, criterion)</code>, where <em>criterion</em> is a logical expression which evaluetes to TRUE for the rows which are to be selected.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code># Subset: all days in which Lena is present

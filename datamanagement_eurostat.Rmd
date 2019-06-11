@@ -1,0 +1,1277 @@
+---
+title: "Datamanagement: Eurostat Example"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+
+# General and Setup
+   
+## General Coding Information
+* Retrieve and manage data for the PES project directly via the Eurostat API and the related eurostat R package 
+* Links: [eurostat Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/eurostat.pdf) and  [eurostat Documentation](https://cran.r-project.org/web/packages/eurostat/eurostat.pdf)
+* There is a minor bug when working with R_Notebook on the old ISG Windows environments. In case you get the error: "Error creating notebook: pandoc document conversion failed with error 11" just apply [this fix](https://github.com/rstudio/rstudio/issues/3661#issuecomment-475705806) from kevinushey (22 Mar 2019). 
+  + When executing code within R Markdown or a plain script this is no problem at all
+* New (obvious) Learning for BF: Never use warning=FALSE in code chunks when working in a R_Notebook --> otherwise you won't see warnings (surprise, surprise!). I wasted 3h today bc I wasn't aware of the warnings....   
+
+## Important Data Management Decisions
+* For Belgium regions the following geo identifiers have been used
+  + **BE1** Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest --> ATTENTION BE10 seems to be identical
+  + **BE2** Vlaams Gewest
+  + **BE3** Région wallonne
+* Youth and working age population
+  + Youth defined as "From 15 to 24 years"
+  + Working age populations as "From 15 to 64 years",
+  
+## Different Data Sources used than in 2018
+* Unemployment rates for Belgium are not only from lfst_r_lfu3rt anymore but are split into   
+  + lfst_r_lfur2gac has 15-64
+  + lfst_r_lfu3rt has 15-24
+* Employment rates:
+  + lfsa_ergaed used instead of lfsa_ergaedn (no citizenship)
+* Employment rate by sex and age - Belgium
+  + There is only data for the working age population
+* Employment growth can be computed for Belgium regions, too 
+  + because we have the data: lfst_r_lfe2emp
+* Nominal GDP per capita
+  + We use Gross domestic product at market prices	tec00001
+* Literacy BE:
+  + Different Dataset which includes age group  age group 15-65 (which edat_lfse_04 didn't)
+* Excel List Variable No 41 pop_working_age --> no data sheet existent for this variable; plus we already have it in population
+* Variable No4 seasonal employment not available
+* In excel list from 2018, we also have a data sheet on "Part-time employment and temporary contracts - annual data  [lfsi_pt_a]"
+  + However, this is very similiar to "Temporary employees as percentage of the total number of employees, by sex, age and citizenship (%) [lfsa_etpgan]" --> which we also have in the excel list but on sheet 1 (the variable overview)
+  + Only difference is that the former is  connected to all types of employment while the latter is only related to the number of employees as numeraire
+  + No important difference, only using the first type of variable 
+* Minimum Wage: There are two additional variables in the excel list: minwage WSI and minwage (binary)
+  + the former is identical to the eurostat minimum wage variable, just in hourly earnings not monthly --> no difference between the two variables
+  + the latter is a binary variable which is time constant --> can't use it because of the lack of time variance
+* Shadow economy Schneider: Please - let's not use this b****it variable
+* Strictness of dismissal protection law: No data after 2013 --> excluded accordingly
+* I have no access to "Tax rate on labour as % of total labour costs (OECD)" --> needs to be purchased retrieved with professional account
+* Replacement Rate Unemployment benefits: data different from the data in excel file
+* Benefit duration in months (can't use it because no time variance)
+
+
+
+  
+## The data management structure
+* Each variable/group of related variables has its own header and is being downloaded and manipulated in the same fashion:
+  + There are three code chunks: one for a) all countries, b) Belgian regions and c) merging a and b
+* a) and b) themselves have the same order:
+  + Download data via API with get_eurostat
+  + Label all codes (for easier readability) with label_eurostat
+  + Filter, Select and Spread the data
+* The first data group (Employment) has extensive comments do ease the understanding of the code
+* To retrieve the eurostat codes for datasets check the subchapter Search for Eurostat codes
+  
+
+## Load packages
+* If you haven't done so already, install all the packages below with install.packages("packagename") 
+```{r,message=FALSE, warning=FALSE}
+library(tidyverse) # the state of the art system of packages for data manipulation, exploration and visualization with a a coherent design philosophy
+library(eurostat) # the propietary eurostat package for retrieving and manipulating Eurostat data
+```
+
+
+## Clean Environment/Cache 
+* Eurostat saves all the data we download via the eurostat package in C:\Users\Username\Temp and reloads them from there every time you rerun the get_eurostat function
+  + This might lead to datasets remaining "unupdated" if we accidentially reload the data from local user and not the API. 
+  + therefore, always run clean_eurostat_cache() before new sessions
+```{r, message=FALSE}
+rm(list = ls()) # The standard environment cleaner for your R environment
+# clean_eurostat_cache() # see bullet points above 
+```
+
+## Search for Eurostat codes
+* Eurostat codes for data tables can be retrieved via search_eurostat
+* An example (looking for all data containing the name employment in the title):
+```{r, message=FALSE}
+query <- search_eurostat("Employment",
+                         type = "all") # inspect query via View(query)
+```
+
+
+# Employment rate by educational attainment levels
+## Countries: **lfsa_ergaed** Employment rates by sex, age and educational attainment level 
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsa_ergaed", # the relevant id to be downloaded
+               time_format = "num") # retrieve time column as.numeric right away (bc we only have yearly data)
+               
+data_a <- label_eurostat(data_a,
+                           code = c("geo",
+                                    "isced11",
+                                    "sex"), # we want to keep the "geo" plus relevant identifier items to be able to merge data easily
+                           lang = "en") # English is the default, line included for transparency
+
+data_a <- data_a %>%
+  filter(age == "From 15 to 64 years",
+         # filter for appropriate values --> if more variables (for example sex or age) are needed, make changes here!
+         isced11_code %in% c("ED0-2", "ED3_4", "ED5-8")) %>%
+  mutate(
+    variab = "emp", # Add variable identifier
+    isced11_code = str_replace(isced11_code, "-", "_"),
+    # R doesn't like '-'(minus) in column names, change that to '_'
+    key = paste(variab, isced11_code, sex_code, sep = "_")
+  ) %>% # Merge sex and isced to get different data vars
+  select(-c(unit, sex, isced11, sex_code, isced11_code, age, geo)) %>% # remove unnecessary rows (which would be in the way of spread)
+  spread(key = key, value = values) %>% # spread out the column whose individual levels are needed as columns
+  rename_all(tolower) # all column names in lowercase
+  
+
+```
+
+## Belgium: **lfst_r_lfe2emprtn** Employment rates by sex, age, educational attainment level, citizenship and NUTS 2 regions
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "lfst_r_lfe2emprtn", # the relevant id to be downloaded
+               time_format = "num") # retrieve time column as.numeric right away (bc we only have yearly data)
+
+
+data_b <- label_eurostat(
+  data_b,
+  code = c("geo",
+           "isced11",
+           "sex"),
+  # we want to keep the "geo" and "na_item" column to be able to merge data easily
+  lang = "en",
+  # English is the default, line included for transparency
+  fix_duplicated = TRUE
+)
+
+data_b <- data_b %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    citizen == "Total", # geo_code and citizen are the only two differences in Belgium compared to Country level for the filter
+    age == "From 15 to 64 years",
+    # filter for appropriate values --> if more variables (for example sex or age) are needed, make changes here!
+    isced11_code %in% c("ED0-2", "ED3_4", "ED5-8")
+  ) %>%
+  mutate(
+    variab = "emp", # Add variable identifier
+    isced11_code = str_replace(isced11_code, "-", "_"),
+    # R doesn't like '-'(minus) in column names, change that to '_'
+    key = paste(variab, isced11_code, sex_code, sep = "_")
+  ) %>% # Merge sex and isced to get different data vars
+  select(-c(unit, sex, isced11, sex_code, isced11_code, age, geo, citizen)) %>% # remove unnecessary rows (which would be in the way of spread) + Do not forget also to unfilter citizen (extra variable in the Belgium data)
+  spread(key = key, value = values) %>% # spread out the column whose individual levels are needed as columns
+  rename_all(tolower) # all column names in lowercase
+
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+empl_educ <- rbind(data_a, data_b)
+```
+
+
+# Unemployment rates
+## Unemployment rates by sex, age and citizenship (%) [lfsa_urgan]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsa_urgan",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo",
+                                  "sex",
+                                  "age"))
+
+data_a <- data_a %>%
+  filter(age %in% c("From 15 to 64 years", "From 15 to 24 years"),
+         citizen == "Total") %>%
+  mutate(
+    variab = "unemp",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower)
+
+```
+
+
+## Unemployment rates by sex, age, ((, country of birth)) and NUTS 2 regions (%) [lfst_r_lfu3rt AND lfst_r_lfur2gac]
+* Somewhat randomly, Unemployment data for Youth and working age population exist but in different datasets:
+  + lfst_r_lfur2gac has 15-64
+  + lfst_r_lfu3rt has 15-24
+* Accordingly, we load and manipulate both data seperately and merge them
+
+```{r, message=FALSE}
+
+# lfst_r_lfur2gac
+
+data_b1 <-
+  get_eurostat(id = "lfst_r_lfur2gac",
+               time_format = "num")
+
+data_b1 <- label_eurostat(data_b1,
+                         code = c("geo",
+                                  "sex",
+                                  "age"),
+                         fix_duplicated = TRUE) 
+
+data_b1 <- data_b1 %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    age %in% c("From 15 to 64 years", "From 15 to 24 years"),
+    c_birth == "Total"
+  ) %>% # lfst_r_lfur2gac has 15-64
+  mutate(
+    variab = "unemp",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower)
+
+
+# lfst_r_lfu3rt
+
+data_b2 <-
+  get_eurostat(id = "lfst_r_lfu3rt",
+               time_format = "num")
+
+data_b2 <- label_eurostat(data_b2,
+                         code = c("geo",
+                                  "sex",
+                                  "age"),
+                         fix_duplicated = TRUE) 
+
+data_b2 <- data_b2 %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    age %in% c("From 15 to 64 years", "From 15 to 24 years")) %>% # lfst_r_lfur2gac has 15-64
+  mutate(
+    variab = "unemp",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>% 
+  select(geo_code, key, time, values) %>% 
+  spread(key = key, value = values) %>% 
+  rename_all(tolower)
+
+# Merge youth and working age pop
+data_b <- merge(data_b1, data_b2, by=c("geo_code", "time"))
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+unempl <- rbind(data_a, data_b)
+```
+
+
+# Employment rate by sex and age
+## Countries: **lfsa_ergaed** Employment rates by sex, age and educational attainment level
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsa_ergaed",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo",
+                                  "sex",
+                                  "age"))
+
+data_a <- data_a %>%
+  filter(age %in% c("From 15 to 64 years", "From 15 to 24 years"),
+         isced11 == "All ISCED 2011 levels") %>%
+  mutate(
+    variab = "emp",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower)
+
+```
+
+
+
+## Belgium: **lfst_r_lfe2emprtn** Employment rates by sex, age, educational attainment level, citizenship and NUTS 2 regions
+* Only data on working age population: 15-64
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "lfst_r_lfe2emprtn",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo",
+                                  "sex",
+                                  "age"),
+                         fix_duplicated = TRUE) 
+
+data_b <- data_b %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    age %in% c("From 15 to 64 years", "From 15 to 24 years"), # only data on working age population available
+    citizen == "Total",
+    isced11 == "All ISCED 2011 levels"
+  ) %>%
+  mutate(
+    variab = "emp",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower) %>%
+  mutate(emp_youth_f = NA,
+         emp_youth_m = NA,
+         emp_youth_t = NA)
+
+
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+empl_sex_age <- rbind(data_a, data_b)
+```
+
+# Transitions into unemplyoment from employment
+* Only data on the country level available
+
+## Labour transitions by employment status [ilc_lvhl30] 
+
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "ilc_lvhl30",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo",
+                                  "sex"))
+
+data_a <- data_a %>%
+  filter(trans1y == "Transition to unemployment",
+         wstatus == "Employed persons") %>%
+  mutate(
+    variab = "trans_to_unemp_from_work",
+    key = paste(variab, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower)
+```
+
+## Rbind a and b
+* In this case, just rename data_a
+```{r, message=FALSE}
+transition <- data_a
+```
+
+# Employment Growth and Total Employment
+* Using the same API code for two variables
+  + employment growth
+  + Total Employment
+* On employment growth:
+  + computed by changes in absolute values
+  + adding a growth function to compute changes
+
+## Employment and activity by sex and age  - annual data  [lfsi_emp_a]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsi_emp_a",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo",
+                                  "sex",
+                                  "age"))
+
+data_a <- data_a %>%
+  filter(
+    age %in% c("From 15 to 64 years", "From 15 to 24 years"),
+    indic_em == "Total employment (resident population concept - LFS)",
+    unit == "Thousand persons"
+  ) %>%
+  mutate(
+    values = values * 1000,
+    # Working Population values are in 1000
+    variab = "workingpop",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower)
+
+totempl_a <- data_a %>%
+  select(geo_code, time, workingpop_workagepop_f, workingpop_workagepop_m, workingpop_workagepop_t) %>%
+  rename(workingpop_m = workingpop_workagepop_m,
+         workingpop_f = workingpop_workagepop_f,
+         workingpop_t = workingpop_workagepop_t )
+
+# To compute growth a) bring wide data into long data format again, b) group by geo_code and key, c) create column with group lagged values and d) calculate pct changes by combining c) with the value column from a)
+data_a <- data_a %>%
+  gather(key=key, value = value, 3:8) %>%
+  group_by(geo_code, key) %>%
+  mutate(lag_value = lag(value),
+         pct_change = (value-lag_value)/lag_value) %>%
+  select(geo_code, time, key, pct_change) %>%
+  spread(key=key, value=pct_change)
+
+
+```
+
+
+
+## Employment by sex, age and NUTS 2 regions (1 000) [lfst_r_lfe2emp]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "lfst_r_lfe2emp",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo",
+                                  "sex",
+                                  "age"),
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    age %in% c("From 15 to 64 years", "From 15 to 24 years")
+  ) %>%
+  mutate(
+    values = values * 1000,
+    # Working Population values are in 1000
+    variab = "workingpop",
+    variab2 = ifelse(age_code == "Y15-64", "workagepop", "youth"),
+    key = paste(variab, variab2, sex_code, sep = "_")
+  ) %>%
+  select(geo_code, key, time, values) %>%
+  spread(key = key, value = values) %>%
+  rename_all(tolower)
+
+totempl_b <- data_b %>%
+  select(geo_code, time, workingpop_workagepop_f, workingpop_workagepop_m, workingpop_workagepop_t) %>%
+  rename(workingpop_m = workingpop_workagepop_m,
+         workingpop_f = workingpop_workagepop_f,
+         workingpop_t = workingpop_workagepop_t )
+
+# To compute growth a) bring wide data into long data format again, b) group by geo_code and key, c) create column with group lagged values and d) calculate pct changes by combining c) with the value column from a)
+data_b <- data_b %>%
+  gather(key=key, value = value, 3:8) %>%
+  group_by(geo_code, key) %>%
+  mutate(lag_value = lag(value),
+         pct_change = (value-lag_value)/lag_value) %>%
+  select(geo_code, time, key, pct_change) %>%
+  spread(key=key, value=pct_change)
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+empl_growth <- rbind(data_a, data_b)
+totemp <- rbind(totempl_a, totempl_b)
+```
+
+
+# GDP growth
+
+## Real GDP growth rate - volume	tec00115
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "tec00115",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"))
+
+data_a <- data_a %>%
+  mutate(gdp_gr = values) %>%
+  select(geo_code, time, gdp_gr) 
+```
+
+## Real growth rate of regional gross value added (GVA) at basic prices by NUTS 2 regions - percentage change on previous year  [nama_10r_2gvagr]
+
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "nama_10r_2gvagr",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo"), 
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(geo_code %in% c("BE1", "BE2", "BE3")) %>%
+  mutate(gdp_gr = values) %>%
+  select(geo_code, time, gdp_gr)
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+gdp_gr <- rbind(data_a, data_b)
+```
+
+
+# Nominal GDP per capita
+
+## Gross domestic product at market prices tec00001
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "tec00001",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"))
+
+data_a <- data_a %>%
+  filter(unit=="Current prices, euro per capita") %>%
+  mutate(gdp_pc = values) %>%
+  select(geo_code, time, gdp_pc) 
+```
+
+
+## Gross domestic product (GDP) at current market prices by NUTS 2 regions [nama_10r_2gdp]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "nama_10r_2gdp",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo"), 
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(unit == "Euro per inhabitant",
+         geo_code %in% c("BE1", "BE2", "BE3")) %>%
+  mutate(gdp_pc = values) %>%
+  select(geo_code, time, gdp_pc)
+
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+gdp_pc <- rbind(data_a, data_b)
+```
+
+
+# Investment Rate
+* Only Data for country level
+* getting data for the variables:
+  + Investment rate (investment/value added at factors cost) - percentage
+  + Investment per person employed - milliers d'euros
+
+## Annual enterprise statistics for special aggregates of activities (NACE Rev. 2) [sbs_na_sca_r2]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "sbs_na_sca_r2",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"),
+                         fix_duplicated = TRUE)
+
+data_a <- data_a %>%
+  filter(
+    nace_r2 ==
+      "Total business economy; repair of computers, personal and household goods; except financial and insurance activities",
+    indic_sb %in% c(
+      "Investment rate (investment/value added at factors cost) - percentage",
+      "Investment per person employed - milliers d'euros"
+    )
+  ) %>%
+  mutate(
+    key = ifelse(
+      indic_sb == "Investment per person employed - milliers d'euros",
+      "inv_per_empl",
+      "inv_total"
+    )
+  ) %>%
+  select(-c(nace_r2, indic_sb, geo)) %>%
+  spread(key = key, value = values) %>%
+  select(geo_code, time, inv_per_empl, inv_total) 
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+inv <- data_a
+```
+
+
+# Minimum Wage
+
+## Monthly minimum wages - bi-annual data	earn_mw_cur
+* We take the Minimum wage at the beginning of the year --> bi-annual data makes no sense for our case
+* We use the mimimum wage in Purchasing Power Standards 
+* Belgian minimum wage is binding for all regions --> accordingly we add the minimum wage for the Belgian regions
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "earn_mw_cur",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"))
+
+data_a <- data_a %>%
+  filter(currency == "Purchasing Power Standard",
+         time %in% c(1999:2019)) %>%
+  mutate(min_wage = values) %>%
+  select(geo_code, time, min_wage)
+
+data_b <-
+  data.frame(geo_code = rep(c("BE1", "BE2", "BE3"), each = (max(data_a$time) -
+                                                              min(data_a$time) +
+                                                              1)),
+             time = rep(min(data_a$time):max(data_a$time), 3))
+
+data_b <-
+  merge(
+    x = data_b,
+    y = data_a[data_a$geo_code == "BE", c("time", "min_wage")],
+    by = c("time"),
+    all.x = TRUE
+  )
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+min_wage <- rbind(data_a, data_b)
+```
+
+
+# Number of small and medium-sized enterprises
+* Data only available for countries
+
+## Annual enterprise statistics by size class for special aggregates of activities (NACE Rev. 2) [sbs_sc_sca_r2]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "sbs_sc_sca_r2",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"),
+                         fix_duplicated = TRUE)
+
+
+data_a <- data_a %>%
+  filter(
+    nace_r2 ==
+      "Total business economy; repair of computers, personal and household goods; except financial and insurance activities",
+    indic_sb %in% c("Enterprises - number")
+  ) %>%
+  mutate(
+    size_emp = dplyr::recode(
+      size_emp,
+      "From 0 to 9 persons employed" = "empsize_verysmall",
+      "From 10 to 19 persons employed" = "empsize_small",
+      "From 20 to 49 persons employed" = "empsize_medium",
+      "From 50 to 249 persons employed" = "empsize_big",
+      "250 persons employed or more" = "empsize_verybig",
+      "Total" = "empsize_total"
+    )
+  ) %>%
+  select(-c(nace_r2, indic_sb, geo)) %>%
+  spread(key = size_emp, value = values)
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+empsize <- data_a
+```
+
+
+
+
+# School Dropouts
+
+## Early leavers from education and training by sex and labour status [edat_lfse_14]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "edat_lfse_14",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    wstatus =="Population"
+  ) %>%
+  mutate(
+    key = paste("dropout", sex_code ,sep="_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+```
+
+## Early leavers from education and training by sex and NUTS 2 regions  [edat_lfse_16]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "edat_lfse_16",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo","sex"), 
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(geo_code %in% c("BE1", "BE2", "BE3")) %>%
+ mutate(
+    key = paste("dropout", sex_code ,sep="_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+dropout <- rbind(data_a, data_b)
+```
+
+
+
+# Literacy
+* Not really literacy --> rather low education level
+
+## Population by educational attainment level, sex and age (%) [edat_lfs_9903]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "edat_lfs_9903",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    isced11 =="Less than primary, primary and lower secondary education (levels 0-2)",
+    age == "From 15 to 64 years"
+  ) %>%
+  mutate(
+    key = paste("literacy", sex_code ,sep="_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+```
+
+## Population by educational attainment level, sex, age, country of birth and NUTS 2 regions (%) [edat_lfs_9917]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "edat_lfs_9917",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo","sex"), 
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(geo_code %in% c("BE1", "BE2", "BE3"),
+         isced11 == "Less than primary, primary and lower secondary education (levels 0-2)",
+         age == "From 15 to 64 years",
+         c_birth == "Total") %>%
+ mutate(
+    key = paste("literacy", sex_code ,sep="_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+literacy <- rbind(data_a, data_b)
+```
+
+
+# Childcare
+* Not really literacy --> rather low education level
+
+## Formal childcare by age group and duration - % over the population of each age group - EU-SILC survey [ilc_caindformal]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "ilc_caindformal",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"))
+
+data_a <- data_a %>%
+  filter(duration != "Zero hours") %>%
+  mutate(
+    age = dplyr::recode(
+      age,
+      "From minimum compulsory school age to 12 years" = "schoolageto12",
+      "From 3 years to minimum compulsory school age" = "threetoschoolage",
+      "From 3 years to minimum compulsory school age" = "lessthan3"
+    ),
+    duration = dplyr::recode(
+      duration,
+      "From 1 to 29 hours" = "from1to29h",
+      "30 hours or over" = "over30h"
+    ),
+    key = paste("childcare", age, duration, sep = "_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+childcare <- data_a
+```
+
+
+
+# Labour productivity
+
+## Labour productivity and unit labour costs [nama_10_lp_ulc]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "nama_10_lp_ulc",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"))
+
+data_a <- data_a %>%
+  filter(
+    unit == "Percentage change on previous period",
+    na_item == "Real labour productivity per person"
+  ) %>%
+  mutate(
+    key = paste0("gr_productiv")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+gr_productiv <- data_a
+```
+
+
+# Pop
+
+## Population on 1 January by broad age group and sex [demo_pjanbroad]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "demo_pjanbroad",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    age != "Unknown",
+    time >= 2002,
+  ) %>%
+  mutate(
+    age = dplyr::recode(
+      age,
+      "Total" = "total",
+      "From 15 to 64 years" = "pop1564",
+      "65 years or over" = "pop65",
+      "Less than 15 years" = "pop15"),
+    key = paste("population", age, sex_code, sep="_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Population on 1 January by broad age group, sex and NUTS 3 region [demo_r_pjanaggr3]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "demo_r_pjanaggr3",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo","sex"), 
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    age != "Unknown",
+    time >= 2002,
+  ) %>%
+  mutate(
+    age = dplyr::recode(
+      age,
+      "Total" = "total",
+      "From 15 to 64 years" = "pop1564",
+      "65 years or over" = "pop65",
+      "Less than 15 years" = "pop15"),
+    key = paste("population", age, sex_code, sep="_")
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+popul <- rbind(data_a, data_b)
+```
+
+
+# Dependency Ratios
+```{r, message=FALSE}
+depratio <- popul %>%
+  mutate(tot_depratio_F = (population_pop15_F+population_pop65_F)/population_pop1564_F,
+         tot_depratio_M = (population_pop15_M+population_pop65_M)/population_pop1564_M,
+         tot_depratio_T = (population_pop15_T+population_pop65_T)/population_pop1564_T,
+         
+         old_depratio_F = population_pop65_F/population_pop1564_F,
+         old_depratio_M = population_pop65_M/population_pop1564_M,
+         old_depratio_T = population_pop65_T/population_pop1564_T,
+         
+         young_depratio_F = population_pop15_F/population_pop1564_F,
+         young_depratio_M = population_pop15_M/population_pop1564_M,
+         young_depratio_T = population_pop15_T/population_pop1564_T
+         ) %>%
+  select(geo_code, time, 15:23) 
+
+```
+
+
+
+# Immigration
+
+## Immigration by age group, sex and citizenship [migr_imm1ctz]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "migr_imm1ctz",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    citizen == "Total",
+    agedef == "Age in completed years",
+    age == "Total", 
+  ) %>%
+  mutate(
+    key = paste("immigration", sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+immigr <- data_a
+```
+
+
+# Emmigration
+
+## Emigration by age group, sex and citizenship [migr_emi1ctz]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "migr_emi1ctz",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    citizen == "Total",
+    agedef == "Age in completed years",
+    age == "Total", 
+  ) %>%
+  mutate(
+    key = paste("emmigration", sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+emmigr <- data_a
+```
+
+
+
+# Temporary Employees
+
+## Temporary employees as percentage of the total number of employees, by sex, age and citizenship (%) [lfsa_etpgan]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsa_etpgan",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    citizen == "Total",
+    age == "From 15 to 64 years", 
+  ) %>%
+  mutate(
+    key = paste("tempemp", sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+tempemp <- data_a
+```
+
+
+# Share in finding  job with contribution of PES
+
+## Methods used for seeking work- Percentage of unemployed who declared having used a given method, by sex (%) [lfsa_ugmsw]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsa_ugmsw",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    swmethod == "Contact public employment office",
+  ) %>%
+  mutate(
+    key = paste("jobsearchpes", sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Rbind a and b
+```{r, message=FALSE}
+jobsrch <- data_a
+```
+
+
+# Activity rate of females and foreigners
+* Two variable groups retrieved and merged here: Gender and Citizenship
+* we give values both for male and female as well as for total
+
+## Activity rates by sex, age and citizenship (%) [lfsa_argan]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsa_argan",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    citizen %in% c("Total", "Foreign country", "Reporting country"),
+    age == "From 15 to 64 years", 
+  ) %>%
+  mutate(
+    citizen = dplyr::recode(citizen,
+                     "Total"= "total", 
+                     "Foreign country" = "foreign", 
+                     "Reporting country" = "home"),
+    key = paste("activityrate", citizen, sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Activity rates by sex, age, educational attainment level, citizenship and NUTS 2 regions [lfst_r_lfp2actrtn]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "lfst_r_lfp2actrtn",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo", "sex"),
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    citizen %in% c("Total", "Foreign country", "Reporting country"),
+    age == "From 15 to 64 years", 
+    isced11 == "All ISCED 2011 levels",
+  ) %>%
+  mutate(
+    citizen = dplyr::recode(citizen,
+                     "Total"= "total", 
+                     "Foreign country" = "foreign", 
+                     "Reporting country" = "home"),
+    key = paste("activityrate", citizen, sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+activtyrate <- rbind(data_a, data_b)
+```
+
+
+# Part time 
+
+## Part-time employment and temporary contracts - annual data  [lfsi_pt_a]
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "lfsi_pt_a",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo", "sex"))
+
+data_a <- data_a %>%
+  filter(
+    worktime == "Part-time",
+    unit == "Percentage of total employment",
+    age == "From 15 to 64 years", 
+  ) %>%
+  mutate(
+    key = paste("parttime", sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values)  
+
+```
+
+## Employment by full-time/part-time, sex and NUTS 2 regions (1 000) [lfst_r_lfe2eftpt]
+```{r, message=FALSE}
+data_b <-
+  get_eurostat(id = "lfst_r_lfe2eftpt",
+               time_format = "num")
+
+data_b <- label_eurostat(data_b,
+                         code = c("geo", "sex"),
+                         fix_duplicated = TRUE)
+
+data_b <- data_b %>%
+  filter(
+    geo_code %in% c("BE1", "BE2", "BE3"),
+    worktime %in% c("Total", "Part-time")
+  ) %>%
+  mutate(
+    key = paste(worktime, sex_code, sep="_"),
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) %>%
+  mutate(parttime_F = `Part-time_F` / Total_F,
+         parttime_M = `Part-time_M` / Total_M,
+         parttime_T = `Part-time_T` / Total_T) %>%
+  select(geo_code, time, parttime_F, parttime_M, parttime_T)
+
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+parttime <- rbind(data_a, data_b)
+```
+
+
+# Enterprise Death Rates
+* Business demography by legal form (from 2004 onwards, NACE Rev. 2) [bd_9ac_l_form_r2]
+* Only available for countries
+```{r, message=FALSE}
+data_a <-
+  get_eurostat(id = "bd_9ac_l_form_r2",
+               time_format = "num")
+
+data_a <- label_eurostat(data_a,
+                         code = c("geo"),
+                         fix_duplicated = TRUE)
+
+data_a <- data_a %>%
+  filter(
+    indic_sb %in% c("Deaths of enterprises in t - number", "Death rate: number of enterprise deaths in the reference period (t) divided by the number of enterprises active in t - percentage"), 
+    leg_form == "Total",
+    nace_r2 == "Industry, construction and services except insurance activities of holding companies", 
+  ) %>%
+  mutate(
+    indic_sb = dplyr::recode(indic_sb,
+                      "Deaths of enterprises in t - number" = "enterprisedeath_tot", 
+                      "Death rate: number of enterprise deaths in the reference period (t) divided by the number of enterprises active in t - percentage" = "enterprisedeath_perc"),
+    key = indic_sb,
+  ) %>%
+  select(geo_code, time, key, values) %>%
+  spread(key = key, value = values) 
+
+```
+
+
+## Rbind a and b
+```{r, message=FALSE}
+death <- data_a
+```
+
+
+# Replacement Rate of last earnings before unemployment
+* From OECD
+* https://stats.oecd.org/Index.aspx?DataSetCode=NRR#_ga=2.115968198.1529179679.1559572370-478591159.1556266530
+* Which time --> data different from the data in excel file ToDo @HV
+```{r, message=FALSE}
+# reprate <- read_csv("2019/orig/test/Replacement Rate last earnings.csv")
+```
+
+
+# Left over for Hans
+* Share of self-employed (Var no 53)
+* Duration of working life (Var no 54)
+
+
+
+
+
++++++++++++++++++++++
+
+# Merge all df together and save as csv
+```{r, message=FALSE}
+
+df_final <-
+  Reduce(
+    function(x, y)
+      full_join(x, y, by = c("geo_code", "time")),
+    list(empl_educ, unempl, empl_sex_age, transition, empl_growth, totemp, gdp_gr, gdp_pc, inv, min_wage, empsize, dropout,  
+         literacy, childcare, gr_productiv, popul, depratio, immigr, emmigr, tempemp, jobsrch, activtyrate, parttime, death)
+  )
+
+df_final <- df_final %>%
+  group_by(geo_code, time) %>%
+  rename_all(tolower)
+
+# write_excel_csv2(df_final, "data_uptodate.csv")
+```
+

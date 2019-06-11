@@ -18,6 +18,13 @@ navbar:
     href: objectsndata.html
   - text: Data Management
     href: datamanagement.html
+    menu:
+      - text: "Data Management Introduction"
+        href: datamanagement.html
+      - text: "Eurostat Example"
+        href: datamanagement_eurostat.html
+      - text: "Destatis Example"
+        href: datamanagement_destatis.html
   - text: Data Viz
     href: dataviz.html
   - text: About

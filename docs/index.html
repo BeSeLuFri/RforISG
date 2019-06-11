@@ -396,8 +396,23 @@ div.tocify {
 <li>
   <a href="objectsndata.html">Objects and Data</a>
 </li>
-<li>
-  <a href="datamanagement.html">Data Management</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Management
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datamanagement.html">Data Management Introduction</a>
+    </li>
+    <li>
+      <a href="datamanagement_eurostat.html">Eurostat Example</a>
+    </li>
+    <li>
+      <a href="datamanagement_destatis.html">Destatis Example</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="dataviz.html">Data Viz</a>
@@ -440,8 +455,23 @@ div.tocify {
 <div id="agenda" class="section level2">
 <h2><span class="header-section-number">1.1</span> Agenda</h2>
 <p>We have two days, 4 hours per day.</p>
-<p><strong>Day 1</strong> * R Basics, Workflow in R Studio and Objects (1.5h) * Data Management and tidyverse (2h) + Quick Intro into the tidyverse and it’s data management tools + Eurostat Example + Destatis Example</p>
-<p><strong>Day 2</strong> * Data visualizationsand the tidyverse (2h) + Quick intro into ggplot + Eurostat Example + Destatis Example * Regressions (.5h) * knitr, R Notebooks (1h)</p>
+<p><strong>Day 1</strong> * R Basics, Workflow in R Studio and Objects (1.5h)</p>
+<ul>
+<li><p>Data Management and tidyverse (2h)</p>
+<ul>
+<li><p>Quick Intro into the tidyverse and it’s data management tools</p></li>
+<li><p>Eurostat Example</p></li>
+<li><p>Destatis Example</p></li>
+</ul></li>
+</ul>
+<p><strong>Day 2</strong> * Data visualizationsand the tidyverse (2h)</p>
+<ul>
+<li><p>Quick intro into ggplot</p></li>
+<li><p>Eurostat Example</p></li>
+<li><p>Destatis Example</p></li>
+<li><p>Regressions (.5h)</p></li>
+<li><p>knitr, R Notebooks (1h)</p></li>
+</ul>
 </div>
 <div id="why-r" class="section level2">
 <h2><span class="header-section-number">1.2</span> Why R</h2>
@@ -559,7 +589,7 @@ c(1, 2, 3, 5) %&gt;% mean()</code></pre>
 <h1><span class="header-section-number">7</span> Important Ressources</h1>
 <p><a href="https://www.stackoverflow.com/">Stackoverflow</a>: A general discussion forum for programmers, including many R users. Just google your question and make sure to place an “R” in the beginning of your question. Most often you will be directed to stackoverflow.</p>
 <p><a href="http://www.urfie.net/">Econometrics for R</a>: Great book - first half of this class is based upon it. Has some 60pages of introduction into R.</p>
-<p><a href="http://tryr.codeschool.com/">CodeSchool</a>: A fun and free way to learn the basics of R.</p>
+<p><a href="https://www.datacamp.com/">Data Camp</a>: Online tutorials with in-browser coding tasks. Everything beyond beginners levels is behind a paywall.</p>
 <p><strong>Cheat Sheets</strong>: Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples</p>
 <ul>
 <li><p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Cheat Sheet Base R</a></p></li>

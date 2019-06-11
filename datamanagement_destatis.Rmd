@@ -1,0 +1,57 @@
+---
+title: "Datamanagement: Eurostat Example"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+
+# General and Setup
+   
+## General Coding Information
+* Retrieve and manage data for the PES project directly via the Eurostat API and the related eurostat R package 
+* Links: [eurostat Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/eurostat.pdf) and  [eurostat Documentation](https://cran.r-project.org/web/packages/eurostat/eurostat.pdf)
+* There is a minor bug when working with R_Notebook on the old ISG Windows environments. In case you get the error: "Error creating notebook: pandoc document conversion failed with error 11" just apply [this fix](https://github.com/rstudio/rstudio/issues/3661#issuecomment-475705806) from kevinushey (22 Mar 2019). 
+  + When executing code within R Markdown or a plain script this is no problem at all
+* New (obvious) Learning for BF: Never use warning=FALSE in code chunks when working in a R_Notebook --> otherwise you won't see warnings (surprise, surprise!). I wasted 3h today bc I wasn't aware of the warnings....   
+
+## Important Data Management Decisions
+* For Belgium regions the following geo identifiers have been used
+  + **BE1** Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest --> ATTENTION BE10 seems to be identical
+  + **BE2** Vlaams Gewest
+  + **BE3** Région wallonne
+* Youth and working age population
+  + Youth defined as "From 15 to 24 years"
+  + Working age populations as "From 15 to 64 years",
+  
+## Different Data Sources used than in 2018
+* Unemployment rates for Belgium are not only from lfst_r_lfu3rt anymore but are split into   
+  + lfst_r_lfur2gac has 15-64
+  + lfst_r_lfu3rt has 15-24
+* Employment rates:
+  + lfsa_ergaed used instead of lfsa_ergaedn (no citizenship)
+* Employment rate by sex and age - Belgium
+  + There is only data for the working age population
+* Employment growth can be computed for Belgium regions, too 
+  + because we have the data: lfst_r_lfe2emp
+* Nominal GDP per capita
+  + We use Gross domestic product at market prices	tec00001
+* Literacy BE:
+  + Different Dataset which includes age group  age group 15-65 (which edat_lfse_04 didn't)
+* Excel List Variable No 41 pop_working_age --> no data sheet existent for this variable; plus we already have it in population
+* Variable No4 seasonal employment not available
+* In excel list from 2018, we also have a data sheet on "Part-time employment and temporary contracts - annual data  [lfsi_pt_a]"
+  + However, this is very similiar to "Temporary employees as percentage of the total number of employees, by sex, age and citizenship (%) [lfsa_etpgan]" --> which we also have in the excel list but on sheet 1 (the variable overview)
+  + Only difference is that the former is  connected to all types of employment while the latter is only related to the number of employees as numeraire
+  + No important difference, only using the first type of variable 
+* Minimum Wage: There are two additional variables in the excel list: minwage WSI and minwage (binary)
+  + the former is identical to the eurostat minimum wage variable, just in hourly earnings not monthly --> no difference between the two variables
+  + the latter is a binary variable which is time constant --> can't use it because of the lack of time variance
+* Shadow economy Schneider: Please - let's not use this b****it variable
+* Strictness of dismissal protection law: No data after 2013 --> excluded accordingly
+* I have no access to "Tax rate on labour as % of total labour costs (OECD)" --> needs to be purchased retrieved with professional account
+* Replacement Rate Unemployment benefits: data different from the data in excel file
+* Benefit duration in months (can't use it because no time variance)
+
+

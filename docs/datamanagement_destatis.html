@@ -11,7 +11,7 @@
 
 
 
-<title>Datamanagement</title>
+<title>Datamanagement: Eurostat Example</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -430,156 +430,88 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Datamanagement</h1>
+<h1 class="title toc-ignore">Datamanagement: Eurostat Example</h1>
 
 </div>
 
 
-<div id="loading-dataset" class="section level1">
-<h1><span class="header-section-number">1</span> Loading Dataset</h1>
-<pre class="r"><code># Laden des Datensatzes
-library(readstata13)
-library(tidyverse)</code></pre>
-<pre><code>## Registered S3 methods overwritten by &#39;ggplot2&#39;:
-##   method         from 
-##   [.quosures     rlang
-##   c.quosures     rlang
-##   print.quosures rlang</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;rvest&#39;:
-##   method            from
-##   read_xml.response xml2</code></pre>
-<pre><code>## -- Attaching packages --------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.1.1       v purrr   0.3.2  
-## v tibble  2.1.1       v dplyr   0.8.0.1
-## v tidyr   0.8.3       v stringr 1.4.0  
-## v readr   1.3.1       v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(magrittr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;magrittr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     set_names</code></pre>
-<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
-## 
-##     extract</code></pre>
-<pre class="r"><code>#Daten als Objekt importieren
-econ &lt;- read.dta13(file=&quot;data/offline/econometrics.dta&quot; ,
-                   convert.factors=F,
-                   nonint.factors = F)
-
-# Subsample with 5000 Observations
-econ &lt;- econ [sample(c(1:nrow(econ)),size = 5000,replace = FALSE),]</code></pre>
+<div id="general-and-setup" class="section level1">
+<h1><span class="header-section-number">1</span> General and Setup</h1>
+<div id="general-coding-information" class="section level2">
+<h2><span class="header-section-number">1.1</span> General Coding Information</h2>
+<ul>
+<li>Retrieve and manage data for the PES project directly via the Eurostat API and the related eurostat R package</li>
+<li>Links: <a href="https://github.com/rstudio/cheatsheets/raw/master/eurostat.pdf">eurostat Cheat Sheet</a> and <a href="https://cran.r-project.org/web/packages/eurostat/eurostat.pdf">eurostat Documentation</a></li>
+<li>There is a minor bug when working with R_Notebook on the old ISG Windows environments. In case you get the error: “Error creating notebook: pandoc document conversion failed with error 11” just apply <a href="https://github.com/rstudio/rstudio/issues/3661#issuecomment-475705806">this fix</a> from kevinushey (22 Mar 2019).
+<ul>
+<li>When executing code within R Markdown or a plain script this is no problem at all</li>
+</ul></li>
+<li>New (obvious) Learning for BF: Never use warning=FALSE in code chunks when working in a R_Notebook –&gt; otherwise you won’t see warnings (surprise, surprise!). I wasted 3h today bc I wasn’t aware of the warnings….</li>
+</ul>
 </div>
-<div id="recodingvariable-declaration" class="section level1">
-<h1><span class="header-section-number">2</span> Recoding/Variable declaration</h1>
-<p>!! Marcel here: not sure if we should stick with car::recode. I personally don’t like it and prefer classic R with [], but its so much more code-intensive…</p>
-<pre class="r"><code>library(car)</code></pre>
-<pre><code>## Loading required package: carData</code></pre>
-<pre><code>## 
-## Attaching package: &#39;car&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     recode</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     some</code></pre>
-<pre class="r"><code># Variable Alter generieren
-econ$alter = 2003 - econ$gebjahr
-econ$alter [econ$alter == 2004] &lt;- NA # entfernen der fehlerhaften
-
-#sex 
-econ$sex &lt;- factor(econ$sex,levels = c(1,2),labels = c(&quot;männlich&quot;,&quot;weiblich&quot;))
-
-# Ueberstunden recodieren 0=nein, 1=ja
-econ$over = recode(econ$tp72,&quot;2=0;-2=NA;-1=NA; 3=NA&quot;)
-
-# Vertragliche und tatsaechliche Wochenarbeitszeit
-# Missings bereinigen
-econ$contract = recode(econ$tp7001,&quot;-3=NA;-2=NA;-1=NA&quot;)
-econ$actual = recode(econ$tp7003,&quot;-3=NA;-2=NA;-1=NA&quot;)
-econ$contract = econ$contract/10
-econ$actual = econ$actual/10
-
-# Vertrauen 
-# &quot;Trust in people&quot; und &quot;Can&#39;t rely on anybody&quot; recodieren
-econ$trust = recode(econ$tp0301,&quot;-1=NA&quot;)
-econ$rely = recode(econ$tp0302,&quot;-1=NA&quot;)
-
-econ$netinc = recode(econ$tp7602,&quot;-3=NA;-2=NA;-1=NA&quot;)
-
-# Nur relevante Variablen werden übernommen
-econ_data &lt;- econ[,c(&quot;netinc&quot;,&quot;alter&quot;,&quot;sex&quot;,&quot;contract&quot;,&quot;actual&quot;,&quot;trust&quot;,&quot;rely&quot;)]
-head(econ_data)</code></pre>
-<pre><code>##       netinc alter      sex contract actual trust rely
-## 3249      NA    48 männlich       NA     NA    NA   NA
-## 11816   1510    47 männlich     38.0     38     2    3
-## 4362     530    22 männlich     38.5     48     2    3
-## 10457   1200    44 männlich     40.0     50     2    3
-## 511       NA    63 männlich       NA     NA     3    3
-## 3858      NA     5 weiblich       NA     NA    NA   NA</code></pre>
-<pre class="r"><code># Delete NAs
-econ_data &lt;- na.omit(econ_data)
-
-# Einkommen Kategorisiert in Quartile
-
-hist(econ$netinc)</code></pre>
-<p><img src="datamanagement_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<pre class="r"><code>quantile(econ_data$netinc)</code></pre>
-<pre><code>##      0%     25%     50%     75%    100% 
-##   50.00  897.75 1390.00 1964.25 8000.00</code></pre>
-<pre class="r"><code>econ_data$inc_kat &lt;- NA
-econ_data$inc_kat [econ_data$netinc &lt; quantile(econ_data$netinc)[2]] &lt;- &quot;Q1&quot;
-econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc)[2] &amp; econ_data$netinc &lt; quantile(econ_data$netinc)[3]] &lt;- &quot;Q2&quot;
-econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc)[3] &amp; econ_data$netinc &lt; quantile(econ_data$netinc)[4]] &lt;- &quot;Q3&quot;
-econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc)[4] ] &lt;- &quot;Q4&quot;
-
-table(econ_data$inc_kat)</code></pre>
-<pre><code>## 
-##  Q1  Q2  Q3  Q4 
-## 422 421 423 422</code></pre>
+<div id="important-data-management-decisions" class="section level2">
+<h2><span class="header-section-number">1.2</span> Important Data Management Decisions</h2>
+<ul>
+<li>For Belgium regions the following geo identifiers have been used
+<ul>
+<li><strong>BE1</strong> Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest –&gt; ATTENTION BE10 seems to be identical</li>
+<li><strong>BE2</strong> Vlaams Gewest</li>
+<li><strong>BE3</strong> Région wallonne</li>
+</ul></li>
+<li>Youth and working age population
+<ul>
+<li>Youth defined as “From 15 to 24 years”</li>
+<li>Working age populations as “From 15 to 64 years”,</li>
+</ul></li>
+</ul>
 </div>
-<div id="advanced-dm-the-tidyverse" class="section level1">
-<h1><span class="header-section-number">3</span> Advanced DM: The tidyverse</h1>
-<p>Some of the most important functions when it gets to datamanagement stem from the tidyverse-packages and most notably dplyr. We can only provide you with a small overview here, but if you understand <code>mutate</code>, <code>summarise</code> and <code>group_by</code>, you should be good to go.</p>
-<div id="mutate" class="section level2">
-<h2><span class="header-section-number">3.1</span> Mutate</h2>
-<p>We can easily add variables (or transformed versions of others) to a knew dataset by adding a new variable through mutate.</p>
-<p>For example, assume we wanted to add a squared age term:</p>
-<pre class="r"><code>econ_data &lt;- 
-  econ_data %&gt;% mutate(alter_squared = alter^2)
-
-head(econ_data)</code></pre>
-<pre><code>##   netinc alter      sex contract actual trust rely inc_kat alter_squared
-## 1   1510    47 männlich     38.0     38     2    3      Q3          2209
-## 2    530    22 männlich     38.5     48     2    3      Q1           484
-## 3   1200    44 männlich     40.0     50     2    3      Q2          1936
-## 4   1240    31 weiblich     35.0     35     2    3      Q2           961
-## 5   2451    45 männlich     37.0     42     1    3      Q4          2025
-## 6   1700    47 weiblich     38.5     40     2    3      Q3          2209</code></pre>
-</div>
-<div id="summarise" class="section level2">
-<h2><span class="header-section-number">3.2</span> Summarise</h2>
-<p>Summarise allows us to summarise certain variables, such as certain features of netincome.</p>
-<pre class="r"><code>econ_data %&gt;% 
-  summarise(mean = mean(alter,na.rm = T),
-            sd = sd(alter,na.rm = T))</code></pre>
-<pre><code>##       mean       sd
-## 1 40.89929 11.58369</code></pre>
-</div>
-<div id="group_by" class="section level2">
-<h2><span class="header-section-number">3.3</span> group_by</h2>
-<p>The same is also possibled for grouped structures. Say, for example, you would want to calculate seperate values for different genders:</p>
-<pre class="r"><code>econ_data %&gt;% 
-  group_by() %&gt;% 
-  summarise(mean = mean(alter,na.rm = T),
-            sd = sd(alter,na.rm = T))</code></pre>
-<pre><code>## # A tibble: 1 x 2
-##    mean    sd
-##   &lt;dbl&gt; &lt;dbl&gt;
-## 1  40.9  11.6</code></pre>
+<div id="different-data-sources-used-than-in-2018" class="section level2">
+<h2><span class="header-section-number">1.3</span> Different Data Sources used than in 2018</h2>
+<ul>
+<li>Unemployment rates for Belgium are not only from lfst_r_lfu3rt anymore but are split into
+<ul>
+<li>lfst_r_lfur2gac has 15-64</li>
+<li>lfst_r_lfu3rt has 15-24</li>
+</ul></li>
+<li>Employment rates:
+<ul>
+<li>lfsa_ergaed used instead of lfsa_ergaedn (no citizenship)</li>
+</ul></li>
+<li>Employment rate by sex and age - Belgium
+<ul>
+<li>There is only data for the working age population</li>
+</ul></li>
+<li>Employment growth can be computed for Belgium regions, too
+<ul>
+<li>because we have the data: lfst_r_lfe2emp</li>
+</ul></li>
+<li>Nominal GDP per capita
+<ul>
+<li>We use Gross domestic product at market prices tec00001</li>
+</ul></li>
+<li>Literacy BE:
+<ul>
+<li>Different Dataset which includes age group age group 15-65 (which edat_lfse_04 didn’t)</li>
+</ul></li>
+<li>Excel List Variable No 41 pop_working_age –&gt; no data sheet existent for this variable; plus we already have it in population</li>
+<li>Variable No4 seasonal employment not available</li>
+<li>In excel list from 2018, we also have a data sheet on “Part-time employment and temporary contracts - annual data [lfsi_pt_a]”
+<ul>
+<li>However, this is very similiar to “Temporary employees as percentage of the total number of employees, by sex, age and citizenship (%) [lfsa_etpgan]” –&gt; which we also have in the excel list but on sheet 1 (the variable overview)</li>
+<li>Only difference is that the former is connected to all types of employment while the latter is only related to the number of employees as numeraire</li>
+<li>No important difference, only using the first type of variable</li>
+</ul></li>
+<li>Minimum Wage: There are two additional variables in the excel list: minwage WSI and minwage (binary)
+<ul>
+<li>the former is identical to the eurostat minimum wage variable, just in hourly earnings not monthly –&gt; no difference between the two variables</li>
+<li>the latter is a binary variable which is time constant –&gt; can’t use it because of the lack of time variance</li>
+</ul></li>
+<li>Shadow economy Schneider: Please - let’s not use this b****it variable</li>
+<li>Strictness of dismissal protection law: No data after 2013 –&gt; excluded accordingly</li>
+<li>I have no access to “Tax rate on labour as % of total labour costs (OECD)” –&gt; needs to be purchased retrieved with professional account</li>
+<li>Replacement Rate Unemployment benefits: data different from the data in excel file</li>
+<li>Benefit duration in months (can’t use it because no time variance)</li>
+</ul>
 </div>
 </div>
 
