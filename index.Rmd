@@ -32,18 +32,27 @@ We have two days, 4 hours per day.
 
 **Day 1**
 * R Basics, Workflow in R Studio and Objects (1.5h)
+
 * Data Management and tidyverse (2h)
+
   + Quick Intro into the tidyverse and it's data management tools
+  
   + Eurostat Example
+  
   + Destatis Example
 
 
 **Day 2** 
 * Data visualizationsand the tidyverse (2h)
+
   + Quick intro into ggplot
+  
   + Eurostat Example
+  
   + Destatis Example
+  
 * Regressions (.5h)
+
 * knitr, R Notebooks (1h)
 
 
@@ -218,8 +227,8 @@ Just google your question and make sure to place an "R" in the beginning of your
 Great book - first half of this class is based upon it.
 Has some 60pages of introduction into R.
 
-[CodeSchool](http://tryr.codeschool.com/):
-A fun and free way to learn the basics of R. 
+[Data Camp](https://www.datacamp.com/):
+Online tutorials with in-browser coding tasks. Everything beyond beginners levels is behind a paywall. 
 
 **Cheat Sheets**:
 Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples

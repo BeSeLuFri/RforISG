@@ -207,7 +207,6 @@ summary(gender)
 
 ***
 
-
 ## Matrices
 Matrices are important tools for data analysis. R has a powerful matrix algebra system. Most often, matrices will be generated from an existing data set. But you can
 also build the from scratch with ```matrix(vec, nrow=m)``` (takes the numbers stored in vector ```vec``` and puts them into a matrix with m rows). 
@@ -270,6 +269,8 @@ A * B
 solve(D)
 
 ```
+
+***
 
 ## Lists
 A list is a generic collection of objects. Unlike vectors, components can be of different types.
@@ -341,7 +342,7 @@ presence
 presence$total.presence2 <- with(presence, Eugen+Julia+Lena)
 
 ```
-***
+
 Sometimes, we do not want to work with a whole data set but only with a subset. This can be easily achieved with the command ````subset(df, criterion)```, where *criterion* is a logical expression which evaluetes to TRUE for the rows which are to be selected. 
 
 <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
