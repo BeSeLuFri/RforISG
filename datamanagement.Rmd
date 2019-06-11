@@ -6,14 +6,15 @@ title: "Datamanagement"
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ```
 
-Download the script here [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R)
+Download the script here [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/datamanagement.R)
 
 # Preliminary:
 
 * We use an old (2003) randomly changed and subsetted SOEP dataset with 5.000 observations. 
 
-* Please, **download** the two csv files ([.soep_europ.csv](heute.de) and [soep_us.csv](heute.de)) and the [soep.dta](heute.de) file and save them locally within your R project directory.
+* Please, **download** the two csv files ([.soep_europ.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_europ.csv) and [soep_us.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_us.csv)) and the [soep.dta](https://github.com/BeSeLuFri/RforISG/raw/master/data/soep.dta) file and save them locally within your R project directory.
 
+***
 
 # Load the packages and set-up the script
 
@@ -28,13 +29,13 @@ Download the script here [here](https://raw.githubusercontent.com/BeSeLuFri/Rfor
   + Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages.
 
 This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages  
-```{r}
+```{r, message=FALSE}
 rm(list = ls())
 # install.packages("tidyverse")
 library(tidyverse)
 ```
 
-
+***
 
 # Loading the Dataset
 
@@ -95,121 +96,342 @@ data <-
 library(readstata13)
 
 #Daten als Objekt importieren
-econ <- readstata13::read.dta13(file="Files/Data/soep.dta" ,
+data <- readstata13::read.dta13(file="data/soep.dta" ,
                    convert.factors=FALSE, # default is TRUE, would create Stata value labels
                    ) 
 
+```
 
+Enough on reading data for now, let's use the European csv for now.
 
+```{r, eval=FALSE}
+data <- read_csv2("data/soep_europ.csv")
 ```
 
 
-# Recoding/Variable declaration
+***
 
+# Select the relevant variables
+Our data has 902 variables. Obviously, we do not need that many. 
+
+Accordingly, we `select` the relevant ones:
+
+* *gebjahr*, *sex*, *tp72* (Work Overtime), *tp7001* (Contracted Working Hours), *tp7003* (Hours Per Week Actual), *tp7602* (Net Income Last Month)
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u> Notice that after typing the first two or three characters of each variable, RStudio gives you a drop down menu. 
+```{r, eval=FALSE}
+data <- data %>% # remember the pipe?
+  select(______) # fill in the missing names
+```
+
+`select()` is from the tidyverse, namely the package `dplyr`. "dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges" [check this out](https://dplyr.tidyverse.org/)
+
+***
+
+# Explore the data structure
+
+For a first overview over our data, we can use the base functions (e.g. those which are without any package installations part of R) `str()`, `head()`, `summary()`, `table()`, `quantile()`, and `View()`.
+
+<span style="color:red">Task</span> <u>**Go through every function's output and try to understand what it means!**</u>
+```{r, eval=FALSE}
+str(data)
+head(data)
+summary(data)
+table(data$tp72) # you could use any other variable here. 
+quantile(data$tp72, na.rm = TRUE)
+View(data)
+```
+
+***
+
+# Basic Recoding and mutate()
+
+The dataset is from 2003. Compute the age accordingly by creating the new variable age
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+
+data$age <- 2003 - _____
+
+```
+
+There is also a dplyr way to do this: `mutate()`. 
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+data <- ______ %>%
+  mutate(age = ______)
+```
+
+
+The benefit of this function is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
+
+* want to recode the binary variable tp72 (Work Overtime) into three levels: 
+
+  + 10 Yes
+  
+  + 20 No
+  
+  + 0 Everything else
+
+* Apply those changes to tp72 by creating the new variable over
+
+* Do someting similar with tp7602 (recreate as netinc, change specific values to NA)
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+data <- data %>%
+  mutate(
+    over = recode(
+      tp72,
+      "3" = 0, #actually means Does not apply: Self-Employment
+      "-2" = 0, # actually means does not apply
+      "-1" = 0, # actually means no answer
+      .default = tp72
+    ),
+    over = over * 10,
+    netinc = ____(
+      _____,
+      "-3" = NA_real_, # remember the difference between integer and double? 
+      "-2" = NA_real_,
+      "-1" = NA_real_
+    )
+  )
+  
+```
+ 
+ Several things to note here:
+ 
+ * Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 20). 
+ 
+ * Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
+ 
+ * Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).
+ 
+Let's check whether the data manipulation worked:
 
 ```{r, eval=FALSE}
 
-# Variable Alter generieren
-econ$alter <- 2003 - econ$gebjahr
-econ$alter [econ$alter == 2004] <- NA # entfernen der fehlerhaften
+table(data$over)
 
-#sex 
-econ$sex <- factor(econ$sex,levels = c(1,2),labels = c("männlich","weiblich"))
+table(data$over, 
+      useNA = "always") # we add the argument useNA in order to also get the number of NA values. 
+```
 
-# Ueberstunden recodieren 0=nein, 1=ja
-econ$over = dplyr::recode(
-  econ$tp72,
-  "2" = 0L,
-    "-2" = NA_integer_,
-  
-)
+***
 
-# Vertragliche und tatsaechliche Wochenarbeitszeit
-# Missings bereinigt
+# Factorize 
 
-econ <- econ %>%
+As we have practiced before, we can factorize variables. This is also possible within the dplyr world (`mutate()` again). Let's do that for sex.
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+
+
+_____ <- _____ _____
+  ____(sex = factor(
+    sex ,
+    levels = c(1, 2),
+    labels = c("male", "female")
+  ))
+```
+
+***
+
+# Recode II
+
+We can also recode values below a certain threshold at once (if it is numeric (either double or integer)): 
+
+`if_else(condition, true, false)`
+
+* tp7001(Contracted Working Hours): mutate as "contract", change all values below 0 (errors) to NA, and divide the variable 
+* Do the same for tp7003: Actual working hours
+
+```{r, eval=FALSE}
+data <- data %>%
   mutate(
-    contr =
-      ifelse(tp7001 < 0, NA, tp7001),
+    contract =
+      if_else(tp7001 < 0, NA_real_, tp7001),
     actual =
-      ifelse(tp7003 < 0, NA, tp7003),
-    contr = contr / 10,
-    actual = actual / 10
+      ____(__________________________________),
+    contract = contract / 10,
+    actual = _______________
+  )
+```
+
+***
+
+# Multiple if_else() statements: 
+
+`cases_when()` allows us to apply multiple `if_else()` statements. 
+
+Let's say, we want to build a character variable inc.quant which indicates the `quantile()` (see above) of netinc. 
+
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+```{r, eval=FALSE}
+
+data <- data %>%
+  mutate(
+    inc.quant = case_when(
+      netinc < quantile(netinc, na.rm = TRUE)[2] ~ "Q1",
+      netinc >= quantile(netinc, na.rm = TRUE)[2] &
+        netinc < quantile(netinc, na.rm = TRUE)[3] ~ "Q2",
+      
+      netinc >= quantile(netinc, na.rm = TRUE)[__] &
+        netinc < _______(netinc, na.rm = TRUE)[__] ~ "Q3",
+      
+      netinc ______________________________________
+    )
   )
 
-
-# Vertrauen 
-# "Trust in people" und "Can't rely on anybody" recodieren
-econ$trust = car::recode(econ$tp0301,"-1=NA")
-econ$rely = car::recode(econ$tp0302,"-1=NA")
-
-econ$netinc = car::recode(econ$tp7602,"-3=NA;-2=NA;-1=NA")
-
-# Nur relevante Variablen werden übernommen
-econ_data <- econ[,c("netinc","alter","sex","contr","actual","trust","rely")]
-head(econ_data)
-
-
-# Einkommen Kategorisiert in Quartile
-
-hist(econ$netinc)
-quantile(econ_data$netinc, na.rm = TRUE)
-
-econ_data$inc_kat <- NA
-econ_data$inc_kat [econ_data$netinc < quantile(econ_data$netinc, na.rm = TRUE)[2]] <-   "Q1"
-
-econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc, na.rm = TRUE)[2] &
-                     econ_data$netinc < quantile(econ_data$netinc, na.rm = TRUE)[3]] <- "Q2"
-
-econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc, na.rm = TRUE)[3] &
-                     econ_data$netinc < quantile(econ_data$netinc, na.rm = TRUE)[4]] <- "Q3"
-
-econ_data$inc_kat [econ_data$netinc >= quantile(econ_data$netinc, na.rm = TRUE)[4]] <-  "Q4"
-
-table(econ_data$inc_kat)
 ```
 
 
-# Advanced DM: The tidyverse
+# Check data.frame again
 
-Some of the most important functions when it gets to datamanagement stem from the tidyverse-packages and most notably dplyr. We can only provide you with a small overview here, but if you understand `mutate`, `summarise` and `group_by`, you should be good to go. 
+```{r, eval=FALSE}
+head(data)
+summary(data)
+```
 
-## Mutate
+# All in one
+By the way, we could have done all of this in one batch - but it would have been untidy... 
+```{r, message=FALSE}
+data <- read_csv2("data/soep_europ.csv")
 
-We can easily add variables (or transformed versions of others) to a knew dataset by adding a new variable through mutate. 
+data <- data %>% # remember the pipe?
+  select(gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>% # fill in the missing names
+  
+  mutate(age = 2003-gebjahr, 
+         
+         over = recode(
+           tp72,
+           "3" = 0, #actually means Does not apply: Self-Employment
+           "-2" = 0, # actually means does not apply
+           "-1" = 0, # actually means no answer
+           .default = tp72
+          ),
+         over = over * 10,
+         netinc = recode(tp7602,
+                         "-3" = NA_real_,
+                         "-2" = NA_real_,
+                         "-1" = NA_real_
+          ),
+         
+         sex = factor(
+           sex ,
+           levels = c(1, 2),
+           labels = c("male", "female")
+         ),    
+         
+         contract =
+           if_else(tp7001 < 0, NA_real_, tp7001),
+         actual =
+           if_else(tp7003 < 0, NA_real_, tp7003),
+         contract = contract / 10,
+         actual = actual / 10,
 
-For example, assume we wanted to add a squared age term: 
+         inc.quant = case_when(
+           netinc < quantile(netinc, na.rm = TRUE)[2] ~ "Q1",
+           netinc >= quantile(netinc, na.rm = TRUE)[2] &
+             netinc < quantile(netinc, na.rm = TRUE)[3] ~ "Q2",
+           netinc >= quantile(netinc, na.rm = TRUE)[3] &
+             netinc < quantile(netinc, na.rm = TRUE)[4] ~ "Q3",
+           netinc >= quantile(netinc, na.rm = TRUE)[4] ~ "Q4"
+         )
+  )
+
+```
+
+Great job! We are almost done. 
+
+Below we'll QUICKLY introduce a few more functions.
+
+***
+
+# Summarise
+
+Summarise allows us to summarise certain variables, such as certain features of age 
 
 ```{r, eval=FALSE}
 
-econ_data <- 
-  econ_data %>% mutate(alter_squared = alter^2)
-
-head(econ_data)
-
+data %>%
+  summarise(mean = mean(age, na.rm = TRUE),
+            sd = sd(age, na.rm = TRUE))
 ```
 
-## Summarise
+***
 
-Summarise allows us to summarise certain variables, such as certain features of netincome. 
+# Grouping
+
+The same is also possible for grouped structures. Say, for example, you would want to calculate seperate values for different genders: 
 
 ```{r, eval=FALSE}
 
-econ_data %>% 
-  summarise(mean = mean(alter,na.rm = T),
-            sd = sd(alter,na.rm = T))
+data %>%
+  group_by(sex) %>%
+  summarise(mean = mean(age, na.rm = TRUE),
+            sd = sd(age, na.rm = TRUE)) 
 
 ```
 
-## group_by
+A bit more nuanced, let's say you want to create a variable cohort.deviance which gives you the deviation in netinc from the mean of all people of the same age
 
-The same is also possibled for grouped structures. Say, for example, you would want to calculate seperate values for different genders: 
-
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
 ```{r, eval=FALSE}
+data <- data %>%
+  _________ %>%
+  mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE)) 
+```
 
-econ_data %>% 
-  group_by() %>% 
-  summarise(mean = mean(alter,na.rm = T),
-            sd = sd(alter,na.rm = T))
+
+***
+
+# Filtering
+
+If you only want to keep certain rows (observations) which variables match a certain criterion, you can `filter()`. 
+
+Let's say, you only want to keep those observations which are older than 18 and who are in the top three income quintiles. We store this in data2
+
+<span style="color:red">Task</span> <u>**Note the difference between the lines of inc.quant and sex!**</u>
+```{r, eval=FALSE}
+data2 <- data %>%
+  filter(age > 18,
+         inc.quant %in% c("Q2", "Q3", "Q4"),
+         sex == "male")
+```
+
+When we filter for exactly one condition, we use `==`. When we filter for a string, we use `%in%`
+
+***
+
+# Arrange
+Sometimes, we want to order data. We do so with `arrange()`.
+
+<span style="color:red">Task</span> <u>**What is the difference between the two examples?**</u>
+```{r, eval=FALSE}
+# Example 1
+data <- data %>%
+  arrange(desc(age))
+
+head(data)
+
+# Example 2
+data <- data %>%
+  group_by(inc.quant) %>%
+  arrange(netinc, .by_group=TRUE)
+
+head(data)
+```
+
+# Merge()
+@BF: Hier Weiter machen.
+Assuming, we forgot the variable 
+
+```{r}
+data <- read_csv2("data/soep_europ.csv")
 
 ```
+
+- merge()
+- spread, und xx

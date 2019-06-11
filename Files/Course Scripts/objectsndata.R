@@ -10,8 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #' 
 #' ***
 #' 
-#' # Objects in R
-#' ## Basic Calculations
+#' # Objects in R: Basic Calculations
 #' We will most often want to store results of calculations to reuse them later. For this, we can work with basic objects. An object has a name and a content. We can freely choose the name of an object and give certain rules - they have to start with a letter and include only letters, numbers and some special characters (".", "_", "-"). **R is case sensitive so "x" and "X" are different object names**.
 #' 
 #' The content of an object is assigned using "<-" or "=" (for tidy readability, you should always use the former, though).
@@ -52,7 +51,7 @@ rm(list=ls()) # all objects are removed
 
 #' 
 #' ***
-#' ## Vectors
+#' # Vectors
 #' For statistical calculations, we obviously need to work with data sets including many numbers of instead of scalars. The simplest way to collect many numbers (or other
 #' types of information) is called a vector in R terminology (you have already been familiarized with vectors on the page before). 
 #' 
@@ -102,7 +101,7 @@ c
 
 #' 
 #' ***
-#' ### Logical Operators and Logical Vectors
+#' ## Logical Operators and Logical Vectors
 #' 
 #' <span style="color:red">Task</span> <u>**Do you understand all of these operators?**</u>
 ## ----eval=FALSE----------------------------------------------------------
@@ -143,8 +142,22 @@ y <- c(TRUE, FALSE, TRUE, FALSE) # logical vector
 z <- c("zero", "four", "nine") # character vector
 
 #' 
+#' One minor (seldomly important) addendum: Within numeric, there is a difference between `1` and `1.0`. The former is a pure `integer`, the latter is an object called `double`.
+#' 
+## ------------------------------------------------------------------------
+# create a string of double-precision values
+dbl_var <- c(1, 2.5, 4.5)  
+typeof(dbl_var)
+
+# placing an L after the values creates a string of integers
+int_var <- c(1L, 6L, 10L)
+typeof(int_var)
+
+
+#' 
 #' ***
-#' ### Naming and Indexing Vectors
+#' 
+#' ## Naming and Indexing Vectors
 #' The elements of a vector can be named which can increase the readability of the output. Given a vector ```vec``` and a string vector ```namevec``` of the same length, the names are attached to the vector elements using ```names(vec) <- namevec```.
 #' 
 #' If we want to access a single element or a subset form a vector, we can work with **indices**. They are written in square brackets next to the vector name. For example
@@ -181,7 +194,7 @@ z <- c("zero", "four", "nine") # character vector
 #' 
 #' ***
 #' 
-#' ## Factors
+#' # Factors
 #' Seemingly similar to vectors but behaving (sometimes) differently: factors. Factors are very useful to work with binary variables. 
 #' 
 #' <span style="color:red">Task</span> <u>**What is the difference between xf1 and xf2?**</u>
@@ -207,7 +220,7 @@ xf2 <- factor(x, labels = c("bad", "okay", "good"))
 #' 
 #' ***
 #' 
-#' ## Matrices
+#' # Matrices
 #' Matrices are important tools for data analysis. R has a powerful matrix algebra system. Most often, matrices will be generated from an existing data set. But you can
 #' also build the from scratch with ```matrix(vec, nrow=m)``` (takes the numbers stored in vector ```vec``` and puts them into a matrix with m rows). 
 #' Other options include: ```rbind(r1,r2)``` and ```cbind(c1,c2)``` in binding several vectors (which obviously need to have the same length) by row or column.
@@ -272,7 +285,7 @@ xf2 <- factor(x, labels = c("bad", "okay", "good"))
 #' 
 #' ***
 #' 
-#' ## Lists
+#' # Lists
 #' A list is a generic collection of objects. Unlike vectors, components can be of different types.
 ## ------------------------------------------------------------------------
 # Generate a list object:
@@ -293,7 +306,7 @@ mylist$A
 #' 
 #' ***
 #' 
-#' ## Data Frames
+#' # Data Frames
 #' A data frame is an object that collects several variables and can be thought of as a rectangular shape with the rows representing the observational units and the columns
 #' representing the variables. As such, it is similar to a matrix. For us, the most important difference to a matrix is that a data frame can contain variables of different
 #' types (like numerical, logical, string and factor), whereas matrices can only contain numerical values. 

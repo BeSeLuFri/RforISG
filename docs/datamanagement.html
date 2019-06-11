@@ -435,13 +435,14 @@ div.tocify {
 </div>
 
 
-<p>Download the script here <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R">here</a></p>
+<p>Download the script here <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/datamanagement.R">here</a></p>
 <div id="preliminary" class="section level1">
 <h1><span class="header-section-number">1</span> Preliminary:</h1>
 <ul>
 <li><p>We use an old (2003) randomly changed and subsetted SOEP dataset with 5.000 observations.</p></li>
-<li><p>Please, <strong>download</strong> the two csv files (<a href="heute.de">.soep_europ.csv</a> and <a href="heute.de">soep_us.csv</a>) and the <a href="heute.de">soep.dta</a> file and save them locally within your R project directory.</p></li>
+<li><p>Please, <strong>download</strong> the two csv files (<a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_europ.csv">.soep_europ.csv</a> and <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_us.csv">soep_us.csv</a>) and the <a href="https://github.com/BeSeLuFri/RforISG/raw/master/data/soep.dta">soep.dta</a> file and save them locally within your R project directory.</p></li>
 </ul>
+<hr />
 </div>
 <div id="load-the-packages-and-set-up-the-script" class="section level1">
 <h1><span class="header-section-number">2</span> Load the packages and set-up the script</h1>
@@ -458,22 +459,7 @@ div.tocify {
 <pre class="r"><code>rm(list = ls())
 # install.packages(&quot;tidyverse&quot;)
 library(tidyverse)</code></pre>
-<pre><code>## Registered S3 methods overwritten by &#39;ggplot2&#39;:
-##   method         from 
-##   [.quosures     rlang
-##   c.quosures     rlang
-##   print.quosures rlang</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;rvest&#39;:
-##   method            from
-##   read_xml.response xml2</code></pre>
-<pre><code>## -- Attaching packages --------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.1.1       v purrr   0.3.2  
-## v tibble  2.1.1       v dplyr   0.8.0.1
-## v tidyr   0.8.3       v stringr 1.4.0  
-## v readr   1.3.1       v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
+<hr />
 </div>
 <div id="loading-the-dataset" class="section level1">
 <h1><span class="header-section-number">3</span> Loading the Dataset</h1>
@@ -515,98 +501,273 @@ library(tidyverse)</code></pre>
 library(readstata13)
 
 #Daten als Objekt importieren
-econ &lt;- readstata13::read.dta13(file=&quot;Files/Data/soep.dta&quot; ,
+data &lt;- readstata13::read.dta13(file=&quot;data/soep.dta&quot; ,
                    convert.factors=FALSE, # default is TRUE, would create Stata value labels
                    ) </code></pre>
+<p>Enough on reading data for now, let’s use the European csv for now.</p>
+<pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)</code></pre>
+<hr />
 </div>
-<div id="recodingvariable-declaration" class="section level1">
-<h1><span class="header-section-number">5</span> Recoding/Variable declaration</h1>
-<pre class="r"><code># Variable Alter generieren
-econ$alter &lt;- 2003 - econ$gebjahr
-econ$alter [econ$alter == 2004] &lt;- NA # entfernen der fehlerhaften
-
-#sex 
-econ$sex &lt;- factor(econ$sex,levels = c(1,2),labels = c(&quot;männlich&quot;,&quot;weiblich&quot;))
-
-# Ueberstunden recodieren 0=nein, 1=ja
-econ$over = dplyr::recode(
-  econ$tp72,
-  &quot;2&quot; = 0L,
-    &quot;-2&quot; = NA_integer_,
-  
-)
-
-# Vertragliche und tatsaechliche Wochenarbeitszeit
-# Missings bereinigt
-
-econ &lt;- econ %&gt;%
+<div id="select-the-relevant-variables" class="section level1">
+<h1><span class="header-section-number">5</span> Select the relevant variables</h1>
+<p>Our data has 902 variables. Obviously, we do not need that many.</p>
+<p>Accordingly, we <code>select</code> the relevant ones:</p>
+<ul>
+<li><em>gebjahr</em>, <em>sex</em>, <em>tp72</em> (Work Overtime), <em>tp7001</em> (Contracted Working Hours), <em>tp7003</em> (Hours Per Week Actual), <em>tp7602</em> (Net Income Last Month)</li>
+</ul>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u> Notice that after typing the first two or three characters of each variable, RStudio gives you a drop down menu.</p>
+<pre class="r"><code>data &lt;- data %&gt;% # remember the pipe?
+  select(______) # fill in the missing names</code></pre>
+<p><code>select()</code> is from the tidyverse, namely the package <code>dplyr</code>. “dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges” <a href="https://dplyr.tidyverse.org/">check this out</a></p>
+<hr />
+</div>
+<div id="explore-the-data-structure" class="section level1">
+<h1><span class="header-section-number">6</span> Explore the data structure</h1>
+<p>For a first overview over our data, we can use the base functions (e.g. those which are without any package installations part of R) <code>str()</code>, <code>head()</code>, <code>summary()</code>, <code>table()</code>, <code>quantile()</code>, and <code>View()</code>.</p>
+<p><span style="color:red">Task</span> <u><strong>Go through every function’s output and try to understand what it means!</strong></u></p>
+<pre class="r"><code>str(data)
+head(data)
+summary(data)
+table(data$tp72) # you could use any other variable here. 
+quantile(data$tp72, na.rm = TRUE)
+View(data)</code></pre>
+<hr />
+</div>
+<div id="basic-recoding-and-mutate" class="section level1">
+<h1><span class="header-section-number">7</span> Basic Recoding and mutate()</h1>
+<p>The dataset is from 2003. Compute the age accordingly by creating the new variable age</p>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<pre class="r"><code>data$age &lt;- 2003 - _____</code></pre>
+<p>There is also a dplyr way to do this: <code>mutate()</code>.</p>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<pre class="r"><code>data &lt;- ______ %&gt;%
+  mutate(age = ______)</code></pre>
+<p>The benefit of this function is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
+<ul>
+<li><p>want to recode the binary variable tp72 (Work Overtime) into three levels:</p>
+<ul>
+<li><p>10 Yes</p></li>
+<li><p>20 No</p></li>
+<li><p>0 Everything else</p></li>
+</ul></li>
+<li><p>Apply those changes to tp72 by creating the new variable over</p></li>
+<li><p>Do someting similar with tp7602 (recreate as netinc, change specific values to NA)</p></li>
+</ul>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<pre class="r"><code>data &lt;- data %&gt;%
   mutate(
-    contr =
-      ifelse(tp7001 &lt; 0, NA, tp7001),
+    over = recode(
+      tp72,
+      &quot;3&quot; = 0, #actually means Does not apply: Self-Employment
+      &quot;-2&quot; = 0, # actually means does not apply
+      &quot;-1&quot; = 0, # actually means no answer
+      .default = tp72
+    ),
+    over = over * 10,
+    netinc = ____(
+      _____,
+      &quot;-3&quot; = NA_real_, # remember the difference between integer and double? 
+      &quot;-2&quot; = NA_real_,
+      &quot;-1&quot; = NA_real_
+    )
+  )</code></pre>
+<p>Several things to note here:</p>
+<ul>
+<li><p>Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 20).</p></li>
+<li><p>Within <code>mutate()</code> we can - in a tidy way - work on multiple variables (e.g. over and netinc)</p></li>
+<li><p>Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).</p></li>
+</ul>
+<p>Let’s check whether the data manipulation worked:</p>
+<pre class="r"><code>table(data$over)
+
+table(data$over, 
+      useNA = &quot;always&quot;) # we add the argument useNA in order to also get the number of NA values. </code></pre>
+<hr />
+</div>
+<div id="factorize" class="section level1">
+<h1><span class="header-section-number">8</span> Factorize</h1>
+<p>As we have practiced before, we can factorize variables. This is also possible within the dplyr world (<code>mutate()</code> again). Let’s do that for sex.</p>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<pre class="r"><code>_____ &lt;- _____ _____
+  ____(sex = factor(
+    sex ,
+    levels = c(1, 2),
+    labels = c(&quot;male&quot;, &quot;female&quot;)
+  ))</code></pre>
+<hr />
+</div>
+<div id="recode-ii" class="section level1">
+<h1><span class="header-section-number">9</span> Recode II</h1>
+<p>We can also recode values below a certain threshold at once (if it is numeric (either double or integer)):</p>
+<p><code>if_else(condition, true, false)</code></p>
+<ul>
+<li>tp7001(Contracted Working Hours): mutate as “contract”, change all values below 0 (errors) to NA, and divide the variable</li>
+<li>Do the same for tp7003: Actual working hours</li>
+</ul>
+<pre class="r"><code>data &lt;- data %&gt;%
+  mutate(
+    contract =
+      if_else(tp7001 &lt; 0, NA_real_, tp7001),
     actual =
-      ifelse(tp7003 &lt; 0, NA, tp7003),
-    contr = contr / 10,
-    actual = actual / 10
-  )
-
-
-# Vertrauen 
-# &quot;Trust in people&quot; und &quot;Can&#39;t rely on anybody&quot; recodieren
-econ$trust = car::recode(econ$tp0301,&quot;-1=NA&quot;)
-econ$rely = car::recode(econ$tp0302,&quot;-1=NA&quot;)
-
-econ$netinc = car::recode(econ$tp7602,&quot;-3=NA;-2=NA;-1=NA&quot;)
-
-# Nur relevante Variablen werden übernommen
-econ_data &lt;- econ[,c(&quot;netinc&quot;,&quot;alter&quot;,&quot;sex&quot;,&quot;contr&quot;,&quot;actual&quot;,&quot;trust&quot;,&quot;rely&quot;)]
-head(econ_data)
-
-
-# Einkommen Kategorisiert in Quartile
-
-hist(econ$netinc)
-quantile(econ_data$netinc, na.rm = TRUE)
-
-econ_data$inc_kat &lt;- NA
-econ_data$inc_kat [econ_data$netinc &lt; quantile(econ_data$netinc, na.rm = TRUE)[2]] &lt;-   &quot;Q1&quot;
-
-econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc, na.rm = TRUE)[2] &amp;
-                     econ_data$netinc &lt; quantile(econ_data$netinc, na.rm = TRUE)[3]] &lt;- &quot;Q2&quot;
-
-econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc, na.rm = TRUE)[3] &amp;
-                     econ_data$netinc &lt; quantile(econ_data$netinc, na.rm = TRUE)[4]] &lt;- &quot;Q3&quot;
-
-econ_data$inc_kat [econ_data$netinc &gt;= quantile(econ_data$netinc, na.rm = TRUE)[4]] &lt;-  &quot;Q4&quot;
-
-table(econ_data$inc_kat)</code></pre>
+      ____(__________________________________),
+    contract = contract / 10,
+    actual = _______________
+  )</code></pre>
+<hr />
 </div>
-<div id="advanced-dm-the-tidyverse" class="section level1">
-<h1><span class="header-section-number">6</span> Advanced DM: The tidyverse</h1>
-<p>Some of the most important functions when it gets to datamanagement stem from the tidyverse-packages and most notably dplyr. We can only provide you with a small overview here, but if you understand <code>mutate</code>, <code>summarise</code> and <code>group_by</code>, you should be good to go.</p>
-<div id="mutate" class="section level2">
-<h2><span class="header-section-number">6.1</span> Mutate</h2>
-<p>We can easily add variables (or transformed versions of others) to a knew dataset by adding a new variable through mutate.</p>
-<p>For example, assume we wanted to add a squared age term:</p>
-<pre class="r"><code>econ_data &lt;- 
-  econ_data %&gt;% mutate(alter_squared = alter^2)
+<div id="multiple-if_else-statements" class="section level1">
+<h1><span class="header-section-number">10</span> Multiple if_else() statements:</h1>
+<p><code>cases_when()</code> allows us to apply multiple <code>if_else()</code> statements.</p>
+<p>Let’s say, we want to build a character variable inc.quant which indicates the <code>quantile()</code> (see above) of netinc.</p>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<pre class="r"><code>data &lt;- data %&gt;%
+  mutate(
+    inc.quant = case_when(
+      netinc &lt; quantile(netinc, na.rm = TRUE)[2] ~ &quot;Q1&quot;,
+      netinc &gt;= quantile(netinc, na.rm = TRUE)[2] &amp;
+        netinc &lt; quantile(netinc, na.rm = TRUE)[3] ~ &quot;Q2&quot;,
+      
+      netinc &gt;= quantile(netinc, na.rm = TRUE)[__] &amp;
+        netinc &lt; _______(netinc, na.rm = TRUE)[__] ~ &quot;Q3&quot;,
+      
+      netinc ______________________________________
+    )
+  )</code></pre>
+</div>
+<div id="check-data.frame-again" class="section level1">
+<h1><span class="header-section-number">11</span> Check data.frame again</h1>
+<pre class="r"><code>head(data)
+summary(data)</code></pre>
+</div>
+<div id="all-in-one" class="section level1">
+<h1><span class="header-section-number">12</span> All in one</h1>
+<p>By the way, we could have done all of this in one batch - but it would have been untidy…</p>
+<pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)
 
-head(econ_data)</code></pre>
+data &lt;- data %&gt;% # remember the pipe?
+  select(gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %&gt;% # fill in the missing names
+  
+  mutate(age = 2003-gebjahr, 
+         
+         over = recode(
+           tp72,
+           &quot;3&quot; = 0, #actually means Does not apply: Self-Employment
+           &quot;-2&quot; = 0, # actually means does not apply
+           &quot;-1&quot; = 0, # actually means no answer
+           .default = tp72
+          ),
+         over = over * 10,
+         netinc = recode(tp7602,
+                         &quot;-3&quot; = NA_real_,
+                         &quot;-2&quot; = NA_real_,
+                         &quot;-1&quot; = NA_real_
+          ),
+         
+         sex = factor(
+           sex ,
+           levels = c(1, 2),
+           labels = c(&quot;male&quot;, &quot;female&quot;)
+         ),    
+         
+         contract =
+           if_else(tp7001 &lt; 0, NA_real_, tp7001),
+         actual =
+           if_else(tp7003 &lt; 0, NA_real_, tp7003),
+         contract = contract / 10,
+         actual = actual / 10,
+
+         inc.quant = case_when(
+           netinc &lt; quantile(netinc, na.rm = TRUE)[2] ~ &quot;Q1&quot;,
+           netinc &gt;= quantile(netinc, na.rm = TRUE)[2] &amp;
+             netinc &lt; quantile(netinc, na.rm = TRUE)[3] ~ &quot;Q2&quot;,
+           netinc &gt;= quantile(netinc, na.rm = TRUE)[3] &amp;
+             netinc &lt; quantile(netinc, na.rm = TRUE)[4] ~ &quot;Q3&quot;,
+           netinc &gt;= quantile(netinc, na.rm = TRUE)[4] ~ &quot;Q4&quot;
+         )
+  )</code></pre>
+<p>Great job! We are almost done.</p>
+<p>Below we’ll QUICKLY introduce a few more functions.</p>
+<hr />
 </div>
-<div id="summarise" class="section level2">
-<h2><span class="header-section-number">6.2</span> Summarise</h2>
-<p>Summarise allows us to summarise certain variables, such as certain features of netincome.</p>
-<pre class="r"><code>econ_data %&gt;% 
-  summarise(mean = mean(alter,na.rm = T),
-            sd = sd(alter,na.rm = T))</code></pre>
+<div id="summarise" class="section level1">
+<h1><span class="header-section-number">13</span> Summarise</h1>
+<p>Summarise allows us to summarise certain variables, such as certain features of age</p>
+<pre class="r"><code>data %&gt;%
+  summarise(mean = mean(age, na.rm = TRUE),
+            sd = sd(age, na.rm = TRUE))</code></pre>
+<hr />
 </div>
-<div id="group_by" class="section level2">
-<h2><span class="header-section-number">6.3</span> group_by</h2>
-<p>The same is also possibled for grouped structures. Say, for example, you would want to calculate seperate values for different genders:</p>
-<pre class="r"><code>econ_data %&gt;% 
-  group_by() %&gt;% 
-  summarise(mean = mean(alter,na.rm = T),
-            sd = sd(alter,na.rm = T))</code></pre>
+<div id="grouping" class="section level1">
+<h1><span class="header-section-number">14</span> Grouping</h1>
+<p>The same is also possible for grouped structures. Say, for example, you would want to calculate seperate values for different genders:</p>
+<pre class="r"><code>data %&gt;%
+  group_by(sex) %&gt;%
+  summarise(mean = mean(age, na.rm = TRUE),
+            sd = sd(age, na.rm = TRUE)) </code></pre>
+<p>A bit more nuanced, let’s say you want to create a variable cohort.deviance which gives you the deviation in netinc from the mean of all people of the same age</p>
+<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<pre class="r"><code>data &lt;- data %&gt;%
+  _________ %&gt;%
+  mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE)) </code></pre>
+<hr />
 </div>
+<div id="filtering" class="section level1">
+<h1><span class="header-section-number">15</span> Filtering</h1>
+<p>If you only want to keep certain rows (observations) which variables match a certain criterion, you can <code>filter()</code>.</p>
+<p>Let’s say, you only want to keep those observations which are older than 18 and who are in the top three income quintiles. We store this in data2</p>
+<p><span style="color:red">Task</span> <u><strong>Note the difference between the lines of inc.quant and sex!</strong></u></p>
+<pre class="r"><code>data2 &lt;- data %&gt;%
+  filter(age &gt; 18,
+         inc.quant %in% c(&quot;Q2&quot;, &quot;Q3&quot;, &quot;Q4&quot;),
+         sex == &quot;male&quot;)</code></pre>
+<p>When we filter for exactly one condition, we use <code>==</code>. When we filter for a string, we use <code>%in%</code></p>
+<hr />
+</div>
+<div id="arrange" class="section level1">
+<h1><span class="header-section-number">16</span> Arrange</h1>
+<p>Sometimes, we want to order data. We do so with <code>arrange()</code>.</p>
+<p><span style="color:red">Task</span> <u><strong>What is the difference between the two examples?</strong></u></p>
+<pre class="r"><code># Example 1
+data &lt;- data %&gt;%
+  arrange(desc(age))
+
+head(data)
+
+# Example 2
+data &lt;- data %&gt;%
+  group_by(inc.quant) %&gt;%
+  arrange(netinc, .by_group=TRUE)
+
+head(data)</code></pre>
+</div>
+<div id="merge" class="section level1">
+<h1><span class="header-section-number">17</span> Merge()</h1>
+<p><span class="citation">@BF</span>: Hier Weiter machen. Assuming, we forgot the variable</p>
+<pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)</code></pre>
+<pre><code>## Using &#39;,&#39; as decimal and &#39;.&#39; as grouping mark. Use read_delim() for more control.</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   tp0902 = col_character(),
+##   tp9301 = col_character(),
+##   tp9302 = col_character(),
+##   tp9303 = col_character(),
+##   tp9304 = col_character(),
+##   tp9305 = col_character(),
+##   tp9306 = col_character(),
+##   tp9307 = col_character(),
+##   tp9308 = col_character(),
+##   tp9310 = col_character(),
+##   tp9311 = col_character(),
+##   tp9312 = col_character(),
+##   tp9717 = col_character(),
+##   tp9718 = col_logical()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<ul>
+<li>merge()</li>
+<li>spread, und xx</li>
+</ul>
 </div>
 
 
