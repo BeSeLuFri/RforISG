@@ -117,12 +117,14 @@ RStudio projects make it straightforward to divide your work into multiple conte
 
 It is - especially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: **You need to designate one folder in your explorer system within which everything related to your very first project is saved.** 
 
-To create a new project, use the Create Project command (available on the Projects menu and on the global toolbar). 
-Press: New Directory 
+Let's do it now: To create a new project, use the Create Project command (available on the Projects menu and on the global toolbar). 
+Follow the instructions. Either create the project in a new directory or in an already existing one. For this tutorial, choose/create one directory where you can conveniently store all files/scripts throughout the tutorial. 
 
-![Test](Files/projects_new.png)
+![](Files/projects_new.png)
 
 This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.
+
+My advise is to create two folders within the project directory right away. One folder for scripts (called scripts) and another folder for data (called data).
 
 When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved. 
 

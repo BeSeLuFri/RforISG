@@ -6,17 +6,17 @@
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 
 #' 
-#' Download the script here [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/datamanagement.R)
+#' Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R)
 #' 
 #' # Preliminary:
 #' 
-#' * We use an old (2003) randomly changed and subsetted SOEP dataset with 5.000 observations. 
+#' * We use an old (2003) randomly changed and subsetted SOEP dataset with ~4.600 observations. 
 #' 
 #' * Please, **download** the two csv files ([.soep_europ.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_europ.csv) and [soep_us.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_us.csv)) and the [soep.dta](https://github.com/BeSeLuFri/RforISG/raw/master/data/soep.dta) file and save them locally within your R project directory.
 #' 
 #' ***
 #' 
-#' # Load the packages and set-up the script
+#' # Packages and script set-up 
 #' 
 #' * To make sure that your R environment is clear, remember to use `rm(list=ls())` in the beginning. 
 #' 
@@ -37,7 +37,7 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # Loading the Dataset
+#' # Loading the dataset
 #' 
 #' Step 1 of Data Management is about "reading" the data into the R environment. 
 #' There are many different file types and with R you can open all of them.
@@ -50,9 +50,11 @@ library(tidyverse)
 #' 
 #' * You have to write down the path where the file is saved relative to the root.directory of your RProject.
 #' 
-#' * A good rule of thumb is to save all your data in a seperate "data" folder within your R environment: E.g. "data**/**soep_europ.csv"
+#' * A good rule of thumb is to save all your data in a separate "data" folder within your R environment: E.g. "data**/**soep_europ.csv"
 #' 
-#' * Don't use the backslash but always the forward slash(/). 
+#' * Don't use the backslash but always the forward slash(/). +#
+#' 
+#' ## .csv
 #' 
 #' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
 ## ---- eval=FALSE---------------------------------------------------------
@@ -60,9 +62,9 @@ library(tidyverse)
 ## 
 
 #' 
-#' What happened: In (most) European countries the standard way to save csv/excel files is to seperate values by ";" and the decimals by ",".
+#' What happened: In (most) European countries the standard way to save csv/excel files is to separate values by ";" and the decimals by ",".
 #' 
-#' In the US and many other countries seperation is done by "," and the decimals are marked by ".". This is the default for read.csv. 
+#' In the US and many other countries separation is done by "," and the decimals are marked by ".". This is the default for read.csv. 
 #' 
 #' To read the data correctly, we have to add the argument "sep" to the function.
 #' 
@@ -85,17 +87,16 @@ library(tidyverse)
 ## data <-
 
 #' 
-#' # DTA
-#' * As a second data file type, we try to read dta (Stata's propietary file format)
+#' ## .dta
+#' * As a second data file type, we try to read dta (Stata's proprietary file format)
 #'   
 #'   + If you only intend to use a package once, you can simply call the package with `packagename::function`.  
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
-## # Laden des Datensatzes
+## 
 ## # install.packages("readstata13")
 ## library(readstata13)
 ## 
-## #Daten als Objekt importieren
 ## data <- readstata13::read.dta13(file="data/soep.dta" ,
 ##                    convert.factors=FALSE, # default is TRUE, would create Stata value labels
 ##                    )
@@ -116,7 +117,7 @@ library(tidyverse)
 #' 
 #' Accordingly, we `select` the relevant ones:
 #' 
-#' * *gebjahr*, *sex*, *tp72* (Work Overtime), *tp7001* (Contracted Working Hours), *tp7003* (Hours Per Week Actual), *tp7602* (Net Income Last Month)
+#' * *hhnr*, *persnr*, *gebjahr*, *sex*, *tp72* (Work Overtime), *tp7001* (Contracted Working Hours), *tp7003* (Hours Per Week Actual), *tp7602* (Net Income Last Month)
 #' 
 #' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u> Notice that after typing the first two or three characters of each variable, RStudio gives you a drop down menu. 
 ## ---- eval=FALSE---------------------------------------------------------
@@ -144,7 +145,7 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # Basic Recoding and mutate()
+#' # Basic recoding and mutate()
 #' 
 #' The dataset is from 2003. Compute the age accordingly by creating the new variable age
 #' 
@@ -176,7 +177,7 @@ library(tidyverse)
 #' 
 #' * Apply those changes to tp72 by creating the new variable over
 #' 
-#' * Do someting similar with tp7602 (recreate as netinc, change specific values to NA)
+#' * Do something similar with tp7602 (recreate as netinc, change specific values to NA)
 #' 
 #' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
 ## ---- eval=FALSE---------------------------------------------------------
@@ -286,6 +287,7 @@ library(tidyverse)
 ## 
 
 #' 
+#' ***
 #' 
 #' # Check data.frame again
 #' 
@@ -294,13 +296,15 @@ library(tidyverse)
 ## summary(data)
 
 #' 
+#' ***
+#' 
 #' # All in one
 #' By the way, we could have done all of this in one batch - but it would have been untidy... 
 ## ---- message=FALSE------------------------------------------------------
 data <- read_csv2("data/soep_europ.csv")
 
 data <- data %>% # remember the pipe?
-  select(gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>% # fill in the missing names
+  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>% # fill in the missing names
   
   mutate(age = 2003-gebjahr, 
          
@@ -349,14 +353,14 @@ data <- data %>% # remember the pipe?
 #' 
 #' ***
 #' 
-#' # Summarise
+#' # Summarize
 #' 
-#' Summarise allows us to summarise certain variables, such as certain features of age 
+#' Summarize allows us to summarise certain variables, such as certain features of age 
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
 ## 
 ## data %>%
-##   summarise(mean = mean(age, na.rm = TRUE),
+##   summarize(mean = mean(age, na.rm = TRUE),
 ##             sd = sd(age, na.rm = TRUE))
 
 #' 
@@ -364,7 +368,7 @@ data <- data %>% # remember the pipe?
 #' 
 #' # Grouping
 #' 
-#' The same is also possible for grouped structures. Say, for example, you would want to calculate seperate values for different genders: 
+#' The same is also possible for grouped structures. Say, for example, you would want to calculate separate values for different genders: 
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
 ## 
@@ -424,14 +428,57 @@ data <- data %>% # remember the pipe?
 ## head(data)
 
 #' 
-#' # Merge()
-#' @BF: Hier Weiter machen.
-#' Assuming, we forgot the variable 
+#' ***
 #' 
-## ------------------------------------------------------------------------
-data <- read_csv2("data/soep_europ.csv")
-
+#' # Merge
+#' Assuming, we forgot to include the variable "tp0101" (Satisfaction With Health) in our dataset when we selected all the variables we want to work with above. Of course, the normal/efficient way would be to go back the select() operation above, include persnnr and rerun the whole code. For the sake of learning let's ignore this possibility. Instead, we reread the SOEP data under a different name, merge the relevant variables from this data.frame with the one we have been working with all the time and create a new data.frame (data2). 
+#' 
+## ---- eval=FALSE---------------------------------------------------------
+## data.origin <- read_csv2("data/soep_europ.csv")
+## 
+## data2 <- data %>%
+##   left_join(data.origin[,c("hhnr", "tp0101")], by=c("hhnr"))
+## 
 
 #' 
-#' - merge()
-#' - spread, und xx
+#' Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:
+#' 
+#' ![.](Files/dplyr_joins.png)
+#' 
+#' Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn't work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with `any(duplicated(data$hhnr))`. 
+#' 
+#' We therefore need a second variable to join them by. In our case, this second variable is persnr. 
+#' 
+#' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+## ---- eval=FALSE---------------------------------------------------------
+## data <- data %>%
+##   left_join(data.origin[,c("hhnr", "tp0101", ____)], by=c("hhnr", ______))
+
+#' 
+#' ***
+#' 
+#' # Spread and Gather
+#' The last section for now! 
+#' 
+#' A reminder of the difference between long and wide data:
+#' 
+#' * Wide data has each different variable in a separate column. 
+#' 
+#' * Long data has in one column all the variable names and in another column the respective values.
+#' 
+#' Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` ![.](Files/dplyr_reshape.png)
+#' 
+#' At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:
+#' 
+## ---- eval=FALSE---------------------------------------------------------
+## data.long <- data %>%
+##   gather(key=key, value = value, -c(hhnr, persnr))
+## 
+
+#' 
+#' <span style="color:red">Task</span> <u>**Can you make data.long wide again?**</u>
+## ---- eval=FALSE---------------------------------------------------------
+## data.wide <- data.long %>%
+##   spread(key=____, value=______)
+
+#' 

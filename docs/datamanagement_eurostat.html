@@ -435,22 +435,35 @@ div.tocify {
 </div>
 
 
-<div id="general-and-setup" class="section level1">
-<h1><span class="header-section-number">1</span> General and Setup</h1>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R">here</a></p>
+<p>Solutions can be downloaded <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R">here</a>. But seriously - try to work through this without the solutions, first! You will feel far more at ease with the basics of data manipulation if you write your own code.</p>
+<div id="general" class="section level1">
+<h1><span class="header-section-number">1</span> General</h1>
+<ul>
+<li><p>This page is for you to practice the data management techniques you learned on the last <a href="https://beselufri.github.io/RforISG/datamanagement.html">page</a>. You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing you. All the operations can be solved with the tidyverse/dplyr grammar from before.</p></li>
+<li><p>Your task is to gather several variables from Eurostat. To make matters a bit more difficult, you have to colelct the data twice: Once on the country level and once on the region (NUTS2) level.</p></li>
+<li><p>The only new thing is that we now use an API to download the data (see next section).</p></li>
+</ul>
+<hr />
+</div>
+<div id="about-api" class="section level1">
+<h1><span class="header-section-number">2</span> About API</h1>
+<p>APIs (=Application Programming Interface) in our R context can be thought of as a function to directly retrieve data from online data bases in a clearly defined way. The data base provider builds an interface which enables machines to download the data.</p>
+<p>This makes life easier for everybody coding with data as the data can be readily downloaded into the (R-) environment and has not to be downloaded in a (foreign) format manually. Downloading data by code also increases reproducibility and transparency.</p>
+<hr />
+</div>
+<div id="info-about-the-eurostat-api-and-the-general-approach." class="section level1">
+<h1><span class="header-section-number">3</span> Info about the Eurostat API and the general approach.</h1>
 <div id="general-coding-information" class="section level2">
-<h2><span class="header-section-number">1.1</span> General Coding Information</h2>
+<h2><span class="header-section-number">3.1</span> General Coding Information</h2>
 <ul>
 <li>Retrieve and manage data for the PES project directly via the Eurostat API and the related eurostat R package</li>
 <li>Links: <a href="https://github.com/rstudio/cheatsheets/raw/master/eurostat.pdf">eurostat Cheat Sheet</a> and <a href="https://cran.r-project.org/web/packages/eurostat/eurostat.pdf">eurostat Documentation</a></li>
-<li>There is a minor bug when working with R_Notebook on the old ISG Windows environments. In case you get the error: “Error creating notebook: pandoc document conversion failed with error 11” just apply <a href="https://github.com/rstudio/rstudio/issues/3661#issuecomment-475705806">this fix</a> from kevinushey (22 Mar 2019).
-<ul>
-<li>When executing code within R Markdown or a plain script this is no problem at all</li>
-</ul></li>
-<li>New (obvious) Learning for BF: Never use warning=FALSE in code chunks when working in a R_Notebook –&gt; otherwise you won’t see warnings (surprise, surprise!). I wasted 3h today bc I wasn’t aware of the warnings….</li>
 </ul>
+<hr />
 </div>
 <div id="important-data-management-decisions" class="section level2">
-<h2><span class="header-section-number">1.2</span> Important Data Management Decisions</h2>
+<h2><span class="header-section-number">3.2</span> Important Data Management Decisions</h2>
 <ul>
 <li>For Belgium regions the following geo identifiers have been used
 <ul>
@@ -464,59 +477,12 @@ div.tocify {
 <li>Working age populations as “From 15 to 64 years”,</li>
 </ul></li>
 </ul>
-</div>
-<div id="different-data-sources-used-than-in-2018" class="section level2">
-<h2><span class="header-section-number">1.3</span> Different Data Sources used than in 2018</h2>
-<ul>
-<li>Unemployment rates for Belgium are not only from lfst_r_lfu3rt anymore but are split into
-<ul>
-<li>lfst_r_lfur2gac has 15-64</li>
-<li>lfst_r_lfu3rt has 15-24</li>
-</ul></li>
-<li>Employment rates:
-<ul>
-<li>lfsa_ergaed used instead of lfsa_ergaedn (no citizenship)</li>
-</ul></li>
-<li>Employment rate by sex and age - Belgium
-<ul>
-<li>There is only data for the working age population</li>
-</ul></li>
-<li>Employment growth can be computed for Belgium regions, too
-<ul>
-<li>because we have the data: lfst_r_lfe2emp</li>
-</ul></li>
-<li>Nominal GDP per capita
-<ul>
-<li>We use Gross domestic product at market prices tec00001</li>
-</ul></li>
-<li>Literacy BE:
-<ul>
-<li>Different Dataset which includes age group age group 15-65 (which edat_lfse_04 didn’t)</li>
-</ul></li>
-<li>Excel List Variable No 41 pop_working_age –&gt; no data sheet existent for this variable; plus we already have it in population</li>
-<li>Variable No4 seasonal employment not available</li>
-<li>In excel list from 2018, we also have a data sheet on “Part-time employment and temporary contracts - annual data [lfsi_pt_a]”
-<ul>
-<li>However, this is very similiar to “Temporary employees as percentage of the total number of employees, by sex, age and citizenship (%) [lfsa_etpgan]” –&gt; which we also have in the excel list but on sheet 1 (the variable overview)</li>
-<li>Only difference is that the former is connected to all types of employment while the latter is only related to the number of employees as numeraire</li>
-<li>No important difference, only using the first type of variable</li>
-</ul></li>
-<li>Minimum Wage: There are two additional variables in the excel list: minwage WSI and minwage (binary)
-<ul>
-<li>the former is identical to the eurostat minimum wage variable, just in hourly earnings not monthly –&gt; no difference between the two variables</li>
-<li>the latter is a binary variable which is time constant –&gt; can’t use it because of the lack of time variance</li>
-</ul></li>
-<li>Shadow economy Schneider: Please - let’s not use this b****it variable</li>
-<li>Strictness of dismissal protection law: No data after 2013 –&gt; excluded accordingly</li>
-<li>I have no access to “Tax rate on labour as % of total labour costs (OECD)” –&gt; needs to be purchased retrieved with professional account</li>
-<li>Replacement Rate Unemployment benefits: data different from the data in excel file</li>
-<li>Benefit duration in months (can’t use it because no time variance)</li>
-</ul>
+<hr />
 </div>
 <div id="the-data-management-structure" class="section level2">
-<h2><span class="header-section-number">1.4</span> The data management structure</h2>
+<h2><span class="header-section-number">3.3</span> The data management structure</h2>
 <ul>
-<li>Each variable/group of related variables has its own header and is being downloaded and manipulated in the same fashion:
+<li>Each variable/group of related variables has its own header and is downloaded and manipulated in the same fashion:
 <ul>
 <li>There are three code chunks: one for a) all countries, b) Belgian regions and c) merging a and b</li>
 </ul></li>
@@ -526,46 +492,40 @@ div.tocify {
 <ul>
 <li>Download data via API with get_eurostat</li>
 <li>Label all codes (for easier readability) with label_eurostat</li>
-<li>Filter, Select and Spread the data</li>
+<li>Filter, select and spread the data</li>
 </ul></li>
-<li>The first data group (Employment) has extensive comments do ease the understanding of the code</li>
-<li>To retrieve the eurostat codes for datasets check the subchapter Search for Eurostat codes</li>
+<li>The first variable (Employment) has extensive comments to ease the understanding of the code</li>
+<li>To retrieve the eurostat codes for datasets check the subchapter “Search for Eurostat codes”</li>
 </ul>
-</div>
-<div id="load-packages" class="section level2">
-<h2><span class="header-section-number">1.5</span> Load packages</h2>
-<ul>
-<li>If you haven’t done so already, install all the packages below with install.packages(“packagename”)</li>
-</ul>
-<pre class="r"><code>library(tidyverse) # the state of the art system of packages for data manipulation, exploration and visualization with a a coherent design philosophy
-library(eurostat) # the propietary eurostat package for retrieving and manipulating Eurostat data</code></pre>
-</div>
-<div id="clean-environmentcache" class="section level2">
-<h2><span class="header-section-number">1.6</span> Clean Environment/Cache</h2>
-<ul>
-<li>Eurostat saves all the data we download via the eurostat package in C:and reloads them from there every time you rerun the get_eurostat function
-<ul>
-<li>This might lead to datasets remaining “unupdated” if we accidentially reload the data from local user and not the API.</li>
-<li>therefore, always run clean_eurostat_cache() before new sessions</li>
-</ul></li>
-</ul>
-<pre class="r"><code>rm(list = ls()) # The standard environment cleaner for your R environment
-# clean_eurostat_cache() # see bullet points above </code></pre>
+<hr />
 </div>
 <div id="search-for-eurostat-codes" class="section level2">
-<h2><span class="header-section-number">1.7</span> Search for Eurostat codes</h2>
+<h2><span class="header-section-number">3.4</span> Search for Eurostat codes</h2>
 <ul>
 <li>Eurostat codes for data tables can be retrieved via search_eurostat</li>
-<li>An example (looking for all data containing the name employment in the title):</li>
+<li>An example (looking for all data containing the name employment in the title):
+<ul>
+<li><code>query &lt;- search_eurostat("Employment", type = "all")</code></li>
+<li>You can then inspect the query via <code>View(query)</code></li>
+</ul></li>
 </ul>
-<pre class="r"><code>query &lt;- search_eurostat(&quot;Employment&quot;,
-                         type = &quot;all&quot;) # inspect query via View(query)</code></pre>
 </div>
+</div>
+<div id="setup-the-script" class="section level1">
+<h1><span class="header-section-number">4</span> Setup the script</h1>
+<ul>
+<li><p>Remember: You should clean the environment and load the necessary packages.</p>
+<ul>
+<li><p>If packages aren’t installed yet, do so.</p></li>
+<li><p>We need the tidyverse and the eurostat package.</p></li>
+</ul></li>
+</ul>
+<p><span style="color:red">Task</span> <u><strong>Clean the environment and load the packages</strong></u></p>
 </div>
 <div id="employment-rate-by-educational-attainment-levels" class="section level1">
-<h1><span class="header-section-number">2</span> Employment rate by educational attainment levels</h1>
+<h1><span class="header-section-number">5</span> Employment rate by educational attainment levels</h1>
 <div id="countries-lfsa_ergaed-employment-rates-by-sex-age-and-educational-attainment-level" class="section level2">
-<h2><span class="header-section-number">2.1</span> Countries: <strong>lfsa_ergaed</strong> Employment rates by sex, age and educational attainment level</h2>
+<h2><span class="header-section-number">5.1</span> Countries: <strong>lfsa_ergaed</strong> Employment rates by sex, age and educational attainment level</h2>
 <pre class="r"><code>data_a &lt;-
   get_eurostat(id = &quot;lfsa_ergaed&quot;, # the relevant id to be downloaded
                time_format = &quot;num&quot;) # retrieve time column as.numeric right away (bc we only have yearly data)
@@ -591,7 +551,7 @@ data_a &lt;- data_a %&gt;%
   rename_all(tolower) # all column names in lowercase</code></pre>
 </div>
 <div id="belgium-lfst_r_lfe2emprtn-employment-rates-by-sex-age-educational-attainment-level-citizenship-and-nuts-2-regions" class="section level2">
-<h2><span class="header-section-number">2.2</span> Belgium: <strong>lfst_r_lfe2emprtn</strong> Employment rates by sex, age, educational attainment level, citizenship and NUTS 2 regions</h2>
+<h2><span class="header-section-number">5.2</span> Belgium: <strong>lfst_r_lfe2emprtn</strong> Employment rates by sex, age, educational attainment level, citizenship and NUTS 2 regions</h2>
 <pre class="r"><code>data_b &lt;-
   get_eurostat(id = &quot;lfst_r_lfe2emprtn&quot;, # the relevant id to be downloaded
                time_format = &quot;num&quot;) # retrieve time column as.numeric right away (bc we only have yearly data)
@@ -627,42 +587,94 @@ data_b &lt;- data_b %&gt;%
   rename_all(tolower) # all column names in lowercase</code></pre>
 </div>
 <div id="rbind-a-and-b" class="section level2">
-<h2><span class="header-section-number">2.3</span> Rbind a and b</h2>
-<pre class="r"><code>empl_educ &lt;- rbind(data_a, data_b)</code></pre>
+<h2><span class="header-section-number">5.3</span> Rbind a and b</h2>
+<p>This is the only new thing. <code>bind_rows()</code> appends rows from different data frames if the column names and types are identical.</p>
+<pre class="r"><code>empl_educ &lt;- bind_rows(data_a, data_b)</code></pre>
 </div>
 </div>
-<div id="replacement-rate-of-last-earnings-before-unemployment" class="section level1">
-<h1><span class="header-section-number">3</span> Replacement Rate of last earnings before unemployment</h1>
+<div id="time-to-practice" class="section level1">
+<h1><span class="header-section-number">6</span> Time to practice!</h1>
 <ul>
-<li>From OECD</li>
-<li><a href="https://stats.oecd.org/Index.aspx?DataSetCode=NRR#_ga=2.115968198.1529179679.1559572370-478591159.1556266530" class="uri">https://stats.oecd.org/Index.aspx?DataSetCode=NRR#_ga=2.115968198.1529179679.1559572370-478591159.1556266530</a></li>
-<li>Which time –&gt; data different from the data in excel file ToDo <span class="citation">@HV</span></li>
+<li><p>You can now work on your own.</p></li>
+<li><p>I would highly recommend you to follow the structure of</p></li>
+<li><ol style="list-style-type: lower-alpha">
+<li>get and manipulate data for all countries, b) get and manipulate data for Belgian regions and c) merge a and b</li>
+</ol></li>
+<li><p>Below you get all the eurostat codes you need as well as the name you should give each respective variable.</p></li>
+<li><p>Once you have all variables, we want to merge them by their geo_code and time identification.</p></li>
+<li><p>Don’t forget to recode values if they are supposed to become a variable</p></li>
+<li><p>E.g. if in the column size_emp one value is called “From 0 to 9 persons employed” and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): <code>.... %&gt;% mutate (size_emp = recode(size_emp, "From 0 to 9 persons employed" = "empsize_verysmall"))</code></p></li>
 </ul>
-<pre class="r"><code># reprate &lt;- read_csv(&quot;2019/orig/test/Replacement Rate last earnings.csv&quot;)</code></pre>
+<pre class="r"><code># Unemployment rates
+
+## Unemployment rates by sex, age and citizenship (%) [lfsa_urgan]
+
+## Unemployment rates by sex, age, ((, country of birth)) and NUTS 2 regions (%) [lfst_r_lfu3rt AND lfst_r_lfur2gac]
+
+## Rbind a and b: unempl
+
+
+
+
+# Total Employment
+
+## Employment and activity by sex and age  - annual data  [lfsi_emp_a]
+
+## Employment by sex, age and NUTS 2 regions (1 000) [lfst_r_lfe2emp]
+
+## Rbind a and b: totemp
+
+
+
+
+# Nominal GDP per capita
+
+## Gross domestic product at market prices tec00001
+
+## Gross domestic product (GDP) at current market prices by NUTS 2 regions [nama_10r_2gdp]
+
+## Rbind a and b gdp.pc
+
+
+
+
+# Investment Rate
+
+## Annual enterprise statistics for special aggregates of activities (NACE Rev. 2) [sbs_na_sca_r2]
+
+## Only data for country level available
+
+## Rbind a and b: Just save data_a as inv </code></pre>
 </div>
-<div id="left-over-for-hans" class="section level1">
-<h1><span class="header-section-number">4</span> Left over for Hans</h1>
+<div id="difficult" class="section level1">
+<h1><span class="header-section-number">7</span> Difficult</h1>
 <ul>
-<li>Share of self-employed (Var no 53)</li>
-<li>Duration of working life (Var no 54)</li>
+<li><p>For Employment Growth (growth in employment YoY) you have to create column with the lagged employment values (e.g. give in the same row the employment values from the present year in one column and in another column the employment from the year before).</p></li>
+<li><p>Lagging can be done with <code>lag()</code>. Don’t forget to use <code>group_by</code> before!</p></li>
 </ul>
-<p>+++++++++++++++++++++</p>
+<pre class="r"><code># Employment Growth 
+
+## Employment and activity by sex and age  - annual data  [lfsi_emp_a]
+
+## Employment by sex, age and NUTS 2 regions (1 000) [lfst_r_lfe2emp]
+
+## Rbind a and b:empl_growth</code></pre>
 </div>
 <div id="merge-all-df-together-and-save-as-csv" class="section level1">
-<h1><span class="header-section-number">5</span> Merge all df together and save as csv</h1>
-<pre class="r"><code># df_final &lt;-
-#   Reduce(
-#     function(x, y)
-#       full_join(x, y, by = c(&quot;geo_code&quot;, &quot;time&quot;)),
-#     list(empl_educ, unempl, empl_sex_age, transition, empl_growth, totemp, gdp_gr, gdp_pc, inv, min_wage, empsize, dropout,  
-#          literacy, childcare, gr_productiv, popul, depratio, immigr, emmigr, tempemp, jobsrch, activtyrate, parttime, death)
-#   )
-# 
-# df_final &lt;- df_final %&gt;%
-#   group_by(geo_code, time) %&gt;%
-#   rename_all(tolower)
+<h1><span class="header-section-number">8</span> Merge all df together and save as csv</h1>
+<pre class="r"><code>df_final &lt;-
+  Reduce(
+    function(x, y)
+      full_join(x, y, by = c(&quot;geo_code&quot;, &quot;time&quot;)),
+    list(empl_educ, unempl, empl_sex_age, transition, empl_growth, totemp, gdp_gr, gdp_pc, inv, min_wage, empsize, dropout,  
+         literacy, childcare, gr_productiv, popul, depratio, immigr, emmigr, tempemp, jobsrch, activtyrate, parttime, death)
+  )
 
-# write_excel_csv2(df_final, &quot;data_uptodate.csv&quot;)</code></pre>
+df_final &lt;- df_final %&gt;%
+  group_by(geo_code, time) %&gt;%
+  rename_all(tolower)
+
+write_excel_csv2(df_final, &quot;data_uptodate.csv&quot;)</code></pre>
 </div>
 
 
