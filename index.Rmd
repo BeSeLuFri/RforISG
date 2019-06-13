@@ -31,6 +31,7 @@ Die Seite ist in Englisch, weil alle meine anderen R Tutorien/Kurse auch in Engl
 We have two days, 4 hours per day. 
 
 **Day 1**
+
 * R Basics, Workflow in R Studio and Objects (1.5h)
 
 * Data Management and tidyverse (2h)
@@ -39,10 +40,11 @@ We have two days, 4 hours per day.
   
   + Eurostat Example
   
-  + Destatis Example
+  + ~~Destatis Example~~
 
 
-**Day 2** 
+**Day 2** (NOT DONE YET)
+
 * Data visualizationsand the tidyverse (2h)
 
   + Quick intro into ggplot
@@ -74,6 +76,8 @@ R is the software executing your commands.
 
 BUT: R itself is not quite user-friendly - the pane is inconvenient to maneuver. Therefore, there are various interfaces that can be added on top on the plain R. 
 The most common one is R-Studio. 
+
+If you are not the Admin on your Laptop/PC: Make sure to install both R and RStudio in `C:/Users/<YOUR_USERNAME>/FOLDER_OF_YOUR_CONVENIENCE` and not `C:/Program Files/`. Otherwise (even if you happen to know the Admin PW) R will not function properly. I recommend to create a folder R, e.g.: ``C:/Users/<YOUR_USERNAME>/R`
 
 
 **Download R**: 
