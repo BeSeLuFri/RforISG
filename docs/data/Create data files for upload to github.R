@@ -18,6 +18,9 @@ write_csv(econ2, "data/soep_us.csv")
 
 write_csv2(econ2, "data/soep_europ.csv")
 
-foreign::write.dta(econ2, "data/soep.dta")
+haven::write_dta(econ2, "data/soep.dta")
 
+haven::write_sav(econ2, "data/soep.sav")
+
+openxlsx::write.xlsx(econ2, "data/soep.xlsx")
 

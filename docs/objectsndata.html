@@ -459,8 +459,25 @@ rm(x) # Deletes an object
 rm(list=ls()) # all objects are removed</code></pre>
 <hr />
 </div>
+<div id="everything-in-r-is-an-object" class="section level1">
+<h1><span class="header-section-number">2</span> Everything in R Is an Object</h1>
+<p>Coming from excel or stata, you might think that objects are objects storing data. However, everything in R is an object: functions, symbols, and even R expressions: functions, symbols, and even R expressions (see <a href="https://www.oreilly.com/library/view/r-in-a/9781449358204/ch05s06.html">R in a Nutshell</a>).</p>
+<p>For example, function names in R are really symbol objects that point to function objects. (That relationship is, in turn, stored in an environment object.) You can assign a symbol to refer to a numeric object and then change the symbol to refer to a function:</p>
+<p><span style="color:red">Task</span> <u><strong>Try to understand the different meanigs of x!</strong></u></p>
+<pre class="r"><code>x &lt;- 1
+x
+
+x(2)
+
+x &lt;- function(i) i^2
+
+x
+
+x(2)</code></pre>
+<hr />
+</div>
 <div id="vectors" class="section level1">
-<h1><span class="header-section-number">2</span> Vectors</h1>
+<h1><span class="header-section-number">3</span> Vectors</h1>
 <p>For statistical calculations, we obviously need to work with data sets including many numbers of instead of scalars. The simplest way to collect many numbers (or other types of information) is called a vector in R terminology (you have already been familiarized with vectors on the page before).</p>
 <p>To define a vector, we can collect different values using <code>c(value1, value2,...)</code>.</p>
 <pre class="r"><code># Examples
@@ -493,7 +510,7 @@ seq(50)
 seq(4, 20, 2)</code></pre>
 <hr />
 <div id="logical-operators-and-logical-vectors" class="section level2">
-<h2><span class="header-section-number">2.1</span> Logical Operators and Logical Vectors</h2>
+<h2><span class="header-section-number">3.1</span> Logical Operators and Logical Vectors</h2>
 <p><span style="color:red">Task</span> <u><strong>Do you understand all of these operators?</strong></u></p>
 <pre class="r"><code>x &lt;- 10
 y &lt;- 9 
@@ -534,7 +551,7 @@ typeof(int_var)</code></pre>
 <hr />
 </div>
 <div id="naming-and-indexing-vectors" class="section level2">
-<h2><span class="header-section-number">2.2</span> Naming and Indexing Vectors</h2>
+<h2><span class="header-section-number">3.2</span> Naming and Indexing Vectors</h2>
 <p>The elements of a vector can be named which can increase the readability of the output. Given a vector <code>vec</code> and a string vector <code>namevec</code> of the same length, the names are attached to the vector elements using <code>names(vec) &lt;- namevec</code>.</p>
 <p>If we want to access a single element or a subset form a vector, we can work with <strong>indices</strong>. They are written in square brackets next to the vector name. For example `<code>myvector[4]</code> returns the 4th element of <code>myvector</code> and <code>myvector[6] &lt;- 8</code> changes the 6th element to take the value of 8. If the vector elements have names, we can also use those as indices like in <code>myvector["elementname"]</code></p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -542,7 +559,7 @@ typeof(int_var)</code></pre>
 kicker.skills &lt;- c(0.2, 4, 3, 10, 5,-2)
 
 # Create a string vector of names:
-players &lt;- c(&quot;Katja&quot;, &quot;Hans&quot;, &quot;Theresa&quot;, &quot;Sabine&quot;, &quot;Kathrin&quot;, &quot;Marco&quot;)
+players &lt;- c(&quot;Katja&quot;, &quot;Hans&quot;, &quot;Theresa&quot;, &quot;Sabine&quot;, &quot;Katrin&quot;, &quot;Marco&quot;)
 
 # Assign names to vector and display vector:
 names(kicker.skills) &lt;- players
@@ -565,7 +582,7 @@ kicker.skills[_ == min(_)] # DO you understand every part of this line? </code><
 </div>
 </div>
 <div id="factors" class="section level1">
-<h1><span class="header-section-number">3</span> Factors</h1>
+<h1><span class="header-section-number">4</span> Factors</h1>
 <p>Seemingly similar to vectors but behaving (sometimes) differently: factors. Factors are very useful to work with binary variables.</p>
 <p><span style="color:red">Task</span> <u><strong>What is the difference between xf1 and xf2?</strong></u></p>
 <pre class="r"><code># Costumer Ratings
@@ -573,6 +590,7 @@ x &lt;- c(3, 2, 2, 3, 1, 2, 3, 2, 1, 2)
 
 xf1 &lt;- factor(x, labels = c(&quot;bad&quot;, &quot;okay&quot;, &quot;good&quot;), ordered = TRUE)
 xf2 &lt;- factor(x, labels = c(&quot;bad&quot;, &quot;okay&quot;, &quot;good&quot;))</code></pre>
+<p>If they are ordered, factors can be seen as an ordinal variable (e.g. in the latter case, values are ranked). Under the hood, factors behave like integers.</p>
 <p><span style="color:red">Task</span> <u><strong>Practice more </strong></u></p>
 <pre class="r"><code># variable gender with 20 &quot;male&quot; entries and 30 &quot;female&quot; entries
 gender &lt;- c(rep(&quot;male&quot;, _ ), rep(_, 30)_  # COMPLETE MISSING PARTS
@@ -584,7 +602,7 @@ summary(gender) </code></pre>
 <hr />
 </div>
 <div id="matrices" class="section level1">
-<h1><span class="header-section-number">4</span> Matrices</h1>
+<h1><span class="header-section-number">5</span> Matrices</h1>
 <p>Matrices are important tools for data analysis. R has a powerful matrix algebra system. Most often, matrices will be generated from an existing data set. But you can also build the from scratch with <code>matrix(vec, nrow=m)</code> (takes the numbers stored in vector <code>vec</code> and puts them into a matrix with m rows). Other options include: <code>rbind(r1,r2)</code> and <code>cbind(c1,c2)</code> in binding several vectors (which obviously need to have the same length) by row or column.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code># GENERATE matrix A from one vector with two rows
@@ -599,7 +617,7 @@ A.row &lt;- _____(vec1, vec2)
 A.col &lt;- ______
 
 # Giving names to rows and columns:
-colnames(A.col) &lt;- c(&quot;Kathrin&quot;, &quot;Hans&quot;)
+colnames(A.col) &lt;- c(&quot;Katrin&quot;, &quot;Hans&quot;)
 rownames(A.col) &lt;- c(&quot;Monday&quot;, &quot;Wednesday&quot;, &quot;Friday&quot;)
 A.col</code></pre>
 <p><strong>Core rule</strong> for indexing all two dimensional objects in R: [row , column]</p>
@@ -610,11 +628,11 @@ A.col[_ , _]
 # GIVE all meal choices from Hans:
 A.col[ , ]
 
-# WHAT does Kathrin have for lunch on Monday? call Kathrin and Monday by name
+# WHAT does Katrin have for lunch on Monday? call Katrin and Monday by name
 A.col[_ , _]
 
 
-# WHAT does Kathrin have on Monday and Friday?
+# WHAT does Katrin have on Monday and Friday?
 A.col[_ , c(_ , _)]</code></pre>
 <p>Some quick matrix algebra:</p>
 <pre class="r"><code># Element wise multiplication (not matrix multiplication but multiplying elements at same place)
@@ -633,7 +651,7 @@ solve(D)</code></pre>
 <hr />
 </div>
 <div id="lists" class="section level1">
-<h1><span class="header-section-number">5</span> Lists</h1>
+<h1><span class="header-section-number">6</span> Lists</h1>
 <p>A list is a generic collection of objects. Unlike vectors, components can be of different types.</p>
 <pre class="r"><code># Generate a list object:
 mylist &lt;- list(A = seq(8, 36, 4),
@@ -662,7 +680,7 @@ mylist$A</code></pre>
 <hr />
 </div>
 <div id="data-frames" class="section level1">
-<h1><span class="header-section-number">6</span> Data Frames</h1>
+<h1><span class="header-section-number">7</span> Data Frames</h1>
 <p>A data frame is an object that collects several variables and can be thought of as a rectangular shape with the rows representing the observational units and the columns representing the variables. As such, it is similar to a matrix. For us, the most important difference to a matrix is that a data frame can contain variables of different types (like numerical, logical, string and factor), whereas matrices can only contain numerical values.</p>
 <p>Unlike a matrix, the columns always contain names which represent the variables. We can define a data frame from scratch by using the command <code>data.frame</code> or <code>as. data.frame</code></p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>

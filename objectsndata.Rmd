@@ -51,6 +51,29 @@ rm(list=ls()) # all objects are removed
 ```
 
 ***
+
+# Everything in R Is an Object
+Coming from excel or stata, you might think that objects are objects storing data. However, everything in R is an object: functions, symbols, and even R expressions: functions, symbols, and even R expressions (see [R in a Nutshell](https://www.oreilly.com/library/view/r-in-a/9781449358204/ch05s06.html)).
+
+For example, function names in R are really symbol objects that point to function objects. (That relationship is, in turn, stored in an environment object.) You can assign a symbol to refer to a numeric object and then change the symbol to refer to a function:
+
+
+<span style="color:red">Task</span> <u>**Try to understand the different meanigs of x!**</u>
+```{r, eval=FALSE}
+x <- 1
+x
+
+x(2)
+
+x <- function(i) i^2
+
+x
+
+x(2)
+```
+
+
+***
 # Vectors
 For statistical calculations, we obviously need to work with data sets including many numbers of instead of scalars. The simplest way to collect many numbers (or other
 types of information) is called a vector in R terminology (you have already been familiarized with vectors on the page before). 
@@ -170,7 +193,7 @@ names, we can also use those as indices like in ```myvector["elementname"]```
 kicker.skills <- c(0.2, 4, 3, 10, 5,-2)
 
 # Create a string vector of names:
-players <- c("Katja", "Hans", "Theresa", "Sabine", "Kathrin", "Marco")
+players <- c("Katja", "Hans", "Theresa", "Sabine", "Katrin", "Marco")
 
 # Assign names to vector and display vector:
 names(kicker.skills) <- players
@@ -206,6 +229,8 @@ xf1 <- factor(x, labels = c("bad", "okay", "good"), ordered = TRUE)
 xf2 <- factor(x, labels = c("bad", "okay", "good"))
 ```
 
+If they are ordered, factors can be seen as an ordinal variable (e.g. in the latter case, values are ranked). Under the hood, factors behave like integers. 
+
 <span style="color:red">Task</span> <u>**Practice more **</u>
 ```{r, eval=FALSE}
 # variable gender with 20 "male" entries and 30 "female" entries
@@ -240,7 +265,7 @@ A.row <- _____(vec1, vec2)
 A.col <- ______
 
 # Giving names to rows and columns:
-colnames(A.col) <- c("Kathrin", "Hans")
+colnames(A.col) <- c("Katrin", "Hans")
 rownames(A.col) <- c("Monday", "Wednesday", "Friday")
 A.col
 ```
@@ -255,11 +280,11 @@ A.col[_ , _]
 # GIVE all meal choices from Hans:
 A.col[ , ]
 
-# WHAT does Kathrin have for lunch on Monday? call Kathrin and Monday by name
+# WHAT does Katrin have for lunch on Monday? call Katrin and Monday by name
 A.col[_ , _]
 
 
-# WHAT does Kathrin have on Monday and Friday?
+# WHAT does Katrin have on Monday and Friday?
 A.col[_ , c(_ , _)]
 ```
 

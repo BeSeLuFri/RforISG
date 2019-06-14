@@ -485,25 +485,26 @@ library(tidyverse)</code></pre>
 <p><span style="color:red">Task</span> <u><strong>1. Try out to to read a US style csv with soep_us.csv</strong></u></p>
 <pre class="r"><code>data &lt;- </code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>An easier way to read European style csv files is to use <code>read_csv2()</code> from the tidyverse.</li>
+<li>An easier way to read European style csv files is to use <code>read_csv2()</code> from the tidyverse. (Accordingly, <code>read_csv()</code> is for US style csv files)</li>
 </ol>
 <p><span style="color:red">Task</span> <u><strong>Use read_csv2() to read soep_europ.csv</strong></u></p>
 <pre class="r"><code>data &lt;- </code></pre>
 </div>
-<div id="dta" class="section level2">
-<h2><span class="header-section-number">3.2</span> .dta</h2>
+<div id="dta-.sav-excel" class="section level2">
+<h2><span class="header-section-number">3.2</span> .dta / .sav / excel</h2>
 <ul>
-<li><p>As a second data file type, we try to read dta (Stata’s proprietary file format)</p>
-<ul>
-<li>If you only intend to use a package once, you can simply call the package with <code>packagename::function</code>.</li>
-</ul></li>
+<li>.csv (together with .txt) is definetely the cleanest file format to read (and therefore also to save) data because it is improved for machine readability.</li>
 </ul>
-<pre class="r"><code># install.packages(&quot;readstata13&quot;)
-library(readstata13)
-
-data &lt;- readstata13::read.dta13(file=&quot;data/soep.dta&quot; ,
-                   convert.factors=FALSE, # default is TRUE, would create Stata value labels
-                   ) </code></pre>
+<p>However, R being R, you can also read many other file formats. Let’s try out some of them. As a second data file type, we try to read .dta (Stata’s proprietary file format)</p>
+<p>For Stata’s .dta file, we can use the haven package (part of the tidyverse but not loaded through <code>library(tidyverse)</code>).</p>
+<ul>
+<li>Btw., if you only intend to use a package once, you can simply call the package with <code>packagename::function</code>.</li>
+</ul>
+<pre class="r"><code>data &lt;- haven::read_dta(&quot;data/soep.dta&quot;)</code></pre>
+<p>Same for SPSS files:</p>
+<pre class="r"><code>data &lt;- haven::read_sav(&quot;data/soep.sav&quot;)</code></pre>
+<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
+<pre class="r"><code>data &lt;- readxl::read_xlsx(&quot;data/soep.xlsx&quot;)</code></pre>
 <p>Enough on reading data for now, let’s use the European csv for now.</p>
 <pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)</code></pre>
 <hr />

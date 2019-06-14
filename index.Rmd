@@ -77,7 +77,7 @@ R is the software executing your commands.
 BUT: R itself is not quite user-friendly - the pane is inconvenient to maneuver. Therefore, there are various interfaces that can be added on top on the plain R. 
 The most common one is R-Studio. 
 
-If you are not the Admin on your Laptop/PC: Make sure to install both R and RStudio in `C:/Users/<YOUR_USERNAME>/FOLDER_OF_YOUR_CONVENIENCE` and not `C:/Program Files/`. Otherwise (even if you happen to know the Admin PW) R will not function properly. I recommend to create a folder R, e.g.: ``C:/Users/<YOUR_USERNAME>/R`
+Before you start: If you are not the Admin on your Laptop/PC: Make sure to install both R and RStudio in `C:/Users/<YOUR_USERNAME>/FOLDER_OF_YOUR_CONVENIENCE` and not `C:/Program Files/`. Otherwise (*even if you happen to know the Admin PW*) R will not function properly. I recommend to create a folder R, e.g.: ``C:/Users/<YOUR_USERNAME>/R`
 
 
 **Download R**: 
@@ -103,15 +103,11 @@ If you have any problems with the installation process follow these pages
 
 ***
 ## First Step
-After having successfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), you should see something like this: 
-![Test](Files/Screen1.png)
+After having successfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), press `Ctrl+Shift+N` or click on the top left icon and select R Script. Then you should see 4 different panes. Their functionality has been brilliantly explained by you should see something like this (credits: [Jessica Ward](https://twitter.com/RLadiesNCL/status/1138812826917724160): 
+![](Files/R-cooking.jpg)
 
-The big one on the left is called *Console* and it is the plain R execution window: 
-You can type single lines of code in there and they are executed immediately after pressing Enter. 
 
-On the right hand side you see the *Environment*. The Environment is just a place to store variables – a set of bindings between symbols and objects. If you open R and make an assignment, you're adding an entry in the global environment (we'll come back to that shortly). 
-
-On the lower left hand side various information about your current project can be retrieved (amongst them the Help section which explains functions). Also, plots can be given a first view in that part. 
+On the lower right hand side various other information about your current project can be retrieved and plots can be given a first view. Particularly helpful is the Help section which explains functions. For example, type `?sqrt` into the console (where the cooking happens) or just type it into the search window.
 
 
 ***
@@ -150,7 +146,8 @@ There must be a better way around this.
 
 ***
 # R Scripts and (plain) text
-Of course there is - R Scripts!
+Of course there is - R Scripts (to stay within the cooking analogy, our recipe)!
+For Stata/SPSS people: This is the equivalent to .do and .sps files.
 An R Script contains all commands including those for reading the raw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some of the commands listed in the R script at once. 
 This is key because what we are interested in for every project is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click. 
 
@@ -202,6 +199,7 @@ The Pipe operator pipes the last element of something into the first one of the 
 # How do we do that? With a vector.
 # You can tell R to collect numbers in a vector with c(number, number, number)
 c(1, 2, 3, 4, 5)
+
 # A cooler way to write this is:
 c(1:5)
 

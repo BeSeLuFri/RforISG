@@ -493,7 +493,7 @@ div.tocify {
 <h2><span class="header-section-number">2.1</span> Installation</h2>
 <p>R is the software executing your commands.</p>
 <p>BUT: R itself is not quite user-friendly - the pane is inconvenient to maneuver. Therefore, there are various interfaces that can be added on top on the plain R. The most common one is R-Studio.</p>
-<p>If you are not the Admin on your Laptop/PC: Make sure to install both R and RStudio in <code>C:/Users/&lt;YOUR_USERNAME&gt;/FOLDER_OF_YOUR_CONVENIENCE</code> and not <code>C:/Program Files/</code>. Otherwise (even if you happen to know the Admin PW) R will not function properly. I recommend to create a folder R, e.g.: `<code>C:/Users/&lt;YOUR_USERNAME&gt;/R</code></p>
+<p>Before you start: If you are not the Admin on your Laptop/PC: Make sure to install both R and RStudio in <code>C:/Users/&lt;YOUR_USERNAME&gt;/FOLDER_OF_YOUR_CONVENIENCE</code> and not <code>C:/Program Files/</code>. Otherwise (<em>even if you happen to know the Admin PW</em>) R will not function properly. I recommend to create a folder R, e.g.: `<code>C:/Users/&lt;YOUR_USERNAME&gt;/R</code></p>
 <p><strong>Download R</strong>:</p>
 <p><a href="https://cran.rstudio.com/bin/macosx/">MACOSX</a></p>
 <p><a href="https://cran.r-project.org/bin/windows/">Windows</a></p>
@@ -507,10 +507,8 @@ div.tocify {
 </div>
 <div id="first-step" class="section level2">
 <h2><span class="header-section-number">2.2</span> First Step</h2>
-<p>After having successfully installed R and R-Studio open RStudio (<em>NEVER open R directly, always access it through RStudio</em>), you should see something like this: <img src="Files/Screen1.png" alt="Test" /></p>
-<p>The big one on the left is called <em>Console</em> and it is the plain R execution window: You can type single lines of code in there and they are executed immediately after pressing Enter.</p>
-<p>On the right hand side you see the <em>Environment</em>. The Environment is just a place to store variables – a set of bindings between symbols and objects. If you open R and make an assignment, you’re adding an entry in the global environment (we’ll come back to that shortly).</p>
-<p>On the lower left hand side various information about your current project can be retrieved (amongst them the Help section which explains functions). Also, plots can be given a first view in that part.</p>
+<p>After having successfully installed R and R-Studio open RStudio (<em>NEVER open R directly, always access it through RStudio</em>), press <code>Ctrl+Shift+N</code> or click on the top left icon and select R Script. Then you should see 4 different panes. Their functionality has been brilliantly explained by you should see something like this (credits: <a href="https://twitter.com/RLadiesNCL/status/1138812826917724160">Jessica Ward</a>: <img src="Files/R-cooking.jpg" /></p>
+<p>On the lower right hand side various other information about your current project can be retrieved and plots can be given a first view. Particularly helpful is the Help section which explains functions. For example, type <code>?sqrt</code> into the console (where the cooking happens) or just type it into the search window.</p>
 <hr />
 </div>
 <div id="working-directoriesprojects" class="section level2">
@@ -537,7 +535,7 @@ div.tocify {
 </div>
 <div id="r-scripts-and-plain-text" class="section level1">
 <h1><span class="header-section-number">4</span> R Scripts and (plain) text</h1>
-<p>Of course there is - R Scripts! An R Script contains all commands including those for reading the raw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some of the commands listed in the R script at once. This is key because what we are interested in for every project is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click.</p>
+<p>Of course there is - R Scripts (to stay within the cooking analogy, our recipe)! For Stata/SPSS people: This is the equivalent to .do and .sps files. An R Script contains all commands including those for reading the raw data, data manipulation, estimation, post-estimation analyses, and the creation of graphs and tables. We can ask R to run all or some of the commands listed in the R script at once. This is key because what we are interested in for every project is reproducibility. When relying on R Scripts we can backtrack all the changes we made to our data and the assumptions we were relying on in our analysis with a simple mouse click.</p>
 <p>To open the editor for creating a new R script click on the symbol in the top left corner and choose open a new R script. Be sure to save it in the same folder where also your RProject is saved.</p>
 <p>As discovered above, the # Symbol is extremely useful because it allows you to comment on stuff without the comment itself being evaluated by R.</p>
 <p>From the R script we can “send” lines of code to R to be evaluated. To run the line in which the cursor is, press <strong>Ctrl+Enter</strong>. To run several lines of code, mark them with the mouse and do the same.</p>

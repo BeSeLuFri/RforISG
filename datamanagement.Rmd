@@ -80,28 +80,40 @@ data <- _____("data/soep_europ.csv", sep="_____") #
 data <- 
 ```
 
-2. An easier way to read European style csv files is to use `read_csv2()` from the tidyverse. 
+2. An easier way to read European style csv files is to use `read_csv2()` from the tidyverse. (Accordingly, `read_csv()` is for US style csv files)
 
 <span style="color:red">Task</span> <u>**Use read_csv2() to read soep_europ.csv**</u>
 ```{r, eval=FALSE}
 data <- 
 ```
 
-## .dta
-* As a second data file type, we try to read dta (Stata's proprietary file format)
+## .dta / .sav / excel
+* .csv (together with .txt) is definetely the cleanest file format to read (and therefore also to save) data because it is improved for machine readability. 
+
+However, R being R, you can also read many other file formats. Let's try out some of them. 
+As a second data file type, we try to read .dta (Stata's proprietary file format)
   
-  + If you only intend to use a package once, you can simply call the package with `packagename::function`.  
+For Stata's .dta file, we can use the haven package (part of the tidyverse but not loaded through `library(tidyverse)`).
+
+* Btw., if you only intend to use a package once, you can simply call the package with `packagename::function`. 
 
 ```{r, eval=FALSE}
-
-# install.packages("readstata13")
-library(readstata13)
-
-data <- readstata13::read.dta13(file="data/soep.dta" ,
-                   convert.factors=FALSE, # default is TRUE, would create Stata value labels
-                   ) 
-
+data <- haven::read_dta("data/soep.dta")
 ```
+
+Same for SPSS files:
+
+```{r, eval=FALSE}
+data <- haven::read_sav("data/soep.sav")
+```
+
+
+We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse. 
+
+```{r, eval=FALSE}
+data <- readxl::read_xlsx("data/soep.xlsx")
+```
+
 
 Enough on reading data for now, let's use the European csv for now.
 
