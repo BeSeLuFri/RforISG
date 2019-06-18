@@ -1,0 +1,30 @@
+---
+title: "Datamanagement: Eurostat Example"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R)
+
+
+- once geom_point example
+
+- one geom_lines example
+
+- one summary statistics example
+
+- one example overlaying different objects (violin and jitter for example)
+
+- one ggsave example
+
+Advanced:
+
+- one adding labels to points, one adjusting colors individually, one facets example
+
+- one interactive plotly example
+
+- one map
+
+https://therbootcamp.github.io/R4DS_2019Feb/_sessions/Plotting/Plotting_practical.html

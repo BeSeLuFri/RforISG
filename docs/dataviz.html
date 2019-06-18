@@ -435,214 +435,358 @@ div.tocify {
 </div>
 
 
-<p>More about this website.</p>
-<div id="load-packages" class="section level1">
-<h1><span class="header-section-number">1</span> Load Packages</h1>
-<p>At first, we need to load some packages. If you do not have them installed them yet, please do so once.</p>
-<pre class="r"><code>library(ggplot2)
-library(hrbrthemes) </code></pre>
-<pre><code>## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.</code></pre>
-<pre><code>##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and</code></pre>
-<pre><code>##       if Arial Narrow is not on your system, please see http://bit.ly/arialnarrow</code></pre>
-<pre class="r"><code>library(extrafont)</code></pre>
-<pre><code>## Registering fonts with R</code></pre>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz.R">here</a>.</p>
+<div id="intro" class="section level1">
+<h1><span class="header-section-number">1</span> Intro</h1>
+<p>In this tutorial, we will learn how to produce this graph.</p>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Actually, it only takes 12 lines of code (of which 5 are only related to the text captions) and some pretty straight forward logic.</p>
+<ul>
+<li><p>To get there, we first get a glimpse into <strong>base R plotting</strong>.</p></li>
+<li><p>Then, we move on the much more powerful <strong>ggplot2 package</strong> (part of the tidyverse).</p>
+<ul>
+<li><p>We study the <strong>grammar of plotting</strong></p></li>
+<li><p>step by step, we will replicate the graph above (but with some lengthy digressions to learn about different ggplot options inbetween.</p></li>
+</ul></li>
+</ul>
+<p>This site heavily builds upon <a href="https://therbootcamp.github.io/">The R Bootcamp</a> who employ the widely used mpg dataset and the accompanying coding instructions (see for example (see for example <a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data Science</a>) for their data visualization tutorial.</p>
+<hr />
 </div>
-<div id="laden-des-datensatzes" class="section level1">
-<h1><span class="header-section-number">2</span> Laden des Datensatzes:</h1>
-<p>Hierfür verwenden wir die Daten, die wir bereits im Datamanagement-Teil eingelesen haben.</p>
-<p>Ein erster Überblick</p>
-<pre class="r"><code>str(econ_data)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    5000 obs. of  8 variables:
-##  $ netinc  : int  NA NA 1000 NA NA 2430 NA NA NA 627 ...
-##  $ alter   : num  43 15 34 62 52 30 24 14 68 44 ...
-##  $ sex     : Factor w/ 2 levels &quot;maennlich&quot;,&quot;weiblich&quot;: 2 2 1 2 2 1 2 1 2 2 ...
-##  $ contract: num  NA NA 40 NA NA 40 NA NA NA 19 ...
-##  $ actual  : num  NA NA 60 NA NA 40 NA NA 40 19 ...
-##  $ trust   : int  3 NA 3 3 3 2 2 NA 2 2 ...
-##  $ rely    : int  2 NA 3 1 3 4 3 NA 3 2 ...
-##  $ inc_kat : chr  NA NA &quot;Q2&quot; NA ...</code></pre>
-<pre class="r"><code>head(econ_data)</code></pre>
-<pre><code>##       netinc alter       sex contract actual trust rely inc_kat
-## 2267      NA    43  weiblich       NA     NA     3    2    &lt;NA&gt;
-## 5775      NA    15  weiblich       NA     NA    NA   NA    &lt;NA&gt;
-## 10439   1000    34 maennlich       40     60     3    3      Q2
-## 11269     NA    62  weiblich       NA     NA     3    1    &lt;NA&gt;
-## 6853      NA    52  weiblich       NA     NA     3    3    &lt;NA&gt;
-## 3878    2430    30 maennlich       40     40     2    4      Q4</code></pre>
+<div id="packages-and-script-set-up" class="section level1">
+<h1><span class="header-section-number">2</span> Packages and script set-up</h1>
+<p>But before we start, as always - clean the environment and load packages. First thing. Always.</p>
+<pre class="r"><code>rm(list = ls())
+library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse</code></pre>
+<hr />
 </div>
-<div id="einfache-scatterplots" class="section level1">
-<h1><span class="header-section-number">3</span> Einfache Scatterplots</h1>
-<div id="zusammenhang-sympathie-netincome-alter" class="section level2">
-<h2><span class="header-section-number">3.1</span> Zusammenhang Sympathie Netincome ~ Alter</h2>
-<pre class="r"><code>ggplot(data = econ_data,               # GGplot starten und Datensatz angeben
-       mapping = aes(x = alter,        # Specify mapping: aestethics (variable stuff)
-                     y = netinc)) +  
-  geom_jitter()   </code></pre>
+<div id="base-r-plotting" class="section level1">
+<h1><span class="header-section-number">3</span> Base R Plotting</h1>
+<p>Base R has several functions for data visualization. Crucially, you need sepearte functions for each type of plot. Some examples:</p>
+<pre class="r"><code>hist(x=mpg$displ)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
-<div id="hinzufugen-einer-regressionsgerade" class="section level2">
-<h2><span class="header-section-number">3.2</span> Hinzufügen einer Regressionsgerade</h2>
-<pre class="r"><code>ggplot(data = econ_data,                          
-       mapping = aes(x = alter,        
-                     y = netinc)) +  
-  geom_jitter() + 
-  geom_smooth(method = &quot;lm&quot;) # lineare Regressionsgerade</code></pre>
+<pre class="r"><code>boxplot(displ~year,
+  data=mpg)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-</div>
-<div id="unterscheiden-nach-geschlecht-farblich" class="section level2">
-<h2><span class="header-section-number">3.3</span> Unterscheiden nach Geschlecht (farblich)</h2>
-<pre class="r"><code>ggplot(data = econ_data,                          
-       mapping = aes(x = alter,        
-                     y = netinc,
-                     col = sex)) +  # groupieren nach Color !
-  geom_jitter() + 
-  geom_smooth(method = &quot;lm&quot;,se = FALSE) # wir schalten die Konfidenzintervalle aus </code></pre>
+<pre class="r"><code>plot(x=mpg$displ,
+     y=mpg$hwy)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<hr />
+<div id="disadvantages-of-base-r" class="section level2">
+<h2><span class="header-section-number">3.1</span> Disadvantages of Base R</h2>
+<ul>
+<li><p>Pretty outdated looking plots</p></li>
+<li><p>Requires a lot of code and not very flexible</p></li>
+<li><p>Plot objects cannot be stored and modified in a tidy way</p></li>
+</ul>
+<p>Solution: <strong>ggplot2</strong></p>
+<hr />
 </div>
-<div id="die-farben-sind-optimierbar" class="section level2">
-<h2><span class="header-section-number">3.4</span> Die Farben sind optimierbar:</h2>
-<pre class="r"><code>ggplot(data = econ_data,                          
-       mapping = aes(x = alter,        
-                     y = netinc,
-                     col = sex)) +  
-  geom_jitter(alpha = 0.7) +  # wir machen die Punkte ein bisschen durchsichtig
-  geom_smooth(size = 2,method = &quot;lm&quot;,se = FALSE)+ 
-  scale_color_manual(values = c(&quot;maennlich&quot; = &quot;pink&quot;,  # wir weisen den Parteien farben zu
-                                &quot;weiblich&quot; = &quot;blue&quot;),
-                     name = &quot;Geschlecht&quot;,
-                     labels = c(&quot;Mann&quot;,&quot;Frau&quot;))</code></pre>
+</div>
+<div id="the-grammar-of-graphics-in-ggplot2" class="section level1">
+<h1><span class="header-section-number">4</span> The grammar of graphics in ggplot2</h1>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aesthetics</th>
+<th>Description</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data</td>
+<td>Which data do we want to use</td>
+<td>ggplot(<strong>data=</strong>)</td>
+</tr>
+<tr class="even">
+<td>Relationship</td>
+<td>Which relationship do we want to display (axes, color, ) color, size, shape, etc.</td>
+<td>ggplot(data=df, <br> <strong>mapping = aes(x= , y = , color= , size= , shape= )</strong>)</td>
+</tr>
+<tr class="odd">
+<td>Geometric Objects</td>
+<td>How (e.g. in which form) do we want to see the relationships in our data (histogram, points, etc…)</td>
+<td>ggplot(data=df, <br> mapping = aes(x= , y = , color= , size= )) <br> <strong>+ geom_XX()</strong></td>
+</tr>
+<tr class="even">
+<td>Additional stuff</td>
+<td>Some additional functions to adjust scales, labels, tick marks, titles</td>
+<td>among other things <strong>+labs()</strong>, <strong>+scale()</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="replicating-the-graph" class="section level1">
+<h1><span class="header-section-number">5</span> Replicating the graph</h1>
+<p>Step by step, with some digressions, we will now replicate the graph from above.</p>
+<div id="data-and-mapping" class="section level2">
+<h2><span class="header-section-number">5.1</span> Data and Mapping</h2>
+<p>Select the data (<em>mpg</em>) and attach <em>displ</em> (the engine displacement) to the x axis, <em>hwy</em> (Highway miles per gallon) for the y axis and the <em>class</em> (car class) as the color variable.</p>
+<pre class="r"><code>ggplot(data = mpg,
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class))</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Well, we don’t see much. The reason is that we have only specified the data and the relationship, so far. But we have not told ggplot, which kinds of objects it should plot.</p>
+<hr />
 </div>
-<div id="achsenlabels" class="section level2">
-<h2><span class="header-section-number">3.5</span> Achsenlabels</h2>
-<pre class="r"><code>ggplot(data = econ_data,                          
-       mapping = aes(x = alter,        
-                     y = netinc,
-                     col = sex)) +  
-  geom_jitter(alpha = 0.7) +  
-  geom_smooth(size = 2,method = &quot;lm&quot;,se = FALSE)+ 
-  scale_color_manual(values = c(&quot;maennlich&quot; = &quot;pink&quot;,  
-                                &quot;weiblich&quot; = &quot;blue&quot;),
-                     name = &quot;Geschlecht&quot;,
-                     labels = c(&quot;Mann&quot;,&quot;Frau&quot;)) + 
-  labs(x = &quot;Alter&quot;, 
-       y = &quot;Nettoeinkommen&quot;,
-       title = &quot;Titel&quot;,
-       subtitle = &quot;Untertitel&quot;,
-       caption = &quot;whatever&quot;)</code></pre>
+<div id="geometric-objects" class="section level2">
+<h2><span class="header-section-number">5.2</span> Geometric objects</h2>
+<pre class="r"><code>ggplot(data = mpg,
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class))+
+  geom_point()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<hr />
+<div id="practice-with-different-geoms" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Practice with different geoms</h3>
+<p>Now, it is up to you.</p>
+<p><span style="color:red">Task</span> <u><strong>Reproduce the following plots!</strong></u></p>
+<p>Follow the instructions about the mapping and the type of geom below each plot.</p>
+<hr />
+<div id="boxplot" class="section level4">
+<h4><span class="header-section-number">5.2.1.1</span> Boxplot</h4>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li><p>Change the Axis as displayed in the plot. Use no color variable.</p></li>
+<li><p>Use the <code>geom_boxplot()</code> function</p></li>
+</ul>
+<hr />
 </div>
-<div id="schones-theme" class="section level2">
-<h2><span class="header-section-number">3.6</span> Schönes Theme</h2>
-<p>Jetzt noch ein Theme und sichern unter dem Objekt gg1</p>
-<pre class="r"><code>gg1 &lt;-  # zuweisen
-  ggplot(data = econ_data,                          
-       mapping = aes(x = alter,        
-                     y = netinc,
-                     col = sex)) +  
-  geom_jitter(alpha = 0.7) +  
-  geom_smooth(size = 2,method = &quot;lm&quot;,se = FALSE)+ 
-  scale_color_manual(values = c(&quot;maennlich&quot; = &quot;pink&quot;,  
-                                &quot;weiblich&quot; = &quot;blue&quot;),
-                     name = &quot;Geschlecht&quot;,
-                     labels = c(&quot;Mann&quot;,&quot;Frau&quot;)) + 
-  labs(x = &quot;Alter&quot;, 
-       y = &quot;Nettoeinkommen&quot;,
-       title = &quot;Titel&quot;,
-       subtitle = &quot;Untertitel&quot;,
-       caption = &quot;whatever&quot;)#+
- theme_ipsum(grid = &quot;Y&quot;) #Theme mit schöner Schrit und mit horizontalen Grid-Linien
-
-gg1 #print</code></pre>
+<div id="violin-plot" class="section level4">
+<h4><span class="header-section-number">5.2.1.2</span> Violin Plot</h4>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li><p>Change the Axis as displayed in the plot. Use no color variable.</p></li>
+<li><p>Use the <code>geom_violin()</code> function</p></li>
+</ul>
+<hr />
 </div>
-<div id="output-zum-einbinden-ins-paper" class="section level2">
-<h2><span class="header-section-number">3.7</span> Output zum Einbinden ins Paper</h2>
-<div id="entweder-pdf" class="section level3">
-<h3><span class="header-section-number">3.7.1</span> Entweder pdf</h3>
-<pre class="r"><code>ggsave(filename = &quot;results/econ_jitterplot.pdf&quot;,
-       plot = gg1,
-       device = &quot;pdf&quot;,
-       width = 10,
-       height = 6,
-       dpi = 2000)</code></pre>
+<div id="density-plot-a" class="section level4">
+<h4><span class="header-section-number">5.2.1.3</span> Density Plot a)</h4>
+<pre class="r"><code>ggplot(data = mpg,
+  mapping = aes(x=hwy,
+                )) + 
+  geom_density()</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ul>
+<li><p>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</p></li>
+<li><p>Use the <code>geom_density()</code> function</p></li>
+</ul>
+<hr />
 </div>
-<div id="oder-png" class="section level3">
-<h3><span class="header-section-number">3.7.2</span> oder png</h3>
-<pre class="r"><code>ggsave(filename = &quot;results/econ_jitterplot.png&quot;,
-       plot = gg1,
-       device = &quot;png&quot;,
-       width = 10,
-       height = 6,
-       dpi = 2000)</code></pre>
-<div id="section" class="section level71">
-<p><span class="header-section-number">3.7.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<div id="histogram" class="section level4">
+<h4><span class="header-section-number">5.2.1.4</span> Histogram</h4>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>Can you imagine how to plot the histogram?</li>
+</ul>
+<hr />
 </div>
+<div id="bar-plot" class="section level4">
+<h4><span class="header-section-number">5.2.1.5</span> Bar Plot</h4>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ul>
+<li><p>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</p></li>
+<li><p>Use the <code>geom_bar()</code> function</p></li>
+</ul>
+<hr />
 </div>
+<div id="numer-of-observations-per-location" class="section level4">
+<h4><span class="header-section-number">5.2.1.6</span> Numer of observations per location</h4>
+<pre class="r"><code>ggplot(data = mpg,
+  mapping = aes(x = displ,
+                y = hwy)) + 
+  geom_count()</code></pre>
+<ul>
+<li><p>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</p></li>
+<li><p>Use the <code>geom_count()</code> function</p></li>
+<li><p>Can you tell the difference to <code>geom_point()</code>?</p></li>
+</ul>
+<hr />
 </div>
-</div>
-<div id="barplots-einkommenskategorien" class="section level1">
-<h1><span class="header-section-number">4</span> Barplots Einkommenskategorien</h1>
-<div id="eindimensional" class="section level2">
-<h2><span class="header-section-number">4.1</span> Eindimensional</h2>
-<pre class="r"><code>table(econ_data$netinc) %&gt;% head()</code></pre>
-<pre><code>## 
-##  0 40 81 84 87 88 
-##  5  1  1  1  1  2</code></pre>
-</div>
-<div id="haeufigkeitsverteilung-der-einkommenskategorien" class="section level2">
-<h2><span class="header-section-number">4.2</span> Haeufigkeitsverteilung der Einkommenskategorien</h2>
-<pre class="r"><code>ggplot(data = econ_data) + 
-  geom_bar(aes(x = inc_kat))</code></pre>
-<p><img src="dataviz_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-</div>
-<div id="in-prozent" class="section level2">
-<h2><span class="header-section-number">4.3</span> In Prozent</h2>
-<pre class="r"><code>ggplot(data = econ_data) + 
-  geom_bar(aes(x = inc_kat,
-               y = (..count..)/sum(..count..))) # relative haeufigkeit </code></pre>
-<p><img src="dataviz_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-</div>
-<div id="twodimensional-barplots" class="section level2">
-<h2><span class="header-section-number">4.4</span> Twodimensional Barplots</h2>
-<pre class="r"><code># Descriptive overview
-round(
-  prop.table(
-  table(zweit = econ_data$inc_kat,
-        erst = econ_data$sex),margin = 1),2)</code></pre>
-<pre><code>##      erst
-## zweit maennlich weiblich
-##    Q1      0.26     0.74
-##    Q2      0.40     0.60
-##    Q3      0.67     0.33
-##    Q4      0.82     0.18</code></pre>
-<pre class="r"><code># In plot
-gg1 &lt;- #objekt zuweisen
-  ggplot(data = econ_data) + 
-  geom_bar(aes(x = inc_kat,
-               y = (..count..),
-               fill = sex))+ # relative haeufigkeit + 
-  scale_fill_manual(values = c(&quot;maennlich&quot; = &quot;pink&quot;,  
-                                &quot;weiblich&quot; = &quot;blue&quot;),
-                     name = &quot;Geschlecht&quot;,
-                     labels = c(&quot;Mann&quot;,&quot;Frau&quot;)) + 
-  labs(x = &quot;Einkommensquartil&quot;, 
-       y = &quot;Haeufigkeit&quot;,
-       title = &quot;Titel&quot;,
-       subtitle = &quot;Untertitel&quot;,
-       caption = &quot;whatever&quot;) + 
-  theme_ipsum(grid = &quot;Y&quot;)
-gg1 #print</code></pre>
+<div id="likert-scale" class="section level4">
+<h4><span class="header-section-number">5.2.1.7</span> Likert scale</h4>
+<p>Let’s create fake Likert scale data. Let’s pretend that the different types of transmissions are the levels of a Likert scale and that car classes are the Likert items.</p>
+<p>Before we can plot this fake likert scale, we have to do some data transformation:</p>
+<pre class="r"><code>mpg2 &lt;- mpg %&gt;%
+  group_by(class) %&gt;%
+  mutate(length.class = n()) %&gt;%
+  group_by(trans, add = TRUE) %&gt;%
+  mutate(length.trans = n(),
+         percentage.trans = 100 * length.trans / length.class) %&gt;%
+  distinct(trans, class, .keep_all = TRUE)</code></pre>
+<pre class="r"><code>ggplot(data = mpg2,
+  mapping = aes(x = class,
+                y = percentage.trans,
+                fill=trans)) + 
+  geom_bar(stat=&quot;identity&quot;, width = 0.7)+
+  coord_flip()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<ul>
+<li><p>Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)</p></li>
+<li><p>Use the <code>geom_bar()</code> function.</p>
+<ul>
+<li><p>use stat=“identity” to indicate that (so that the height of the bars represents the values in the data)</p></li>
+<li><p>use widht = 0.7 to reduce the bar widht a bit</p></li>
+</ul></li>
+<li><p>Use <code>+coord_flip()</code> ?</p></li>
+</ul>
+<hr />
 </div>
-<div id="output-to-pdf" class="section level2">
-<h2><span class="header-section-number">4.5</span> Output to pdf</h2>
-<pre class="r"><code>ggsave(filename = &quot;results/econ_barplot.pdf&quot;,
-       plot = gg1,
-       device = &quot;pdf&quot;,
-       width = 10,
-       height = 6,
-       dpi = 1000)</code></pre>
 </div>
+</div>
+<div id="additional-stuff" class="section level2">
+<h2><span class="header-section-number">5.3</span> Additional Stuff</h2>
+<p>Back to business. Let’s continue working on our replication.</p>
+<div id="smoothed-regression-line" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> Smoothed regression line</h3>
+<p>A smoothed regression line (standard OLS) can be added by adding <code>geom_smooth()</code>. Choose <code>method = "lm"</code> for standard OLS.</p>
+<pre class="r"><code>ggplot(data = mpg,
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class))+
+  geom_point()+
+  geom_smooth(color = &quot;blue&quot;, 
+              method = &quot;lm&quot;)</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="labels" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> Labels</h3>
+<p>This is largely self explanatory.</p>
+<pre class="r"><code>ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="themes" class="section level3">
+<h3><span class="header-section-number">5.3.3</span> Themes</h3>
+<div id="playing-with-thems-and-other-stuff" class="section level4">
+<h4><span class="header-section-number">5.3.3.1</span> Playing with thems and other stuff</h4>
+<p>We can modify the theme - the non-data components, e.g. (besides titles and labels) fonts, background, gridlines, and legends - as much as we would like to with <code>theme()</code></p>
+<p>Some random ideas for the theme:</p>
+<ul>
+<li><p>Set background color to pink: <code>panel.background = element_rect(fill = "pink")</code></p></li>
+<li><p>Change color of horizontal gridlines to green: <code>panel.grid.major.y = element_line(colour = "green"), panel.grid.minor.y = element_line(colour = "green")</code></p></li>
+<li><p>Move the legend to the bottom: <code>legend.position = "bottom"</code></p></li>
+<li><p>Add a box around the plot: <code>panel.border = element_rect(color="orange", fill = NA, size=5)</code></p></li>
+</ul>
+<p>Additionally, outside of theme, we also want to add even more beautiful stuff:</p>
+<ul>
+<li><p>add a fat vertical line at 3: <code>+geom_vline(xintercept = 3, size=5)</code></p></li>
+<li><p>Add ticks for every 0.5 on the x-axis: <code>+scale_x_continuous(breaks = seq(1,8, by=0.5)</code></p></li>
+</ul>
+<p><span style="color:red">Task</span> <u><strong>Reproduce the plot below and follow the instructions from above!</strong></u></p>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="serious-themes" class="section level4">
+<h4><span class="header-section-number">5.3.3.2</span> Serious themes</h4>
+<p>While you can adjust the theme as much as you want, the lazy but safer (e.g. plot designs which are deemed acceptable by more people than just yourself), you can rely on the large set of predesigned themes from ggplot2. Additionally, you can also make use of the ggthemes package, which offers even more themes.</p>
+<pre class="r"><code>ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)+
+  theme_classic()</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>There are many more themes (for example, <code>theme_grey</code>, <code>theme_void</code>, <code>theme_dark</code>, <code>theme_minimal</code>)</p>
+<p>With the ggthemes packages, you have even more themes at hand:</p>
+<div id="theme-from-fivethirtyeight" class="section level5">
+<h5><span class="header-section-number">5.3.3.2.1</span> Theme from FiveThirtyEight</h5>
+<pre class="r"><code>library(ggthemes)
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)+
+  theme_fivethirtyeight()</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="for-those-who-miss-stata" class="section level5">
+<h5><span class="header-section-number">5.3.3.2.2</span> For those who miss stata</h5>
+<pre class="r"><code>ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)+
+  theme_stata()</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+</div>
+</div>
+<div id="finish" class="section level2">
+<h2><span class="header-section-number">5.4</span> Finish</h2>
+<p>… This still doesn’t look like the plot we wanted to create. Actually, the plot from above was build with the <code>theme_bw()</code></p>
+<pre class="r"><code>ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)+
+  theme_bw()</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="some-ressources-for-ggplot2" class="section level1">
+<h1><span class="header-section-number">6</span> Some ressources for ggplot2</h1>
+<p><a href="https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html#aesthetic_mapping">Tutorial</a> on replicating a graph from The Economist from Harvard Data Science Services.</p>
+<p><a href="http://socviz.co/index.html#preface">Book</a> on Data Visualizaton by Kieran Healy, freely available online</p>
 </div>
 
 
