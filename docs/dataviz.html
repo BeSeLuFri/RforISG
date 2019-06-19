@@ -407,13 +407,25 @@ div.tocify {
     <li>
       <a href="datamanagement_eurostat.html">Eurostat Example</a>
     </li>
-    <li>
-      <a href="datamanagement_destatis.html">Destatis Example</a>
-    </li>
   </ul>
 </li>
-<li>
-  <a href="dataviz.html">Data Viz</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Viz
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="dataviz.html">Data Viz Introduction</a>
+    </li>
+    <li>
+      <a href="dataviz_eurostat.html">Eurostat Example</a>
+    </li>
+    <li>
+      <a href="dataviz_map.html">Map Example</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -635,7 +647,7 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <li><p>Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)</p></li>
 <li><p>Use the <code>geom_bar()</code> function.</p>
 <ul>
-<li><p>use stat=“identity” to indicate that (so that the height of the bars represents the values in the data)</p></li>
+<li><p>use stat=“identity” to indicate that the height of the bars should represent values in the data (default is stat = “bin” which simply counts the number of occurences of the x aestehetic)</p></li>
 <li><p>use widht = 0.7 to reduce the bar widht a bit</p></li>
 </ul></li>
 <li><p>Use <code>+coord_flip()</code> ?</p></li>
@@ -783,8 +795,66 @@ ggplot(data = mpg,
 <hr />
 </div>
 </div>
+<div id="minor-addenda" class="section level1">
+<h1><span class="header-section-number">6</span> Minor Addenda</h1>
+<div id="saving-a-ggplot-object-in-the-environment" class="section level2">
+<h2><span class="header-section-number">6.1</span> Saving a ggplot object in the environment</h2>
+<p>Jsut to mention this, you can save a ggplot object in the environment like everything else (remember, everything in R is an object).</p>
+<p>Storing our final plot from above as final_plot</p>
+<pre class="r"><code>final_plot &lt;- ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)+
+  theme_bw()</code></pre>
+<p>We can then add stuff to the the ggplot object in the usual way.</p>
+<p>Suppose, we want to add a fat vertical line (x=3) again:</p>
+<pre class="r"><code>final_plot+
+  geom_vline(xintercept = 3, size=5)</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="integrating-ggplot-with-other-tidyverse-functions" class="section level2">
+<h2><span class="header-section-number">6.2</span> Integrating ggplot with other tidyverse functions</h2>
+<p>GGplot, being part of the tidyverse, can be perfectly integrated with other functions of the tidyverse.</p>
+<p>As an easy example, suppose, we only want to keep hwy values above 25:</p>
+<pre class="r"><code>mpg %&gt;% 
+  filter(hwy&gt;=25)%&gt;%
+  ggplot(                           # do not call data=mpg again here! 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = &quot;blue&quot;, 
+              method = &quot;lm&quot;)+
+  labs(x = &quot;Engine Displacement in Liters&quot;,
+       y = &quot;Highway miles per gallon&quot;,
+       title = &quot;MPG data&quot;,
+       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+       color = &quot;Car Classes&quot;)+
+  theme_bw()</code></pre>
+<p><img src="dataviz_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="ggsave" class="section level2">
+<h2><span class="header-section-number">6.3</span> ggsave</h2>
+<p>You can print a ggplot object with <code>ggsave</code></p>
+<pre class="r"><code>ggsave(plot = final_plot, 
+       file= &quot;FILEDIRECTORYtoSAVEto.png&quot;)</code></pre>
+<hr />
+</div>
+</div>
 <div id="some-ressources-for-ggplot2" class="section level1">
-<h1><span class="header-section-number">6</span> Some ressources for ggplot2</h1>
+<h1><span class="header-section-number">7</span> Some ressources for ggplot2</h1>
 <p><a href="https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html#aesthetic_mapping">Tutorial</a> on replicating a graph from The Economist from Harvard Data Science Services.</p>
 <p><a href="http://socviz.co/index.html#preface">Book</a> on Data Visualizaton by Kieran Healy, freely available online</p>
 </div>

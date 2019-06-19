@@ -259,7 +259,7 @@ ggplot(data = mpg2,
 
 * Use the `geom_bar()` function.
 
-  + use stat="identity" to indicate that (so that the height of the bars represents the values in the data)
+  + use stat="identity" to indicate that the height of the bars should represent values in the data (default is stat = "bin" which simply counts the number of occurences of the x aestehetic)
   
   + use widht = 0.7 to reduce the bar widht a bit
 
@@ -450,6 +450,85 @@ ggplot(data = mpg,
        color = "Car Classes")+
   theme_bw()
 ```
+
+***
+
+# Minor Addenda
+
+## Saving a ggplot object in the environment
+
+Jsut to mention this, you can save a ggplot object in the environment like everything else (remember, everything in R is an object).
+
+Storing our final plot from above as final_plot
+
+```{r}
+final_plot <- ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue", 
+              method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+       color = "Car Classes")+
+  theme_bw()
+```
+
+We can then add stuff to the the ggplot object in the usual way.
+
+Suppose, we want to add a fat vertical line (x=3) again:
+
+```{r}
+final_plot+
+  geom_vline(xintercept = 3, size=5)
+```
+
+***
+
+## Integrating ggplot with other tidyverse functions
+
+GGplot, being part of the tidyverse, can be perfectly integrated with other functions of the tidyverse.
+
+As an easy example, suppose, we only want to keep hwy values above 25:
+
+```{r}
+mpg %>% 
+  filter(hwy>=25)%>%
+  ggplot(                           # do not call data=mpg again here! 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue", 
+              method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+       color = "Car Classes")+
+  theme_bw()
+  
+
+```
+
+
+
+***
+
+## ggsave
+You can print a ggplot object with `ggsave`
+
+```{r, eval=FALSE, message=FALSE}
+ggsave(plot = final_plot, 
+       file= "FILEDIRECTORYtoSAVEto.png")
+```
+
+
 
 ***
 

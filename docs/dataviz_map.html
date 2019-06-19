@@ -11,7 +11,7 @@
 
 
 
-<title>About This Website</title>
+<title>Datamanagement: Map with Eurostat Data</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -442,16 +442,48 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">About This Website</h1>
+<h1 class="title toc-ignore">Datamanagement: Map with Eurostat Data</h1>
 
 </div>
 
 
-<hr />
-<p>The first pages of this site (Intro and Objects and Data) builds upon <a href="https://schliebs.github.io/Applied_Econometrics_with_R">Econometrics with R</a> - a tutorial for students at Zeppelin University. Credits go to <a href="https://github.com/schliebs">Marcel Schliebs</a> with whom I designed and lead this class.</p>
-<p>“Objects and Data” examples and explanations are inspired by <a href="http://www.urfie.net/">Econometrics for R</a>.</p>
-<p>Data Viz I heavily builds upon <a href="https://therbootcamp.github.io/">The R Bootcamp</a> who employ the widely used mpg dataset and the accompanying coding instructions (see for example <a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data Science</a>) for their data visualization tutorial.</p>
-<p>Most of the other subpages and scripts are of my own making. This is especially true for all errors and bugs. If you find one, shoot me an email at benedikt(at)fritz.re</p>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map.R">here</a> Download the data <a href="xxxxxxxxxxxxxxxxxxxxxx.">here</a></p>
+<div id="bla" class="section level1">
+<h1><span class="header-section-number">1</span> Bla</h1>
+</div>
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">2</span> Setup</h1>
+<p>What do we always do first? Besides the tidyverse, we need the rwolrdmap package (which you have to install).</p>
+<pre class="r"><code>eurost &lt;- read_csv2(&quot;data/eurostat_data.csv&quot;)
+
+eurost &lt;- eurost %&gt;%
+  filter(time==2014)
+
+mpdta &lt;- map_data(&quot;world&quot;)
+
+eurost2 &lt;- inner_join(x=eurost, y=mpdta, by=c(&quot;geo_name&quot; = &quot;region&quot;))</code></pre>
+<p>Plot for now</p>
+<pre class="r"><code>P &lt;- ggplot()+ 
+  geom_polygon(data = eurost2, aes(x=long, y = lat, group = group, fill=unemp_youth_t),
+               colour = &quot;white&quot;, size = 0.1)
+
+P</code></pre>
+<p><img src="dataviz_map_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Integrate this tomorrow</p>
+<pre class="r"><code> # coord_map(xlim = c(-13, 35),  ylim = c(32, 71)) +
+  scale_fill_gradient(name = &quot;Implicit Yield&quot;, 
+                      low = rgb(207,233, 238, maxColorValue = 255),
+                      high = rgb(79, 129, 189, maxColorValue = 255),
+                      na.value = &quot;grey&quot;) +
+  theme(panel.grid.minor = element_line(colour = NA), 
+        panel.background = element_rect(fill = NA, colour = NA),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(), axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(), axis.title = element_blank(),
+        #rect = element_blank(),
+        plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), &quot;lines&quot;))+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+</div>
 
 
 

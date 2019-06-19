@@ -23,10 +23,15 @@ navbar:
         href: datamanagement.html
       - text: "Eurostat Example"
         href: datamanagement_eurostat.html
-      - text: "Destatis Example"
-        href: datamanagement_destatis.html
   - text: Data Viz
     href: dataviz.html
+    menu:
+      - text: "Data Viz Introduction"
+        href: dataviz.html
+      - text: "Eurostat Example"
+        href: dataviz_eurostat.html
+      - text: "Map Example"
+        href: dataviz_map.html
   - text: About
     href: about.html
 

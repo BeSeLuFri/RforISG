@@ -1,0 +1,68 @@
+---
+title: "Datamanagement: Map with Eurostat Data"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map.R)
+Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
+
+# Bla
+
+
+# Setup
+What do we always do first? Besides the tidyverse, we need the rwolrdmap package (which you have to install).
+
+```{r, echo=FALSE, message=FALSE}
+rm(list = ls())
+library(tidyverse)
+library(rworldmap)
+
+```
+
+
+```{r, message=FALSE}
+eurost <- read_csv2("data/eurostat_data.csv")
+
+eurost <- eurost %>%
+  filter(time==2014)
+
+mpdta <- map_data("world")
+
+eurost2 <- inner_join(x=eurost, y=mpdta, by=c("geo_name" = "region"))
+
+```
+
+
+Plot for now
+```{r}
+P <- ggplot()+ 
+  geom_polygon(data = eurost2, aes(x=long, y = lat, group = group, fill=unemp_youth_t),
+               colour = "white", size = 0.1)
+
+P
+ 
+```
+
+
+Integrate this tomorrow
+```{r, eval=FALSE}
+
+ # coord_map(xlim = c(-13, 35),  ylim = c(32, 71)) +
+  scale_fill_gradient(name = "Implicit Yield", 
+                      low = rgb(207,233, 238, maxColorValue = 255),
+                      high = rgb(79, 129, 189, maxColorValue = 255),
+                      na.value = "grey") +
+  theme(panel.grid.minor = element_line(colour = NA), 
+        panel.background = element_rect(fill = NA, colour = NA),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(), axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(), axis.title = element_blank(),
+        #rect = element_blank(),
+        plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), "lines"))+
+  theme(legend.position = "none")
+
+```
+
