@@ -574,44 +574,7 @@ View(data)</code></pre>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code>data &lt;- ______ %&gt;%
   mutate(age = ______)</code></pre>
-<hr />
-</div>
-<div id="filtering" class="section level1">
-<h1><span class="header-section-number">7</span> Filtering</h1>
-<p>If you only want to keep certain rows (observations) in which values of a variable match a certain criterion, you can <code>filter()</code>.</p>
-<p>Let’s say, we only want to keep those observations which are at least 18.</p>
-<p><span style="color:red">Task</span> <u><strong>Note the difference between the lines of inc.quant and sex!</strong></u></p>
-<pre class="r"><code>data &lt;- data %&gt;%
-  filter(age &gt;= 18)</code></pre>
-<p>Note for later: When we filter for exactly one condition, we use <code>==</code> (or <code>&gt;=</code> in our case). When we filter for a string, we use <code>%in%</code></p>
-<hr />
-</div>
-<div id="arrange" class="section level1">
-<h1><span class="header-section-number">8</span> Arrange</h1>
-<p>Sometimes, we want to order data. We do so with <code>arrange()</code>. <code>desc(x)</code> sorts x in descending order.</p>
-<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
-<pre class="r"><code># Example 1
-data &lt;- _____ %&gt;%
-  _____(desc(___)) </code></pre>
-<hr />
-</div>
-<div id="all-in-one" class="section level1">
-<h1><span class="header-section-number">9</span> All in one</h1>
-<p>By the way, we could have done all of this in one batch:</p>
-<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
-<pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;) # read data again.
-
-data &lt;- data %&gt;%
-  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %&gt;%
-  mutate(age = 2003-_____) %&gt;% 
-  filter(______) %&gt;% # only those who are at least 18
-  _____(____(____)) # Arrange the dataframe so that age is displayed in descending order</code></pre>
-<p>Great, by now you basically have the main logic of dplyr at hand. In the sections below, we simply introduce some more dplyr functions and expand the functionality a bit.</p>
-<hr />
-</div>
-<div id="more-mutate" class="section level1">
-<h1><span class="header-section-number">10</span> More mutate</h1>
-<p>The benefit of <code>mutate()</code> is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
+<p>The benefit of this function is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
 <ul>
 <li><p>want to recode the binary variable tp72 (Work Overtime) into three levels:</p>
 <ul>
@@ -637,8 +600,7 @@ data &lt;- data %&gt;%
       _____,
       &quot;-3&quot; = NA_real_, # remember the difference between integer and double? 
       &quot;-2&quot; = NA_real_,
-      &quot;-1&quot; = NA_real_,
-      .default = _____
+      &quot;-1&quot; = NA_real_
     )
   )</code></pre>
 <p>Several things to note here:</p>
@@ -655,7 +617,7 @@ table(data$over,
 <hr />
 </div>
 <div id="factorize" class="section level1">
-<h1><span class="header-section-number">11</span> Factorize</h1>
+<h1><span class="header-section-number">7</span> Factorize</h1>
 <p>As we have practiced before, we can factorize variables. This is also possible within the dplyr world (<code>mutate()</code> again). Let’s do that for sex.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code>_____ &lt;- _____ _____
@@ -667,7 +629,7 @@ table(data$over,
 <hr />
 </div>
 <div id="recode-ii" class="section level1">
-<h1><span class="header-section-number">12</span> Recode II</h1>
+<h1><span class="header-section-number">8</span> Recode II</h1>
 <p>We can also recode values below a certain threshold at once (if it is numeric (either double or integer)):</p>
 <p><code>if_else(condition, true, false)</code></p>
 <ul>
@@ -686,7 +648,7 @@ table(data$over,
 <hr />
 </div>
 <div id="multiple-if_else-statements" class="section level1">
-<h1><span class="header-section-number">13</span> Multiple if_else() statements:</h1>
+<h1><span class="header-section-number">9</span> Multiple if_else() statements:</h1>
 <p><code>cases_when()</code> allows us to apply multiple <code>if_else()</code> statements.</p>
 <p>Let’s say, we want to build a character variable inc.quant which indicates the <code>quantile()</code> (see above) of netinc.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -706,26 +668,21 @@ table(data$over,
 <hr />
 </div>
 <div id="check-data.frame-again" class="section level1">
-<h1><span class="header-section-number">14</span> Check data.frame again</h1>
+<h1><span class="header-section-number">10</span> Check data.frame again</h1>
 <pre class="r"><code>head(data)
 summary(data)</code></pre>
 <hr />
 </div>
-<div id="all-in-one-ii" class="section level1">
-<h1><span class="header-section-number">15</span> All in one II</h1>
-<p>Again, we could have done all of this in one batch - but it would have been untidy…</p>
+<div id="all-in-one" class="section level1">
+<h1><span class="header-section-number">11</span> All in one</h1>
+<p>By the way, we could have done all of this in one batch - but it would have been untidy…</p>
 <pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)
 
 data &lt;- data %&gt;% # remember the pipe?
+  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %&gt;% # fill in the missing names
   
-  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602)%&gt;%
-  
-  mutate(age = 2003-gebjahr) %&gt;%
-  
-  filter(age&gt;=18) %&gt;%
-  
-  arrange(desc(age))%&gt;%
-  mutate(
+  mutate(age = 2003-gebjahr, 
+         
          over = recode(
            tp72,
            &quot;3&quot; = 0, #actually means Does not apply: Self-Employment
@@ -767,7 +724,7 @@ data &lt;- data %&gt;% # remember the pipe?
 <hr />
 </div>
 <div id="summarize" class="section level1">
-<h1><span class="header-section-number">16</span> Summarize</h1>
+<h1><span class="header-section-number">12</span> Summarize</h1>
 <p>Summarize allows us to summarise certain variables, such as certain features of age</p>
 <pre class="r"><code>data %&gt;%
   summarize(mean = mean(age, na.rm = TRUE),
@@ -775,7 +732,7 @@ data &lt;- data %&gt;% # remember the pipe?
 <hr />
 </div>
 <div id="grouping" class="section level1">
-<h1><span class="header-section-number">17</span> Grouping</h1>
+<h1><span class="header-section-number">13</span> Grouping</h1>
 <p>The same is also possible for grouped structures. Say, for example, you would want to calculate separate values for different genders:</p>
 <pre class="r"><code>data %&gt;%
   group_by(sex) %&gt;%
@@ -788,8 +745,38 @@ data &lt;- data %&gt;% # remember the pipe?
   mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE)) </code></pre>
 <hr />
 </div>
+<div id="filtering" class="section level1">
+<h1><span class="header-section-number">14</span> Filtering</h1>
+<p>If you only want to keep certain rows (observations) which variables match a certain criterion, you can <code>filter()</code>.</p>
+<p>Let’s say, you only want to keep those observations which are older than 18 and who are in the top three income quintiles. We store this in data2</p>
+<p><span style="color:red">Task</span> <u><strong>Note the difference between the lines of inc.quant and sex!</strong></u></p>
+<pre class="r"><code>data2 &lt;- data %&gt;%
+  filter(age &gt; 18,
+         inc.quant %in% c(&quot;Q2&quot;, &quot;Q3&quot;, &quot;Q4&quot;),
+         sex == &quot;male&quot;)</code></pre>
+<p>When we filter for exactly one condition, we use <code>==</code>. When we filter for a string, we use <code>%in%</code></p>
+<hr />
+</div>
+<div id="arrange" class="section level1">
+<h1><span class="header-section-number">15</span> Arrange</h1>
+<p>Sometimes, we want to order data. We do so with <code>arrange()</code>.</p>
+<p><span style="color:red">Task</span> <u><strong>What is the difference between the two examples?</strong></u></p>
+<pre class="r"><code># Example 1
+data &lt;- data %&gt;%
+  arrange(desc(age))
+
+head(data)
+
+# Example 2
+data &lt;- data %&gt;%
+  group_by(inc.quant) %&gt;%
+  arrange(netinc, .by_group=TRUE)
+
+head(data)</code></pre>
+<hr />
+</div>
 <div id="merge" class="section level1">
-<h1><span class="header-section-number">18</span> Merge</h1>
+<h1><span class="header-section-number">16</span> Merge</h1>
 <p>Assuming, we forgot to include the variable “tp0101” (Satisfaction With Health) in our dataset when we selected all the variables we want to work with above. Of course, the normal/efficient way would be to go back the select() operation above, include persnnr and rerun the whole code. For the sake of learning let’s ignore this possibility. Instead, we reread the SOEP data under a different name, merge the relevant variables from this data.frame with the one we have been working with all the time and create a new data.frame (data2).</p>
 <pre class="r"><code>data.origin &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)
 
@@ -808,7 +795,7 @@ data2 &lt;- data %&gt;%
 <hr />
 </div>
 <div id="spread-and-gather" class="section level1">
-<h1><span class="header-section-number">19</span> Spread and Gather</h1>
+<h1><span class="header-section-number">17</span> Spread and Gather</h1>
 <p>The last section for now!</p>
 <p>A reminder of the difference between long and wide data:</p>
 <ul>

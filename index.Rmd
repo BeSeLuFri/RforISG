@@ -1,7 +1,7 @@
 ---
 title: "R-Intro ISG"
 author: "Benedikt Fritz"
-date: "01 June 2019"
+date: "July 2019"
 ---
 
 ```{r setup, include=FALSE}
@@ -40,22 +40,24 @@ We have two days, 4 hours per day.
   
   + Eurostat Example
   
-  + ~~Destatis Example~~
 
+**Day 2** 
 
-**Day 2** (NOT DONE YET)
-
-* Data visualizationsand the tidyverse (2h)
+* Data visualizationsand the tidyverse (2.5h)
 
   + Quick intro into ggplot
   
   + Eurostat Example
   
-  + Destatis Example
+  + Maps
   
-* Regressions (.5h)
+* Other (1h)
 
-* knitr, R Notebooks (1h)
+  + Regressions
+  
+  + knitr, R Notebooks 
+  
+  + Further Information
 
 
 ## Why R

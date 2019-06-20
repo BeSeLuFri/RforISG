@@ -32,6 +32,15 @@ navbar:
         href: dataviz_eurostat.html
       - text: "Map Example"
         href: dataviz_map.html
+  - text: Other
+    href: other_regressions.html
+    menu:
+      - text: Regressions
+        href: other_regressions.html
+      - text: RMarkdown
+        href: other_rmarkdown.html
+      - text: Further Information
+        href: other_furtherinfo.html
   - text: About
     href: about.html
 

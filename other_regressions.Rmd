@@ -1,0 +1,14 @@
+---
+title: "Regressions"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+
+This screenshot 
+
+
+[](Files/rmarkdown-screenshot.png)
+

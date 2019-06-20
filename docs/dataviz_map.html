@@ -427,6 +427,24 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Other
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="other_regressions.html">Regressions</a>
+    </li>
+    <li>
+      <a href="other_rmarkdown.html">RMarkdown</a>
+    </li>
+    <li>
+      <a href="other_furtherinfo.html">Further Information</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="about.html">About</a>
 </li>
@@ -448,12 +466,17 @@ div.tocify {
 
 
 <p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map.R">here</a> Download the data <a href="xxxxxxxxxxxxxxxxxxxxxx.">here</a></p>
-<div id="bla" class="section level1">
-<h1><span class="header-section-number">1</span> Bla</h1>
+<div id="intro" class="section level1">
+<h1><span class="header-section-number">1</span> Intro</h1>
+<p>Creating maps with ggplot is easy. You just have to supply longitudial data as the x variable and lattitudial data as the y variable and additionally give a group variable (so that R knows, which rows are to be filled together).</p>
+<p>This kind of data (long, lat, group) is something which you can get from external sources (we present two options below). Then you have to merge this data with your values (e.g. what you want to fill into the map). So in addition, you need a fourth variable (like the code or the name of the geography).</p>
 </div>
 <div id="setup" class="section level1">
 <h1><span class="header-section-number">2</span> Setup</h1>
 <p>What do we always do first? Besides the tidyverse, we need the rwolrdmap package (which you have to install).</p>
+</div>
+<div id="country-level-map-with-rworldmap" class="section level1">
+<h1><span class="header-section-number">3</span> Country level map with rworldmap</h1>
 <pre class="r"><code>eurost &lt;- read_csv2(&quot;data/eurostat_data.csv&quot;)
 
 eurost &lt;- eurost %&gt;%
@@ -462,27 +485,81 @@ eurost &lt;- eurost %&gt;%
 mpdta &lt;- map_data(&quot;world&quot;)
 
 eurost2 &lt;- inner_join(x=eurost, y=mpdta, by=c(&quot;geo_name&quot; = &quot;region&quot;))</code></pre>
-<p>Plot for now</p>
+<p>The basic ggplot can be done with <code>geom_polygon</code>. As we said, you supply longitude as x and lattitudial as y data, group them according to the group indicator and fill in your variable of interest (youth unemployment.)</p>
+<p>That’s it.</p>
 <pre class="r"><code>P &lt;- ggplot()+ 
   geom_polygon(data = eurost2, aes(x=long, y = lat, group = group, fill=unemp_youth_t),
                colour = &quot;white&quot;, size = 0.1)
-
 P</code></pre>
 <p><img src="dataviz_map_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>Integrate this tomorrow</p>
-<pre class="r"><code> # coord_map(xlim = c(-13, 35),  ylim = c(32, 71)) +
-  scale_fill_gradient(name = &quot;Implicit Yield&quot;, 
-                      low = rgb(207,233, 238, maxColorValue = 255),
-                      high = rgb(79, 129, 189, maxColorValue = 255),
-                      na.value = &quot;grey&quot;) +
+<p>Mapping is a normal ggplot operation like anything else. You can change the plot in the normal way.</p>
+<pre class="r"><code>P2 &lt;- P+
   theme(panel.grid.minor = element_line(colour = NA), 
         panel.background = element_rect(fill = NA, colour = NA),
         axis.text.x = element_blank(),
         axis.text.y = element_blank(), axis.ticks.x = element_blank(),
-        axis.ticks.y = element_blank(), axis.title = element_blank(),
-        #rect = element_blank(),
-        plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), &quot;lines&quot;))+
-  theme(legend.position = &quot;none&quot;)</code></pre>
+        axis.ticks.y = element_blank(), axis.title = element_blank())+
+   scale_fill_gradient(name = &quot;Youth Umemployment&quot;, 
+                      low = rgb(207,233, 238, maxColorValue = 255),
+                      high = rgb(79, 129, 189, maxColorValue = 255))+
+  labs(title = &quot;Map of youth unemployment per country in Europe (2014)&quot;,
+       subtitle = &quot;notice the different way of changing the colors&quot;,
+       caption = &quot;Source: Eurostat&quot;)
+
+
+P2</code></pre>
+<p><img src="dataviz_map_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="nuts2-level-plots-with-eurostat" class="section level1">
+<h1><span class="header-section-number">4</span> NUTS2 level plots with eurostat</h1>
+<p>The eurstat package, which you already know by now, has the function <code>get_eurostat_geospatial</code> which allows you to retrieve a data frame with longitudial, lattitudial, and group data for maps on different levels of agglomeration.</p>
+<p>The overall procedure is the same as above. Once we have data on long, lat, and group, we merge it with our data of interest.</p>
+<pre class="r"><code>library(&quot;eurostat&quot;)
+
+df &lt;- get_eurostat_geospatial(output_class = &quot;df&quot;, 
+                              # data in a data.frame in order to be able to work with ggplot in a tidy way
+                              
+                              resolution = &quot;20&quot;,   
+                              # the higher the resolution, the more processing power needed
+                              
+                              nuts_level = &quot;2&quot;
+                              # which NUTS level do you want
+                              )   
+
+data_b2 &lt;-
+  get_eurostat(id = &quot;yth_empl_110&quot;,
+               time_format = &quot;num&quot;)
+
+data_b2 &lt;- data_b2 %&gt;%
+  filter(age==&quot;Y15-24&quot;,
+         sex==&quot;T&quot;,
+         time==2014)  %&gt;%
+  subset(nchar(as.character(geo))&gt;3)
+
+df2 &lt;- inner_join(data_b2, df, by=&quot;geo&quot;)</code></pre>
+<p>And the plot in the exact same way.</p>
+<pre class="r"><code>new &lt;- ggplot()+ 
+  geom_polygon(data = df2, aes(x=long, y = lat, group = group, fill=values),
+               colour = &quot;white&quot;, size = 0.1)
+
+new</code></pre>
+<p><img src="dataviz_map_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Again, we simply modify this chart.</p>
+<pre class="r"><code>new2 &lt;- new+
+    theme(panel.grid.minor = element_line(colour = NA), 
+        panel.background = element_rect(fill = NA, colour = NA),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(), axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(), axis.title = element_blank())+
+   scale_fill_gradient(name = &quot;Youth Umemployment&quot;, 
+                      low = rgb(207,233, 238, maxColorValue = 255),
+                      high = rgb(79, 129, 189, maxColorValue = 255))+
+  coord_map(xlim = c(-30, 45), ylim = c(30, 75))+
+  labs(title = &quot;Map of youth unemployment per NUTS2 region in Europe (2014)&quot;,
+       subtitle = &quot;We zoom into main continental Europe with `coord_map()` for better readability&quot;,
+       caption = &quot;Source: Eurostat&quot;)
+new2</code></pre>
+<p><img src="dataviz_map_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 
 

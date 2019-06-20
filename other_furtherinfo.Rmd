@@ -1,0 +1,10 @@
+---
+title: "Further Information"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+Further ressources: 
+(z.B. Open-Access-Bücher aus dem RStudio-Umfeld, socviz.co, dieser Sheet)

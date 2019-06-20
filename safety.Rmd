@@ -177,58 +177,7 @@ data <- ______ %>%
 ```
 
 
-***
-
-# Filtering
-
-If you only want to keep certain rows (observations) in which values of a variable match a certain criterion, you can `filter()`. 
-
-Let's say, we only want to keep those observations which are at least 18.
-
-<span style="color:red">Task</span> <u>**Note the difference between the lines of inc.quant and sex!**</u>
-```{r, eval=FALSE}
-data <- data %>%
-  filter(age >= 18)
-```
-
-Note for later: When we filter for exactly one condition, we use `==` (or `>=` in our case). When we filter for a string, we use `%in%`
-
-***
-
-# Arrange
-Sometimes, we want to order data. We do so with `arrange()`. `desc(x)` sorts x in descending order. 
-
-<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
-```{r, eval=FALSE}
-# Example 1
-data <- _____ %>%
-  _____(desc(___)) 
-  
-```
-
-***
-
-# All in one
-By the way, we could have done all of this in one batch:
-
-<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
-```{r, eval=FALSE}
-data <- read_csv2("data/soep_europ.csv") # read data again.
-
-data <- data %>%
-  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>%
-  mutate(age = 2003-_____) %>% 
-  filter(______) %>% # only those who are at least 18
-  _____(____(____)) # Arrange the dataframe so that age is displayed in descending order
-  
-```
-
-Great, by now you basically have the main logic of dplyr at hand. In the sections below, we simply introduce some more dplyr functions and expand the functionality a bit. 
-
-***
-
-# More mutate
-The benefit of `mutate()` is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
+The benefit of this function is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
 
 * want to recode the binary variable tp72 (Work Overtime) into three levels: 
 
@@ -258,8 +207,7 @@ data <- data %>%
       _____,
       "-3" = NA_real_, # remember the difference between integer and double? 
       "-2" = NA_real_,
-      "-1" = NA_real_,
-      .default = _____
+      "-1" = NA_real_
     )
   )
   
@@ -362,21 +310,16 @@ summary(data)
 
 ***
 
-# All in one II
-Again, we could have done all of this in one batch - but it would have been untidy... 
+# All in one
+By the way, we could have done all of this in one batch - but it would have been untidy... 
 ```{r, message=FALSE}
 data <- read_csv2("data/soep_europ.csv")
 
 data <- data %>% # remember the pipe?
+  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>% # fill in the missing names
   
-  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602)%>%
-  
-  mutate(age = 2003-gebjahr) %>%
-  
-  filter(age>=18) %>%
-  
-  arrange(desc(age))%>%
-  mutate(
+  mutate(age = 2003-gebjahr, 
+         
          over = recode(
            tp72,
            "3" = 0, #actually means Does not apply: Self-Employment
@@ -457,6 +400,45 @@ data <- data %>%
   mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE)) 
 ```
 
+
+***
+
+# Filtering
+
+If you only want to keep certain rows (observations) which variables match a certain criterion, you can `filter()`. 
+
+Let's say, you only want to keep those observations which are older than 18 and who are in the top three income quintiles. We store this in data2
+
+<span style="color:red">Task</span> <u>**Note the difference between the lines of inc.quant and sex!**</u>
+```{r, eval=FALSE}
+data2 <- data %>%
+  filter(age > 18,
+         inc.quant %in% c("Q2", "Q3", "Q4"),
+         sex == "male")
+```
+
+When we filter for exactly one condition, we use `==`. When we filter for a string, we use `%in%`
+
+***
+
+# Arrange
+Sometimes, we want to order data. We do so with `arrange()`.
+
+<span style="color:red">Task</span> <u>**What is the difference between the two examples?**</u>
+```{r, eval=FALSE}
+# Example 1
+data <- data %>%
+  arrange(desc(age))
+
+head(data)
+
+# Example 2
+data <- data %>%
+  group_by(inc.quant) %>%
+  arrange(netinc, .by_group=TRUE)
+
+head(data)
+```
 
 ***
 
