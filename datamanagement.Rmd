@@ -496,7 +496,12 @@ A reminder of the difference between long and wide data:
 
 * Long data has in one column all the variable names and in another column the respective values.
 
-Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` ![.](Files/dplyr_reshape.png)
+Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` 
+
+![](Files/dplyr_reshape.png)
+
+
+
 
 At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:
 

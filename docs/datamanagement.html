@@ -805,7 +805,11 @@ data2 &lt;- data %&gt;%
 <li><p>Wide data has each different variable in a separate column.</p></li>
 <li><p>Long data has in one column all the variable names and in another column the respective values.</p></li>
 </ul>
-<p>Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: <code>spread()</code> and <code>gather()</code> <img src="Files/dplyr_reshape.png" alt="." /></p>
+<p>Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: <code>spread()</code> and <code>gather()</code></p>
+<div class="figure">
+<img src="Files/dplyr_reshape.png" />
+
+</div>
 <p>At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:</p>
 <pre class="r"><code>data.long &lt;- data %&gt;%
   gather(key=key, value = value, -c(hhnr, persnr))</code></pre>
