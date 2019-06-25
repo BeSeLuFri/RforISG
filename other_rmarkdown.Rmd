@@ -10,8 +10,13 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 
 R Markdown is a file format for making dynamic documents with R. An R Markdown document is written in markdown (an easy-to-write plain text format) and contains chunks of embedded R code.
 
-The cool thing about RMarkdown is that it offers a plain and easy to understand way to link code and documentation. Furthermore, it is also very straight forward to produce html outputs from RMarkdown.
+The cool thing about RMarkdown is that it offers a plain and easy to understand way to link code and documentation. Furthermore, it is also very straight forward to produce html, pdf or docx outputs from RMarkdown (this website is mainly based on Markdown).
 
+# Setup
  
 ![](Files/rmarkdown-screenshot.png)
 
+
+# RNotebook
+
+Actually, 

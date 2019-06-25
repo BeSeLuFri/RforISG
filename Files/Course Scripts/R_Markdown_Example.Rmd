@@ -1,13 +1,12 @@
 ---
-title: "R Notebook"
+title: "Example Notebook"
 output: html_notebook
 editor_options: 
   chunk_output_type: inline
 ---
 
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
