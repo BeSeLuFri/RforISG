@@ -72,7 +72,9 @@ h6 {
 </style>
 
 
+</head>
 
+<body>
 
 <style type = "text/css">
 .main-container {
@@ -190,6 +192,8 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
+
+<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -353,16 +357,6 @@ div.tocify {
 }
 
 </style>
-
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -544,8 +538,9 @@ df2 &lt;- inner_join(data_b2, df, by=&quot;geo&quot;)</code></pre>
 
 new</code></pre>
 <p><img src="dataviz_map_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Again, we simply modify this chart.</p>
-<pre class="r"><code>new2 &lt;- new+
+<p>Again, we simply modify this chart. To zoom into the plot, we use the function <code>coord_map</code> which builds upon the mapproj package (which you have to install first).</p>
+<pre class="r"><code>library(mapproj)
+new2 &lt;- new+
     theme(panel.grid.minor = element_line(colour = NA), 
         panel.background = element_rect(fill = NA, colour = NA),
         axis.text.x = element_blank(),

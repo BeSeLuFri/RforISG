@@ -116,9 +116,10 @@ new
 
 ```
 
-Again, we simply modify this chart. 
+Again, we simply modify this chart. To zoom into the plot, we use the function `coord_map` which builds upon the mapproj package (which you have to install first).
 
 ```{r}
+library(mapproj)
 new2 <- new+
     theme(panel.grid.minor = element_line(colour = NA), 
         panel.background = element_rect(fill = NA, colour = NA),

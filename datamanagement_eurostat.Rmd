@@ -77,6 +77,12 @@ This makes life easier for everybody coding with data as the data can be readily
 
 ```
 
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(eurostat)
+
+```
+
 
 # Employment rate by educational attainment levels
 ## Countries: **lfsa_ergaed** Employment rates by sex, age and educational attainment level 

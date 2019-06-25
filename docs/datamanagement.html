@@ -72,7 +72,9 @@ h6 {
 </style>
 
 
+</head>
 
+<body>
 
 <style type = "text/css">
 .main-container {
@@ -190,6 +192,8 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
+
+<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -354,16 +358,6 @@ div.tocify {
 
 </style>
 
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
-
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -478,12 +472,10 @@ div.tocify {
 <h1><span class="header-section-number">2</span> Packages and script set-up</h1>
 <ul>
 <li><p>To make sure that your R environment is clear, remember to use <code>rm(list=ls())</code> in the beginning.</p></li>
-<li><p>As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions.</p>
-<ul>
+<li><p>As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions.</p></li>
 <li><p>Therefore, you should always load the packages you need in the beginning, too.</p></li>
 <li><p>When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.</p></li>
 <li><p>Throughout this page, we’ll introduce the powerful <a href="https://www.tidyverse.org/">tidyverse</a>) - a collection of very useful packages.</p></li>
-</ul></li>
 </ul>
 <p>This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages</p>
 <pre class="r"><code>rm(list = ls())
@@ -533,7 +525,7 @@ library(tidyverse)</code></pre>
 <pre class="r"><code>data &lt;- haven::read_dta(&quot;data/soep.dta&quot;)</code></pre>
 <p>Same for SPSS files:</p>
 <pre class="r"><code>data &lt;- haven::read_sav(&quot;data/soep.sav&quot;)</code></pre>
-<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
+<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
 <pre class="r"><code>data &lt;- readxl::read_xlsx(&quot;data/soep.xlsx&quot;)</code></pre>
 <p>Enough on reading data for now, let’s use the European csv for now.</p>
 <pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)</code></pre>
@@ -613,12 +605,10 @@ data &lt;- data %&gt;%
 <h1><span class="header-section-number">10</span> More mutate</h1>
 <p>The benefit of <code>mutate()</code> is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
 <ul>
-<li><p>want to recode the binary variable tp72 (Work Overtime) into three levels:</p>
-<ul>
+<li><p>want to recode the binary variable tp72 (Work Overtime) into three levels:</p></li>
 <li><p>10 Yes</p></li>
 <li><p>20 No</p></li>
 <li><p>0 Everything else</p></li>
-</ul></li>
 <li><p>Apply those changes to tp72 by creating the new variable over</p></li>
 <li><p>Do something similar with tp7602 (recreate as netinc, change specific values to NA)</p></li>
 </ul>

@@ -72,7 +72,9 @@ h6 {
 </style>
 
 
+</head>
 
+<body>
 
 <style type = "text/css">
 .main-container {
@@ -190,6 +192,8 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
+
+<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -354,16 +358,6 @@ div.tocify {
 
 </style>
 
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
-
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -473,11 +467,9 @@ div.tocify {
 <p>Actually, it only takes 12 lines of code (of which 5 are only related to the text captions) and some pretty straight forward logic.</p>
 <ul>
 <li><p>To get there, we first get a glimpse into <strong>base R plotting</strong>.</p></li>
-<li><p>Then, we move on the much more powerful <strong>ggplot2 package</strong> (part of the tidyverse).</p>
-<ul>
+<li><p>Then, we move on the much more powerful <strong>ggplot2 package</strong> (part of the tidyverse).</p></li>
 <li><p>We study the <strong>grammar of plotting</strong></p></li>
 <li><p>step by step, we will replicate the graph above (but with some lengthy digressions to learn about different ggplot options inbetween.</p></li>
-</ul></li>
 </ul>
 <p>This site heavily builds upon <a href="https://therbootcamp.github.io/">The R Bootcamp</a> who employ the widely used mpg dataset and the accompanying coding instructions (see for example (see for example <a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data Science</a>) for their data visualization tutorial.</p>
 <hr />
@@ -514,11 +506,11 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 </div>
 <div id="the-grammar-of-graphics-in-ggplot2" class="section level1">
 <h1><span class="header-section-number">4</span> The grammar of graphics in ggplot2</h1>
-<table>
+<table style="width:50%;">
 <colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -663,11 +655,9 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <p><img src="dataviz_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <ul>
 <li><p>Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)</p></li>
-<li><p>Use the <code>geom_bar()</code> function.</p>
-<ul>
+<li><p>Use the <code>geom_bar()</code> function.</p></li>
 <li><p>use stat=“identity” to indicate that the height of the bars should represent values in the data (default is stat = “bin” which simply counts the number of occurences of the x aestehetic)</p></li>
 <li><p>use widht = 0.7 to reduce the bar widht a bit</p></li>
-</ul></li>
 <li><p>Use <code>+coord_flip()</code> ?</p></li>
 </ul>
 <hr />
@@ -679,7 +669,7 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <p>Back to business. Let’s continue working on our replication.</p>
 <div id="smoothed-regression-line" class="section level3">
 <h3><span class="header-section-number">5.3.1</span> Smoothed regression line</h3>
-<p>A smoothed regression line (standard OLS) can be added by adding <code>geom_smooth()</code>. Choose <code>method = "lm"</code> for standard OLS.</p>
+<p>A smoothed regression line (standard OLS) can be added by adding <code>geom_smooth()</code>. Choose <code>method = &quot;lm&quot;</code> for standard OLS.</p>
 <pre class="r"><code>ggplot(data = mpg,
        mapping = aes(x = displ, 
                      y = hwy, 
@@ -713,13 +703,13 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <h3><span class="header-section-number">5.3.3</span> Themes</h3>
 <div id="playing-with-thems-and-other-stuff" class="section level4">
 <h4><span class="header-section-number">5.3.3.1</span> Playing with thems and other stuff</h4>
-<p>We can modify the theme - the non-data components, e.g. (besides titles and labels) fonts, background, gridlines, and legends - as much as we would like to with <code>theme()</code></p>
+<p>We can modify the theme - the non-data components, e.g. (besides titles and labels) fonts, background, gridlines, and legends - as much as we would like to with <code>theme()</code></p>
 <p>Some random ideas for the theme:</p>
 <ul>
-<li><p>Set background color to pink: <code>panel.background = element_rect(fill = "pink")</code></p></li>
-<li><p>Change color of horizontal gridlines to green: <code>panel.grid.major.y = element_line(colour = "green"), panel.grid.minor.y = element_line(colour = "green")</code></p></li>
-<li><p>Move the legend to the bottom: <code>legend.position = "bottom"</code></p></li>
-<li><p>Add a box around the plot: <code>panel.border = element_rect(color="orange", fill = NA, size=5)</code></p></li>
+<li><p>Set background color to pink: <code>panel.background = element_rect(fill = &quot;pink&quot;)</code></p></li>
+<li><p>Change color of horizontal gridlines to green: <code>panel.grid.major.y = element_line(colour = &quot;green&quot;), panel.grid.minor.y = element_line(colour = &quot;green&quot;)</code></p></li>
+<li><p>Move the legend to the bottom: <code>legend.position = &quot;bottom&quot;</code></p></li>
+<li><p>Add a box around the plot: <code>panel.border = element_rect(color=&quot;orange&quot;, fill = NA, size=5)</code></p></li>
 </ul>
 <p>Additionally, outside of theme, we also want to add even more beautiful stuff:</p>
 <ul>
