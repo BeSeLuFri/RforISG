@@ -1,18 +1,16 @@
 ---
-title: "R Notebook"
+title: "Example Notebook"
 output: html_notebook
 editor_options: 
   chunk_output_type: inline
 ---
 
+> The code chunk below is the only special code for R Notebooks: We want to make sure that every code chunk uses the working directory of the R Project (and not nessarily the path where the Notebook is saved). A special feature of R Notebook / Markdown is that it uses diverges from the working directory of the project. 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map.R)
-Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
 
 # Intro
 
@@ -84,7 +82,7 @@ The eurstat package, which you already know by now, has the function `get_eurost
 
 The overall procedure is the same as above. Once we have data on long, lat, and group, we merge it with our data of interest. 
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library("eurostat")
 
 df <- get_eurostat_geospatial(output_class = "df", 
