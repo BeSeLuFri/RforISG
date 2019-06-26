@@ -71,10 +71,9 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -192,8 +191,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -358,6 +355,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -463,7 +470,7 @@ div.tocify {
 <hr />
 <div id="objects-in-r-basic-calculations" class="section level1">
 <h1><span class="header-section-number">1</span> Objects in R: Basic Calculations</h1>
-<p>We will most often want to store results of calculations to reuse them later. For this, we can work with basic objects. An object has a name and a content. We can freely choose the name of an object and give certain rules - they have to start with a letter and include only letters, numbers and some special characters (“.”, “_“,”-“). <strong>R is case sensitive so “x” and “X” are different object names</strong>.</p>
+<p>We will most often want to store results of calculations to reuse them later. For this, we can work with basic objects. An object has a name and a content. We can freely choose the name of an object and give certain rules - they have to start with a letter and include only letters, numbers and some special characters (“.”, "_“,”-"). <strong>R is case sensitive so “x” and “X” are different object names</strong>.</p>
 <p>The content of an object is assigned using “&lt;-” or “=” (for tidy readability, you should always use the former, though).</p>
 <p>In order to assign the value of 5 to an object with name x do</p>
 <pre class="r"><code>x &lt;- 5
@@ -577,7 +584,7 @@ typeof(int_var)</code></pre>
 <div id="naming-and-indexing-vectors" class="section level2">
 <h2><span class="header-section-number">3.2</span> Naming and Indexing Vectors</h2>
 <p>The elements of a vector can be named which can increase the readability of the output. Given a vector <code>vec</code> and a string vector <code>namevec</code> of the same length, the names are attached to the vector elements using <code>names(vec) &lt;- namevec</code>.</p>
-<p>If we want to access a single element or a subset form a vector, we can work with <strong>indices</strong>. They are written in square brackets next to the vector name. For example `<code>myvector[4]</code> returns the 4th element of <code>myvector</code> and <code>myvector[6] &lt;- 8</code> changes the 6th element to take the value of 8. If the vector elements have names, we can also use those as indices like in <code>myvector[&quot;elementname&quot;]</code></p>
+<p>If we want to access a single element or a subset form a vector, we can work with <strong>indices</strong>. They are written in square brackets next to the vector name. For example `<code>myvector[4]</code> returns the 4th element of <code>myvector</code> and <code>myvector[6] &lt;- 8</code> changes the 6th element to take the value of 8. If the vector elements have names, we can also use those as indices like in <code>myvector["elementname"]</code></p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code># Create a vector &quot;kicker.skills&quot;:
 kicker.skills &lt;- c(0.2, 4, 3, 10, 5,-2)
@@ -730,7 +737,7 @@ presence.mat
 presence &lt;- as.data.frame(presence.mat)
 presence</code></pre>
 <p>The outputs of matrix <code>presence.mat</code> and <code>presence</code> look exactly the same, but they behave differently. In RStudio, the difference can be seen in the Workspace window. <code>presence</code> is described as <em>5 obs. of 3 variables</em>. Again, every column is an individual variable.</p>
-<p>We can address a single variable var of a data frame df using the matrix-like syntax <code>df[, &quot;var&quot;]</code> or by stating <code>df$var</code>. This can be used for extracting the values of a variable but also for creating new variables. Sometimes, it is convenient not to have to type the name of the data frame several times within a command. The function <code>with(df, some expression using vars of df</code> can help.</p>
+<p>We can address a single variable var of a data frame df using the matrix-like syntax <code>df[, "var"]</code> or by stating <code>df$var</code>. This can be used for extracting the values of a variable but also for creating new variables. Sometimes, it is convenient not to have to type the name of the data frame several times within a command. The function <code>with(df, some expression using vars of df</code> can help.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code># Accessing a single variable:
 presence$Eugen

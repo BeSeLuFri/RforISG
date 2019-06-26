@@ -124,7 +124,9 @@ data <- read_csv2("data/soep_europ.csv")
 
 ***
 
-# Select the relevant variables
+# Basic Data Management
+
+## Select the relevant variables
 Our data has 902 variables. Obviously, we do not need that many. 
 
 Accordingly, we `select` the relevant ones:
@@ -141,7 +143,7 @@ data <- data %>% # remember the pipe?
 
 ***
 
-# Explore the data structure
+## Explore the data structure
 
 For a first overview over our data, we can use the base functions (e.g. those which are without any package installations part of R) `str()`, `head()`, `summary()`, `table()`, `quantile()`, and `View()`.
 
@@ -157,7 +159,7 @@ View(data)
 
 ***
 
-# Basic recoding and mutate()
+## Basic recoding and mutate()
 
 The dataset is from 2003. Compute the age accordingly by creating the new variable age
 
@@ -179,23 +181,23 @@ data <- ______ %>%
 
 ***
 
-# Filtering
+## Filtering
 
 If you only want to keep certain rows (observations) in which values of a variable match a certain criterion, you can `filter()`. 
 
 Let's say, we only want to keep those observations which are at least 18.
 
-<span style="color:red">Task</span> <u>**Note the difference between the lines of inc.quant and sex!**</u>
+<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
 ```{r, eval=FALSE}
 data <- data %>%
-  filter(age >= 18)
+  filter(____ >= _____)
 ```
 
-Note for later: When we filter for exactly one condition, we use `==` (or `>=` in our case). When we filter for a string, we use `%in%`
+Note for later (see Filtering II): When we filter for exactly one condition, we use `==` (or operators like `>=`). When we filter for a string, we use `%in%`.
 
 ***
 
-# Arrange
+## Arrange
 Sometimes, we want to order data. We do so with `arrange()`. `desc(x)` sorts x in descending order. 
 
 <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
@@ -208,7 +210,7 @@ data <- _____ %>%
 
 ***
 
-# All in one
+## All in one
 By the way, we could have done all of this in one batch:
 
 <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
@@ -227,7 +229,9 @@ Great, by now you basically have the main logic of dplyr at hand. In the section
 
 ***
 
-# More mutate
+# Advanced stuff
+
+## More mutate
 The benefit of `mutate()` is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
 
 * want to recode the binary variable tp72 (Work Overtime) into three levels: 
@@ -285,7 +289,7 @@ table(data$over,
 
 ***
 
-# Factorize 
+## Factorize 
 
 As we have practiced before, we can factorize variables. This is also possible within the dplyr world (`mutate()` again). Let's do that for sex.
 
@@ -303,13 +307,13 @@ _____ <- _____ _____
 
 ***
 
-# Recode II
+## Recode II
 
 We can also recode values below a certain threshold at once (if it is numeric (either double or integer)): 
 
 `if_else(condition, true, false)`
 
-* tp7001(Contracted Working Hours): mutate as "contract", change all values below 0 (errors) to NA, and divide the variable 
+* tp7001(Contracted Working Hours): mutate to column "contract", change all values below 0 (errors) to NA, and divide the variable by 10
 * Do the same for tp7003: Actual working hours
 
 ```{r, eval=FALSE}
@@ -326,7 +330,7 @@ data <- data %>%
 
 ***
 
-# Multiple if_else() statements: 
+## Multiple if_else() statements: 
 
 `cases_when()` allows us to apply multiple `if_else()` statements. 
 
@@ -353,7 +357,7 @@ data <- data %>%
 
 ***
 
-# Check data.frame again
+## Check data.frame again
 
 ```{r, eval=FALSE}
 head(data)
@@ -362,7 +366,7 @@ summary(data)
 
 ***
 
-# All in one II
+## All in one II
 Again, we could have done all of this in one batch - but it would have been untidy... 
 ```{r, message=FALSE}
 data <- read_csv2("data/soep_europ.csv")
@@ -416,13 +420,15 @@ data <- data %>% # remember the pipe?
 
 ```
 
+***
+
+# (Easy) additional stuff
+
 Great job! We are almost done. 
 
 Below we'll QUICKLY introduce a few more functions.
 
-***
-
-# Summarize
+## Summarize
 
 Summarize allows us to summarise certain variables, such as certain features of age 
 
@@ -435,7 +441,7 @@ data %>%
 
 ***
 
-# Grouping
+## Grouping
 
 The same is also possible for grouped structures. Say, for example, you would want to calculate separate values for different genders: 
 
@@ -457,10 +463,27 @@ data <- data %>%
   mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE)) 
 ```
 
+***
+
+## Filtering II
+
+As explained above, there are different types of filtering operations.
+
+Let's say, you only want to keep those observations which are older than 18 and who are in the top three income quintiles. We store this in data2
+
+<span style="color:red">Task</span> <u>**Note the difference between the lines of inc.quant and sex!**</u>
+```{r, eval=FALSE}
+data2 <- data %>%
+  filter(age > 18,
+         inc.quant %in% c("Q2", "Q3", "Q4"),
+         sex == "male")
+```
+
+When we filter for exactly one condition, we use `==` (or `>`, `<`, `>=`, `<=`). When we filter for a string, we use `%in%`.
 
 ***
 
-# Merge
+## Merge
 Assuming, we forgot to include the variable "tp0101" (Satisfaction With Health) in our dataset when we selected all the variables we want to work with above. Of course, the normal/efficient way would be to go back the select() operation above, include persnnr and rerun the whole code. For the sake of learning let's ignore this possibility. Instead, we reread the SOEP data under a different name, merge the relevant variables from this data.frame with the one we have been working with all the time and create a new data.frame (data2). 
 
 ```{r, eval=FALSE}
@@ -473,7 +496,7 @@ data2 <- data %>%
 
 Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:
 
-![.](Files/dplyr_joins.png)
+![](Files/dplyr_joins.png)
 
 Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn't work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with `any(duplicated(data$hhnr))`. 
 
@@ -487,7 +510,7 @@ data <- data %>%
 
 ***
 
-# Spread and Gather
+## Spread and Gather
 The last section for now! 
 
 A reminder of the difference between long and wide data:
@@ -499,9 +522,6 @@ A reminder of the difference between long and wide data:
 Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` 
 
 ![](Files/dplyr_reshape.png)
-
-
-
 
 At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:
 

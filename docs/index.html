@@ -72,10 +72,9 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -193,8 +192,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -359,6 +356,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -456,8 +463,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">R-Intro ISG</h1>
-<h4 class="author"><em>Benedikt Fritz</em></h4>
-<h4 class="date"><em>July 2019</em></h4>
+<h4 class="author">Benedikt Fritz</h4>
+<h4 class="date">July 2019</h4>
 
 </div>
 
@@ -481,20 +488,26 @@ div.tocify {
 <p><strong>Day 1</strong></p>
 <ul>
 <li><p>R Basics, Workflow in R Studio and Objects (1.5h)</p></li>
-<li><p>Data Management and tidyverse (2h)</p></li>
+<li><p>Data Management and tidyverse (2h)</p>
+<ul>
 <li><p>Quick Intro into the tidyverse and it’s data management tools</p></li>
 <li><p>Eurostat Example</p></li>
+</ul></li>
 </ul>
 <p><strong>Day 2</strong></p>
 <ul>
-<li><p>Data visualizationsand the tidyverse (2.5h)</p></li>
+<li><p>Data visualizationsand the tidyverse (2.5h)</p>
+<ul>
 <li><p>Quick intro into ggplot</p></li>
 <li><p>Eurostat Example</p></li>
 <li><p>Maps</p></li>
-<li><p>Other (1h)</p></li>
+</ul></li>
+<li><p>Other (1h)</p>
+<ul>
 <li><p>Regressions</p></li>
 <li><p>knitr, R Notebooks</p></li>
 <li><p>Further Information</p></li>
+</ul></li>
 </ul>
 </div>
 <div id="why-r" class="section level2">
@@ -527,7 +540,7 @@ div.tocify {
 </div>
 <div id="first-step" class="section level2">
 <h2><span class="header-section-number">2.2</span> First Step</h2>
-<p>After having successfully installed R and R-Studio open RStudio (<em>NEVER open R directly, always access it through RStudio</em>), press <code>Ctrl+Shift+N</code> or click on the top left icon and select R Script. Then you should see 4 different panes. Their functionality has been brilliantly explained by you should see something like this (credits: <a href="https://twitter.com/RLadiesNCL/status/1138812826917724160">Jessica Ward</a>: <img src="Files/R-cooking.jpg" /></p>
+<p>After having successfully installed R and R-Studio open RStudio (<em>NEVER open R directly, always access it through RStudio</em>), press <code>Ctrl+Shift+N</code> or click on the top left icon and select R Script. Then you should see 4 different panes. Their functionality has been brilliantly explained by you should see something like this (credits: <a href="https://twitter.com/RLadiesNCL/status/1138812826917724160">Jessica Ward</a>) <img src="Files/R-cooking.jpg" /></p>
 <p>On the lower right hand side various other information about your current project can be retrieved and plots can be given a first view. Particularly helpful is the Help section which explains functions. For example, type <code>?sqrt</code> into the console (where the cooking happens) or just type it into the search window.</p>
 <hr />
 </div>
@@ -536,10 +549,7 @@ div.tocify {
 <p><strong>Always</strong> use projects - they make your life much easier. RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.</p>
 <p>It is - especially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: <strong>You need to designate one folder in your explorer system within which everything related to your very first project is saved.</strong></p>
 <p>Let’s do it now: To create a new project, use the Create Project command (available on the Projects menu and on the global toolbar). Follow the instructions. Either create the project in a new directory or in an already existing one. For this tutorial, choose/create one directory where you can conveniently store all files/scripts throughout the tutorial.</p>
-<div class="figure">
-<img src="Files/projects_new.png" />
-
-</div>
+<p><img src="Files/projects_new.png" /></p>
 <p>This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.</p>
 <p>My advise is to create two folders within the project directory right away. One folder for scripts (called scripts) and another folder for data (called data).</p>
 <p>When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved.</p>
@@ -620,14 +630,23 @@ library(magrittr)</code></pre>
 <div id="important-ressources" class="section level1">
 <h1><span class="header-section-number">7</span> Important Ressources</h1>
 <p><a href="https://www.stackoverflow.com/">Stackoverflow</a>: A general discussion forum for programmers, including many R users. Just google your question and make sure to place an “R” in the beginning of your question. Most often you will be directed to stackoverflow.</p>
-<p><a href="http://www.urfie.net/">Econometrics for R</a>: Great book - first half of this class is based upon it. Has some 60pages of introduction into R.</p>
-<p><a href="https://www.datacamp.com/">Data Camp</a>: Online tutorials with in-browser coding tasks. Everything beyond beginners levels is behind a paywall.</p>
+<p><a href="https://www.datacamp.com/">Data Camp</a>: Online tutorials with in-browser coding tasks. Everything beyond beginners levels is behind a paywall. If you want to avoid DataCamp, <a href="https://docs.google.com/spreadsheets/d/1LtaeWPzEhRiy-kdNZBn0gPwc6aTYkWtt6Cau6PzcXuo/edit#gid=0">here</a> is a list of DataCamp tutorials with mostly free alternatives.</p>
 <p><strong>Cheat Sheets</strong>: Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples</p>
 <ul>
 <li><p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Cheat Sheet Base R</a></p></li>
 <li><p><a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">Cheat Sheet dplyr</a></p></li>
 <li><p><a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">Cheat Sheet ggplot</a></p></li>
 </ul>
+<div id="individual-trouble-shooting" class="section level2">
+<h2><span class="header-section-number">7.1</span> Individual Trouble Shooting</h2>
+<p>Learning how to find out about stuff in R by yourself is one of the key techniques for smooth coding.</p>
+<p>If you have any questions, one of the following might help:</p>
+<ul>
+<li><p><code>?functionname</code> (and press enter) to retrieve the official documentation</p></li>
+<li><p>google (make sure to type r somewhere into your query; stackoverflow results are preferrable)</p></li>
+<li><p>Ask us ;)</p></li>
+</ul>
+</div>
 </div>
 
 

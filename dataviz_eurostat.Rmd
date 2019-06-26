@@ -14,6 +14,8 @@ Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
 We practice with the Eurostat data again. 
 However, to spare us the time of datamanagement, now we already have a prepared daset at hand. 
 
+***
+
 # Setup
 What do we always do first? (We only need the tidyverse)
 ```{r, echo=FALSE, message=FALSE}
@@ -21,6 +23,7 @@ rm(list = ls())
 library(tidyverse)
 ```
 
+***
 
 # Read and explore the data
 Read the data ( [eurostat_data.csv](XXXXXX)) and store them as `eurost`.
@@ -38,13 +41,15 @@ eurost <-
 You might want to explore the data first.
 Remember, you can use some of those `str()`, `head()`, `summary()`, `table()`, `quantile()`, and `View()`.
 
+***
+
 # Reproduce Plots
 
 Reproduce these three plots. Below the graphs you can find some information.
 
+
 ## geom_point
 
-  
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 eurost <- read_csv2("data/eurostat_data.csv")
 
@@ -83,7 +88,9 @@ ggplot(
 
 * Use `theme_classic()`
 
-* You might realize that the label symbols of size are a bit weird as soon as you add the regression line. This is because the function to create the regression line interacts with the size argument within the `ggplot()` function. Therefore, as soon as you add the regression function, <u>move the size argument to `geom_point`</u>. But don't forget that the size argument only works within `aes()`!
+* You might realize that the label symbols of size are a bit weird as soon as you add the regression line. This is because the function to create the regression line interacts with the size argument within the `ggplot()` function. Therefore, as soon as you add the regression function, <u>move the size argument to `geom_point`</u>. But don't forget that the size argument has to be put within `aes()`!
+
+  + Here is an important learning: **aes() can be passed to either ggplot() or to a specific layer (e.g. geom_)**. Aesthetics specified to ggplot() are used as defaults for every layer, while aes() passed to a specific layer a used as default for that layer only. 
 
 * Furthermore, add this line `+ scale_color_manual(values = c("red"), labels = c(" "))`. Do you understand what it does?
 
@@ -181,10 +188,12 @@ ggplot(data = eurost2,
 
 * Add this line: `scale_fill_manual(values = c("red", "blue"), labels = c("Total Unemployment", "Youth Unemployment"))`
 
-
+***
 
 # New Stuff 
-In this section, we cover some new functions within ggplot2. However, as the ggplot logic is so straight forward, try to learn these new techniques yourself (nevertheless, there are some hints). Learning how to find out about stuff in R by yourself, is one of the key techniques for smooth coding. 
+In this section, we cover some new functions within ggplot2. However, as the ggplot logic is so straight forward, try to learn these new techniques yourself (nevertheless, there are some hints). 
+
+Learning how to find out about stuff in R by yourself is one of the key techniques for smooth coding. 
 
 If you have any questions, one of the following might help:
 
@@ -221,6 +230,8 @@ main_plot <- ggplot(
 ```{r}
 main_plot
 ```
+
+***
 
 ## Adjusting colors
 
@@ -262,8 +273,7 @@ main_plot+
 
 * The function from ggrepel we want to use is `geom_text_repel`. Use geo_code as the label within the `aes()` argument of `geom_text_repel`.
 
-
-
+***
 
 ## Facets and more
 
@@ -279,6 +289,7 @@ main_plot+
 
 * Use location as the facet variable.
 
+***
 
 # Interactive Graph
 

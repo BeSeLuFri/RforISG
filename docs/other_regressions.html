@@ -75,10 +75,9 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -196,8 +195,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -362,6 +359,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -466,16 +473,28 @@ div.tocify {
 <div id="tldr" class="section level1">
 <h1><span class="header-section-number">1</span> Tl;dr</h1>
 <p>This is how standard OLS regressions are done:</p>
+<pre class="r"><code>ols_object &lt;- lm(regressand ~ regressor1 + regressor2 + regressor3, 
+                data=data.frame)</code></pre>
 <p>This is how a (two-ways FE) panel regression is done</p>
+<pre class="r"><code>library(plm)
+panel_object &lt;- plm(regressand ~ regressor1 + regressor2 + regressor3,
+                    index=c(&quot;unit&quot;, &quot;time&quot;), model=&quot;within&quot;, effect= &quot;twoways&quot;, # for two-ways fixed effect regressions
+                    data=data.frame)</code></pre>
 <p>This is how you can get a summary of your regression:</p>
+<pre class="r"><code>summary(ols_object, panel_object)</code></pre>
 <p>This is a nicer way for getting a summary and exporting (journal style)</p>
+<pre class="r"><code>library(stargazer)
+stargazer(ols_object, panel_object,
+          type = &quot;html&quot;, # either html, latex, or text
+          out = &quot;output.html&quot;) # if a file should be produced</code></pre>
+<hr />
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
 <div id="workflow" class="section level2">
 <h2><span class="header-section-number">2.1</span> Workflow</h2>
-<div id="htmlwidget-d10a5fbe13114db0249e" style="width:800px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d10a5fbe13114db0249e">{"x":{"diagram":"digraph {\n\n  rankdir=LR\n\n  # a \"graph\" statement\n  node[shape = note margin=0.25]\n  graph [overlap = true, fontsize = 10]\n\n   formula [label = \"Model Formula\"]\n\n  node[shape = hexagon]\n    lm [label = \"Fit Model \\n lm()\"]\n  \n  node [shape = cylinder]\n    data [label = \"Data\"]\n    \n    out [label = \"lm - Output\"]\n    \n  node [shape = box]\n  \n    inspect [label = \"Inspect & Plot\"]\n    evaluate [label = \"Evaluate\"]\n    export [label = \"Display & Export\"]\n\n  data -> lm\n  formula -> lm\n  \n  lm -> out\n  \n  out -> evaluate\n  out -> inspect\n  out -> export\n\n\n  # several \"edge\" statements\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a1da8778173108eb966e" style="width:800px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a1da8778173108eb966e">{"x":{"diagram":"digraph {\n\n  rankdir=LR\n\n  # a \"graph\" statement\n  node[shape = note margin=0.25]\n  graph [overlap = true, fontsize = 10]\n\n   formula [label = \"Model Formula\"]\n\n  node[shape = hexagon]\n    lm [label = \"Fit Model \\n lm()\"]\n  \n  node [shape = cylinder]\n    data [label = \"Data\"]\n    \n    out [label = \"lm - Output\"]\n    \n  node [shape = box]\n  \n    inspect [label = \"Inspect & Plot\"]\n    evaluate [label = \"Evaluate\"]\n    export [label = \"Display & Export\"]\n\n  data -> lm\n  formula -> lm\n  \n  lm -> out\n  \n  out -> evaluate\n  out -> inspect\n  out -> export\n\n\n  # several \"edge\" statements\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <hr />
 </div>
 <div id="the-lm-function" class="section level2">
@@ -547,7 +566,7 @@ formula(y ~ a + b + ... + z) # for a dataset with variables from a to z</code></
 <ul>
 <li>Specify <code>na.action = na.fail</code> if you want an error when the data contains missing values</li>
 </ul>
-<p>Again, it is a best-practice to look for missing values in your data prior to the estimation to keep your code transparent.</p>
+<p>However, it is a best-practice to look for missing values in your data prior to the estimation to keep your code transparent.</p>
 <ul>
 <li>You can use the <code>missmap</code> function from the <code>Amelia</code> package to get a nice visualisation of missing values in your data</li>
 </ul>
@@ -557,10 +576,12 @@ formula(y ~ a + b + ... + z) # for a dataset with variables from a to z</code></
 <h2><span class="header-section-number">2.6</span> Example Call of <code>lm</code> with Eurostat Data</h2>
 <pre class="r"><code>eur_data &lt;- read.csv2(&quot;data/eurostat_data.csv&quot;)
 
-m1 &lt;- formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
-              subset = year == 2014)
-model&lt;- lm(formula = m1,
-           data = eur_data)</code></pre>
+m1 &lt;-
+  formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
+          subset = time == 2014)
+
+model &lt;- lm(formula = m1,
+            data = eur_data)</code></pre>
 <hr />
 </div>
 <div id="output-of-lm" class="section level2">
@@ -577,7 +598,7 @@ model&lt;- lm(formula = m1,
 <ul>
 <li><code>?lm()</code></li>
 <li><code>str(model)</code> where model is our saved output from <code>lm</code></li>
-<li>the <code>$</code> operator and <code>tab</code>, e.g. <code>model$...</code></li>
+<li>the <code>$</code> operator and <code>tab</code>, e.g. <code>model$...</code></li>
 </ul>
 <p>Lets look up our coefficients <span class="math inline">\(\beta\)</span>, fitted values <span class="math inline">\(\hat{y}\)</span> and OLS residuals <span class="math inline">\(\varepsilon\)</span></p>
 <pre class="r"><code>model$coefficients</code></pre>
@@ -591,13 +612,14 @@ model&lt;- lm(formula = m1,
 ## -3.644069 -3.967108 -3.514682 -3.544617 -3.712589 -3.271478 -3.147128</code></pre>
 <p>We can visualise the results very simply with <code>hist</code> or <code>plot</code>:</p>
 <pre class="r"><code>hist(model$residuals, breaks = 30)</code></pre>
-<p><img src="other_regressions_files/figure-html/unnamed-chunk-21-1.png" width="960" /></p>
+<p><img src="other_regressions_files/figure-html/unnamed-chunk-20-1.png" width="960" /></p>
 <pre class="r"><code>hist(model$fitted.values, breaks = 30)</code></pre>
-<p><img src="other_regressions_files/figure-html/unnamed-chunk-22-1.png" width="960" /></p>
+<p><img src="other_regressions_files/figure-html/unnamed-chunk-21-1.png" width="960" /></p>
 <hr />
 </div>
 <div id="output-of-lm-with-the-summary-function" class="section level2">
 <h2><span class="header-section-number">2.8</span> Output of <code>lm</code> with the <code>summary()</code> function</h2>
+<pre class="r"><code>summary(model)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = m1, data = eur_data)
@@ -663,7 +685,10 @@ model&lt;- lm(formula = m1,
 <div id="compare-different-models" class="section level2">
 <h2><span class="header-section-number">2.10</span> Compare different Models</h2>
 <pre class="r"><code>model2 &lt;- lm(unemp_workagepop_t~gdp_gr, 
-             data = eur_data)</code></pre>
+             data = eur_data,
+             subset = time == 2014)</code></pre>
+<pre class="r"><code>stargazer::stargazer(model, model2, 
+                     type = &quot;html&quot;)</code></pre>
 <table style="text-align:center">
 <tr>
 <td colspan="3" style="border-bottom: 1px solid black">
@@ -711,7 +736,7 @@ gdp_gr
 -0.164<sup>**</sup>
 </td>
 <td>
--0.343<sup>***</sup>
+-0.764<sup>*</sup>
 </td>
 </tr>
 <tr>
@@ -721,7 +746,7 @@ gdp_gr
 (0.079)
 </td>
 <td>
-(0.065)
+(0.447)
 </td>
 </tr>
 <tr>
@@ -794,7 +819,7 @@ Constant
 12.841<sup>***</sup>
 </td>
 <td>
-9.152<sup>***</sup>
+11.909<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -804,7 +829,7 @@ Constant
 (0.563)
 </td>
 <td>
-(0.258)
+(1.420)
 </td>
 </tr>
 <tr>
@@ -827,7 +852,7 @@ Observations
 242
 </td>
 <td>
-360
+30
 </td>
 </tr>
 <tr>
@@ -838,7 +863,7 @@ R<sup>2</sup>
 0.189
 </td>
 <td>
-0.071
+0.094
 </td>
 </tr>
 <tr>
@@ -849,7 +874,7 @@ Adjusted R<sup>2</sup>
 0.179
 </td>
 <td>
-0.069
+0.062
 </td>
 </tr>
 <tr>
@@ -860,7 +885,7 @@ Residual Std. Error
 4.386 (df = 238)
 </td>
 <td>
-4.423 (df = 358)
+5.298 (df = 28)
 </td>
 </tr>
 <tr>
@@ -871,7 +896,7 @@ F Statistic
 18.457<sup>***</sup> (df = 3; 238)
 </td>
 <td>
-27.447<sup>***</sup> (df = 1; 358)
+2.918<sup>*</sup> (df = 1; 28)
 </td>
 </tr>
 <tr>
@@ -887,7 +912,7 @@ F Statistic
 </td>
 </tr>
 </table>
-<p>Specify the folder and file were your table should be saved as <code>&quot;path/name.type&quot;</code></p>
+<p>Specify the folder and file were your table should be saved as <code>"path/name.type"</code></p>
 <ol style="list-style-type: decimal">
 <li>Output as <code>.html</code> : Open the file in your web browser and copy it into Word</li>
 <li>Output as <code>.tex</code> : Include in LaTeX</li>
@@ -898,6 +923,166 @@ F Statistic
 <div id="panel-regression" class="section level1">
 <h1><span class="header-section-number">3</span> Panel Regression</h1>
 <p>Just a very quick glimpse into panel regressions with plm.</p>
+<p>Install the plm package first.</p>
+<p>The basic structure for a two-way FE panel regression is as follows:</p>
+<pre class="r"><code>library(plm)
+panel_object &lt;- plm(regressand ~ regressor1 + regressor2 + regressor3,
+                    index=c(&quot;unit&quot;, &quot;time&quot;), model=&quot;within&quot;, effect= &quot;twoways&quot;, # for two-ways fixed effect regressions
+                    data=data.frame)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plm&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     between, lag, lead</code></pre>
+<p>For our data, this means</p>
+<pre class="r"><code>p1 &lt;-
+  plm(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
+      index=c(&quot;geo_code&quot;, &quot;time&quot;), model=&quot;within&quot;, effect= &quot;twoways&quot;,
+      data = eur_data)</code></pre>
+<pre class="r"><code>stargazer::stargazer(p1,
+                     type = &quot;html&quot;)</code></pre>
+<table style="text-align:center">
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+unemp_workagepop_t
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+gdp_gr
+</td>
+<td>
+-0.188<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.063)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+inv_per_empl
+</td>
+<td>
+-0.156<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.056)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+immigration_t
+</td>
+<td>
+-0.00001<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+242
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.122
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+-0.047
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+9.399<sup>***</sup> (df = 3; 202)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+<p>Within plm, you can easily switch between different econometric models (one-way FE, random effects, pooling, etc.).</p>
 </div>
 
 

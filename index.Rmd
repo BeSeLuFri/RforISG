@@ -105,7 +105,7 @@ If you have any problems with the installation process follow these pages
 
 ***
 ## First Step
-After having successfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), press `Ctrl+Shift+N` or click on the top left icon and select R Script. Then you should see 4 different panes. Their functionality has been brilliantly explained by you should see something like this (credits: [Jessica Ward](https://twitter.com/RLadiesNCL/status/1138812826917724160): 
+After having successfully installed R and R-Studio open RStudio (*NEVER open R directly, always access it through RStudio*), press `Ctrl+Shift+N` or click on the top left icon and select R Script. Then you should see 4 different panes. Their functionality has been brilliantly explained by you should see something like this (credits: [Jessica Ward](https://twitter.com/RLadiesNCL/status/1138812826917724160)) 
 ![](Files/R-cooking.jpg)
 
 
@@ -224,17 +224,14 @@ The basic shortcut for the RStudio IDE to get tidy code is a) selecting code to 
 A pretty exhaustive style guide by Hadley Wickham and the tidyverse team can be found [here](https://style.tidyverse.org/). This builds upon the still widely referenced [Google's R Style guide](https://google.github.io/styleguide/Rguide.xml). 
 
 # Important Ressources
+
 [Stackoverflow](https://www.stackoverflow.com/):
 A general discussion forum for programmers, including many R users.
 Just google your question and make sure to place an "R" in the beginning of your question. Most often you will be directed to stackoverflow. 
 
-
-[Econometrics for R](http://www.urfie.net/):
-Great book - first half of this class is based upon it.
-Has some 60pages of introduction into R.
-
 [Data Camp](https://www.datacamp.com/):
-Online tutorials with in-browser coding tasks. Everything beyond beginners levels is behind a paywall. 
+Online tutorials with in-browser coding tasks. Everything beyond beginners levels is behind a paywall.
+If you want to avoid DataCamp, [here](https://docs.google.com/spreadsheets/d/1LtaeWPzEhRiy-kdNZBn0gPwc6aTYkWtt6Cau6PzcXuo/edit#gid=0) is a list of DataCamp tutorials with mostly free alternatives.
 
 **Cheat Sheets**:
 Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples
@@ -245,3 +242,14 @@ Cheat Sheets are a great way to get a concise overview over the functionality an
 
 * [Cheat Sheet ggplot](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 
+## Individual Trouble Shooting
+
+Learning how to find out about stuff in R by yourself is one of the key techniques for smooth coding. 
+
+If you have any questions, one of the following might help:
+
+* `?functionname` (and press enter) to retrieve the official documentation
+
+* google (make sure to type r somewhere into your query; stackoverflow results are preferrable)
+
+* Ask us ;) 

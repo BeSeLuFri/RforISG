@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
   
   + Codue chunks 
 
-* The cool thing about RMarkdown is that it offers a plain and easy to understand way to link code and documentation. 
+* The cool thing about RMarkdown is that it offers a plain and easy to understand way to link code and documentation.   
 
 * Furthermore, it is also very straight forward to produce html, pdf or docx outputs from RMarkdow. For example, this website is mainly based on Markdown.
 

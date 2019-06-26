@@ -103,7 +103,7 @@ Additional stuff | Some additional functions to adjust scales, labels, tick mark
 
 Step by step, with some digressions, we will now replicate the graph from above. 
 
-## Data and Mapping
+## Data and Relationship
 
 Select the data (*mpg*) and attach *displ* (the engine displacement) to the x axis,  *hwy* (Highway miles per gallon) for the y axis and the *class* (car class) as the color variable. 
 
@@ -216,7 +216,7 @@ ggplot(data = mpg,
 
 #### Numer of observations per location
 
-```{r, eval=FALSE}
+```{r, echo=FALSE}
 ggplot(data = mpg,
   mapping = aes(x = displ,
                 y = hwy)) + 
@@ -228,42 +228,6 @@ ggplot(data = mpg,
 * Use the `geom_count()` function
 
 * Can you tell the difference to `geom_point()`?
-
-***
-
-#### Likert scale
-Let's create fake Likert scale data. Let's pretend that the different types of transmissions are the levels of a Likert scale and that car classes are the Likert items. 
-
-Before we can plot this fake likert scale, we have to do some data transformation:
-
-```{r}
-mpg2 <- mpg %>%
-  group_by(class) %>%
-  mutate(length.class = n()) %>%
-  group_by(trans, add = TRUE) %>%
-  mutate(length.trans = n(),
-         percentage.trans = 100 * length.trans / length.class) %>%
-  distinct(trans, class, .keep_all = TRUE)
-```
-
-```{r}
-ggplot(data = mpg2,
-  mapping = aes(x = class,
-                y = percentage.trans,
-                fill=trans)) + 
-  geom_bar(stat="identity", width = 0.7)+
-  coord_flip()
-```
-
-* Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)
-
-* Use the `geom_bar()` function.
-
-  + use stat="identity" to indicate that the height of the bars should represent values in the data (default is stat = "bin" which simply counts the number of occurences of the x aestehetic)
-  
-  + use widht = 0.7 to reduce the bar widht a bit
-
-* Use `+coord_flip()` ?
 
 ***
 
@@ -311,27 +275,9 @@ ggplot(data = mpg,
 
 ### Themes 
 
-#### Playing with thems and other stuff
+We can modify the theme - the non-data components, e.g. (besides titles and labels) fonts, background, gridlines, and legends - as much as we would like to with `theme()`. 
 
-We can modify the theme - the non-data components, e.g. (besides titles and labels) fonts, background, gridlines, and legends - as much as we would like to with `theme()`
-
-Some random ideas for the theme:
-
-* Set background color to pink: `panel.background = element_rect(fill = "pink")`
-
-* Change color of horizontal gridlines to green: `panel.grid.major.y = element_line(colour = "green"), panel.grid.minor.y = element_line(colour = "green")`
-
-* Move the legend to the bottom: `legend.position = "bottom"`
-
-* Add a box around the plot: `panel.border = element_rect(color="orange", fill = NA, size=5)`
-
-Additionally, outside of theme, we also want to add even more beautiful stuff:
-
-* add a fat vertical line at 3: `+geom_vline(xintercept = 3, size=5)`
-
-* Add ticks for every 0.5 on the x-axis: `+scale_x_continuous(breaks = seq(1,8, by=0.5)` 
-
-<span style="color:red">Task</span> <u>**Reproduce the plot below and follow the instructions from above!**</u> 
+Further [below](https://beselufri.github.io/RforISG/dataviz.html#6_minor_addenda) we will explain how to build this beautiful graph:
 
 ```{r, echo=FALSE}
 
@@ -385,9 +331,10 @@ ggplot(data = mpg,
 
 There are many more themes (for example, `theme_grey`, `theme_void`, `theme_dark`, `theme_minimal`)
 
+#### Themes from ggthemes
+
 With the ggthemes packages, you have even more themes at hand:
 
-##### Theme from FiveThirtyEight
 ```{r}
 library(ggthemes)
 
@@ -408,25 +355,7 @@ ggplot(data = mpg,
 
 ```
 
-##### For those who miss stata
-```{r}
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
-  theme_stata()
-
-```
-
+Other themes from the ggthemes package include `theme_economist` (The Economist style graphs), `theme_stata()` (for those who miss Stata), or `theme_tufte()`. It has also a cool functionality for creating color scales for color blind people. 
 
 ***
 
@@ -457,7 +386,7 @@ ggplot(data = mpg,
 
 ## Saving a ggplot object in the environment
 
-Jsut to mention this, you can save a ggplot object in the environment like everything else (remember, everything in R is an object).
+Just to mention this, you can save a ggplot object in the environment like everything else (remember, everything in R is an object).
 
 Storing our final plot from above as final_plot
 
@@ -526,6 +455,94 @@ You can print a ggplot object with `ggsave`
 ```{r, eval=FALSE, message=FALSE}
 ggsave(plot = final_plot, 
        file= "FILEDIRECTORYtoSAVEto.png")
+```
+
+
+***
+# Addenda II
+
+Below, find information on how to create a likert scale type of graph and the basics on how to create an individual theme.
+
+## Likert scale
+Let's create fake Likert scale data. Let's pretend that the different types of transmissions are the levels of a Likert scale and that car classes are the Likert items. 
+
+Before we can plot this fake likert scale, we have to do some data transformation:
+
+```{r}
+mpg2 <- mpg %>%
+  group_by(class) %>%
+  mutate(length.class = n()) %>%
+  group_by(trans, add = TRUE) %>%
+  mutate(length.trans = n(),
+         percentage.trans = 100 * length.trans / length.class) %>%
+  distinct(trans, class, .keep_all = TRUE)
+```
+
+```{r}
+ggplot(data = mpg2,
+  mapping = aes(x = class,
+                y = percentage.trans,
+                fill=trans)) + 
+  geom_bar(stat="identity", width = 0.7)+
+  coord_flip()
+```
+
+* Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)
+
+* Use the `geom_bar()` function.
+
+  + use stat="identity" to indicate that the height of the bars should represent values in the data (default is stat = "bin" which simply counts the number of occurences of the x aestehetic)
+  
+  + use widht = 0.7 to reduce the bar widht a bit
+
+* Use `+coord_flip()` ?
+
+***
+
+## Playing with themes
+
+As indicated above, here is an example of a manually (ridiculously) adjusted theme.
+
+Some random ideas for the theme (through the function `theme'()`:
+
+* Set background color to pink: `panel.background = element_rect(fill = "pink")`
+
+* Change color of horizontal gridlines to green: `panel.grid.major.y = element_line(colour = "green"), panel.grid.minor.y = element_line(colour = "green")`
+
+* Move the legend to the bottom: `legend.position = "bottom"`
+
+* Add a box around the plot: `panel.border = element_rect(color="orange", fill = NA, size=5)`
+
+Additionally, outside of theme, we also want to add even more beautiful stuff:
+
+* add a fat vertical line at 3: `+geom_vline(xintercept = 3, size=5)`
+
+* Add ticks for every 0.5 on the x-axis: `+scale_x_continuous(breaks = seq(1,8, by=0.5)` 
+
+<span style="color:red">Task</span> <u>**Reproduce the plot below and follow the instructions from above!**</u> 
+
+```{r, echo=FALSE}
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     color = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue", 
+              method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+       color = "Car Classes")+
+  theme(panel.background = element_rect(fill = "pink"),
+        panel.grid.major.y = element_line(colour = "green"),
+        panel.grid.minor.y = element_line(colour = "green"),
+        legend.position = "bottom",
+        panel.border = element_rect(color="orange", fill = NA, size=5))+
+  scale_x_continuous(breaks = seq(1,8, by=0.5))+
+  geom_vline(xintercept = 3, size=5)
 ```
 
 
