@@ -1,171 +1,119 @@
-#' ---
-#' title: "Datamanagement"
-#' ---
-#' 
-## ----setup, include=FALSE------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 
-#' 
-#' Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R)
-#' 
-#' # Preliminary:
-#' 
-#' * We use an old (2003) randomly changed and subsetted SOEP dataset with ~4.600 observations. 
-#' 
-#' * Please, **download** the two csv files ([.soep_europ.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_europ.csv) and [soep_us.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_us.csv)) and the [soep.dta](https://github.com/BeSeLuFri/RforISG/raw/master/data/soep.dta) file and save them locally within your R project directory.
-#' 
-#' ***
-#' 
-#' # Packages and script set-up 
-#' 
-#' * To make sure that your R environment is clear, remember to use `rm(list=ls())` in the beginning. 
-#' 
-#' * As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions. 
-#' 
-#'   + Therefore, you should always load the packages you need in the beginning, too. 
-#'   
-#'   + When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.
-#'   
-#'   + Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages.
-#' 
-#' This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages  
-## ---- message=FALSE------------------------------------------------------
+# Packages and script set-up 
+
 rm(list = ls())
 # install.packages("tidyverse")
 library(tidyverse)
 
-#' 
-#' ***
-#' 
-#' # Loading the dataset
-#' 
-#' Step 1 of Data Management is about "reading" the data into the R environment. 
-#' There are many different file types and with R you can open all of them.
-#' 
-#' Here, we'll focus on two file types (csv and dta). Different data files require different approaches but  - **as always** - information can be easily accessed in the CRAN documentation/stackoverflow. 
-#' 
-#' Let's first open the csv fiel "soep_europ.csv". 
-#' 
-#' **Remember**: 
-#' 
-#' * You have to write down the path where the file is saved relative to the root.directory of your RProject.
-#' 
-#' * A good rule of thumb is to save all your data in a separate "data" folder within your R environment: E.g. "data**/**soep_europ.csv"
-#' 
-#' * Don't use the backslash but always the forward slash(/). +#
-#' 
-#' ## .csv
-#' 
-#' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## data <- read.csv("_______") # Looks weird....
-## 
+# Loading the dataset
 
-#' 
-#' What happened: In (most) European countries the standard way to save csv/excel files is to separate values by ";" and the decimals by ",".
-#' 
-#' In the US and many other countries separation is done by "," and the decimals are marked by ".". This is the default for read.csv. 
-#' 
+## .csv
+ 
+#'Complete the empty spaces! (soep_europ.csv)
+data <- read.csv("_______") # Looks weird....
+
 #' To read the data correctly, we have to add the argument "sep" to the function.
-#' 
-#' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## data <- _____("data/soep_europ.csv", sep="_____") #
+data <- _____("data/soep_europ.csv", sep="_____") #
 
-#' 
+ 
 #' 2 Addenda: 
-#' 
-#' <span style="color:red">Task</span> <u>**1. Try out to to read a US style csv with soep_us.csv**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## data <-
 
-#' 
-#' 2. An easier way to read European style csv files is to use `read_csv2()` from the tidyverse. 
-#' 
-#' <span style="color:red">Task</span> <u>**Use read_csv2() to read soep_europ.csv**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## data <-
+#'1. Try out to to read a US style csv with soep_us.csv**
 
-#' 
-#' ## .dta
-#' * As a second data file type, we try to read dta (Stata's proprietary file format)
-#'   
-#'   + If you only intend to use a package once, you can simply call the package with `packagename::function`.  
-#' 
-## ---- eval=FALSE---------------------------------------------------------
-## 
-## # install.packages("readstata13")
-## library(readstata13)
-## 
-## data <- readstata13::read.dta13(file="data/soep.dta" ,
-##                    convert.factors=FALSE, # default is TRUE, would create Stata value labels
-##                    )
-## 
+data <-
+  
+#' 2. An easier way to read European style csv files is to use read_csv2() from the tidyverse. 
+#'   (Accordingly, read_csv() is for US style csv files)
 
-#' 
-#' Enough on reading data for now, let's use the European csv for now.
-#' 
-## ---- eval=FALSE---------------------------------------------------------
-## data <- read_csv2("data/soep_europ.csv")
+data <-
 
-#' 
-#' 
-#' ***
-#' 
-#' # Select the relevant variables
-#' Our data has 902 variables. Obviously, we do not need that many. 
-#' 
+
+
+## .dta / .sav / excel
+data <- haven::read_dta("data/soep.dta")
+
+data <- haven::read_sav("data/soep.sav")
+
+data <- readxl::read_xlsx("data/soep.xlsx")
+
+data <- read_csv2("data/soep_europ.csv")
+
+# Basic Data Management
+
+## Select the relevant variables
+
 #' Accordingly, we `select` the relevant ones:
+#' hhnr, persnr, gebjahr, sex, tp72 (Work Overtime), tp7001 (Contracted Working Hours), 
+#' tp7003 (Hours Per Week Actual), tp7602 (Net Income Last Month)
 #' 
-#' * *hhnr*, *persnr*, *gebjahr*, *sex*, *tp72* (Work Overtime), *tp7001* (Contracted Working Hours), *tp7003* (Hours Per Week Actual), *tp7602* (Net Income Last Month)
-#' 
-#' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u> Notice that after typing the first two or three characters of each variable, RStudio gives you a drop down menu. 
-## ---- eval=FALSE---------------------------------------------------------
-## data <- data %>% # remember the pipe?
-##   select(______) # fill in the missing names
 
-#' 
-#' `select()` is from the tidyverse, namely the package `dplyr`. "dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges" [check this out](https://dplyr.tidyverse.org/)
-#' 
-#' ***
-#' 
-#' # Explore the data structure
-#' 
-#' For a first overview over our data, we can use the base functions (e.g. those which are without any package installations part of R) `str()`, `head()`, `summary()`, `table()`, `quantile()`, and `View()`.
-#' 
-#' <span style="color:red">Task</span> <u>**Go through every function's output and try to understand what it means!**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## str(data)
-## head(data)
-## summary(data)
-## table(data$tp72) # you could use any other variable here.
-## quantile(data$tp72, na.rm = TRUE)
-## View(data)
+data <- data %>% # remember the pipe?
+   select(______) # fill in the missing names
 
-#' 
-#' ***
-#' 
-#' # Basic recoding and mutate()
-#' 
+ 
+## Explore the data structure
+
+#' For a first overview over our data, we can use the base functions 
+#' (e.g. those which are without any package installations part of R) 
+#' str(), head(), summary(), table(), quantile(), and View().
+
+str(data)
+head(data)
+summary(data)
+table(data$tp72) # you could use any other variable here.
+quantile(data$tp72, na.rm = TRUE)
+View(data)
+
+## Basic recoding and mutate()
+
 #' The dataset is from 2003. Compute the age accordingly by creating the new variable age
+data$age <- 2003 - _____
+ 
+#' There is also a dplyr way to do this: mutate(). 
+
+data <- ______ %>%
+   mutate(age = ______)
+
+## Filtering
+
+#' Let's say, we only want to keep those observations which are at least 18.
+data <- data %>%
+   filter(____ >= _____)
+
+## Arrange
+#' Sometimes, we want to order data. 
+#' We do so with `arrange()`. `desc(x)` sorts x in descending order. 
+
+data <- _____ %>%
+   _____(desc(___))
+# 
+
+#' 
+#' ***
+#' 
+#' ## All in one
+#' By the way, we could have done all of this in one batch:
 #' 
 #' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
 ## ---- eval=FALSE---------------------------------------------------------
+## data <- read_csv2("data/soep_europ.csv") # read data again.
 ## 
-## data$age <- 2003 - _____
+## data <- data %>%
+##   select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>%
+##   mutate(age = 2003-_____) %>%
+##   filter(______) %>% # only those who are at least 18
+##   _____(____(____)) # Arrange the dataframe so that age is displayed in descending order
 ## 
 
 #' 
-#' There is also a dplyr way to do this: `mutate()`. 
+#' Great, by now you basically have the main logic of dplyr at hand. In the sections below, we simply introduce some more dplyr functions and expand the functionality a bit. 
 #' 
-#' <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## data <- ______ %>%
-##   mutate(age = ______)
-
+#' ***
 #' 
+#' # Advanced stuff
 #' 
-#' The benefit of this function is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
+#' ## More mutate
+#' The benefit of `mutate()` is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
 #' 
 #' * want to recode the binary variable tp72 (Work Overtime) into three levels: 
 #' 
@@ -195,7 +143,8 @@ library(tidyverse)
 ##       _____,
 ##       "-3" = NA_real_, # remember the difference between integer and double?
 ##       "-2" = NA_real_,
-##       "-1" = NA_real_
+##       "-1" = NA_real_,
+##       .default = _____
 ##     )
 ##   )
 ## 
@@ -203,7 +152,7 @@ library(tidyverse)
 #'  
 #'  Several things to note here:
 #'  
-#'  * Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 20). 
+#'  * Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10). 
 #'  
 #'  * Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
 #'  
@@ -221,7 +170,7 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # Factorize 
+#' ## Factorize 
 #' 
 #' As we have practiced before, we can factorize variables. This is also possible within the dplyr world (`mutate()` again). Let's do that for sex.
 #' 
@@ -239,13 +188,13 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # Recode II
+#' ## Recode II
 #' 
 #' We can also recode values below a certain threshold at once (if it is numeric (either double or integer)): 
 #' 
 #' `if_else(condition, true, false)`
 #' 
-#' * tp7001(Contracted Working Hours): mutate as "contract", change all values below 0 (errors) to NA, and divide the variable 
+#' * tp7001(Contracted Working Hours): mutate to column "contract", change all values below 0 (errors) to NA, and divide the variable by 10
 #' * Do the same for tp7003: Actual working hours
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
@@ -262,7 +211,7 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # Multiple if_else() statements: 
+#' ## Multiple if_else() statements: 
 #' 
 #' `cases_when()` allows us to apply multiple `if_else()` statements. 
 #' 
@@ -275,6 +224,7 @@ library(tidyverse)
 ##   mutate(
 ##     inc.quant = case_when(
 ##       netinc < quantile(netinc, na.rm = TRUE)[2] ~ "Q1",
+## 
 ##       netinc >= quantile(netinc, na.rm = TRUE)[2] &
 ##         netinc < quantile(netinc, na.rm = TRUE)[3] ~ "Q2",
 ## 
@@ -289,7 +239,7 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # Check data.frame again
+#' ## Check data.frame again
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
 ## head(data)
@@ -298,16 +248,21 @@ library(tidyverse)
 #' 
 #' ***
 #' 
-#' # All in one
-#' By the way, we could have done all of this in one batch - but it would have been untidy... 
+#' ## All in one II
+#' Again, we could have done all of this in one batch - but it would have been untidy... 
 ## ---- message=FALSE------------------------------------------------------
 data <- read_csv2("data/soep_europ.csv")
 
 data <- data %>% # remember the pipe?
-  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>% # fill in the missing names
   
-  mutate(age = 2003-gebjahr, 
-         
+  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602)%>%
+  
+  mutate(age = 2003-gebjahr) %>%
+  
+  filter(age>=18) %>%
+  
+  arrange(desc(age))%>%
+  mutate(
          over = recode(
            tp72,
            "3" = 0, #actually means Does not apply: Self-Employment
@@ -347,13 +302,15 @@ data <- data %>% # remember the pipe?
 
 
 #' 
+#' ***
+#' 
+#' # (Easy) additional stuff
+#' 
 #' Great job! We are almost done. 
 #' 
 #' Below we'll QUICKLY introduce a few more functions.
 #' 
-#' ***
-#' 
-#' # Summarize
+#' ## Summarize
 #' 
 #' Summarize allows us to summarise certain variables, such as certain features of age 
 #' 
@@ -366,7 +323,7 @@ data <- data %>% # remember the pipe?
 #' 
 #' ***
 #' 
-#' # Grouping
+#' ## Grouping
 #' 
 #' The same is also possible for grouped structures. Say, for example, you would want to calculate separate values for different genders: 
 #' 
@@ -388,12 +345,11 @@ data <- data %>% # remember the pipe?
 ##   mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE))
 
 #' 
-#' 
 #' ***
 #' 
-#' # Filtering
+#' ## Filtering II
 #' 
-#' If you only want to keep certain rows (observations) which variables match a certain criterion, you can `filter()`. 
+#' As explained above, there are different types of filtering operations.
 #' 
 #' Let's say, you only want to keep those observations which are older than 18 and who are in the top three income quintiles. We store this in data2
 #' 
@@ -405,32 +361,11 @@ data <- data %>% # remember the pipe?
 ##          sex == "male")
 
 #' 
-#' When we filter for exactly one condition, we use `==`. When we filter for a string, we use `%in%`
+#' When we filter for exactly one condition, we use `==` (or `>`, `<`, `>=`, `<=`). When we filter for a string, we use `%in%`.
 #' 
 #' ***
 #' 
-#' # Arrange
-#' Sometimes, we want to order data. We do so with `arrange()`.
-#' 
-#' <span style="color:red">Task</span> <u>**What is the difference between the two examples?**</u>
-## ---- eval=FALSE---------------------------------------------------------
-## # Example 1
-## data <- data %>%
-##   arrange(desc(age))
-## 
-## head(data)
-## 
-## # Example 2
-## data <- data %>%
-##   group_by(inc.quant) %>%
-##   arrange(netinc, .by_group=TRUE)
-## 
-## head(data)
-
-#' 
-#' ***
-#' 
-#' # Merge
+#' ## Merge
 #' Assuming, we forgot to include the variable "tp0101" (Satisfaction With Health) in our dataset when we selected all the variables we want to work with above. Of course, the normal/efficient way would be to go back the select() operation above, include persnnr and rerun the whole code. For the sake of learning let's ignore this possibility. Instead, we reread the SOEP data under a different name, merge the relevant variables from this data.frame with the one we have been working with all the time and create a new data.frame (data2). 
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
@@ -441,9 +376,9 @@ data <- data %>% # remember the pipe?
 ## 
 
 #' 
-#' Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:
+#' Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below: 
 #' 
-#' ![.](Files/dplyr_joins.png)
+#' ![](Files/dplyr_joins.png)
 #' 
 #' Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn't work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with `any(duplicated(data$hhnr))`. 
 #' 
@@ -457,7 +392,7 @@ data <- data %>% # remember the pipe?
 #' 
 #' ***
 #' 
-#' # Spread and Gather
+#' ## Spread and Gather
 #' The last section for now! 
 #' 
 #' A reminder of the difference between long and wide data:
@@ -466,7 +401,9 @@ data <- data %>% # remember the pipe?
 #' 
 #' * Long data has in one column all the variable names and in another column the respective values.
 #' 
-#' Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` ![.](Files/dplyr_reshape.png)
+#' Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` 
+#' 
+#' ![](Files/dplyr_reshape.png)
 #' 
 #' At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:
 #' 

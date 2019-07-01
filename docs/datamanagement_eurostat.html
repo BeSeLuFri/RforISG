@@ -464,12 +464,13 @@ div.tocify {
 </div>
 
 
-<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R">here</a></p>
-<p>Solutions can be downloaded <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R">here</a>. But seriously - try to work through this without the solutions, first! You will feel far more at ease with the basics of data manipulation if you write your own code.</p>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat_clean.R">here</a></p>
+<p>Solutions can be downloaded <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/soloutions_datamanagement_eurostat.R">here</a>. But seriously - try to work through this without the solutions, first! You will feel far more at ease with the basics of data manipulation if you write your own code.</p>
 <div id="general" class="section level1">
 <h1><span class="header-section-number">1</span> General</h1>
 <ul>
-<li><p>This page is for you to practice the data management techniques you learned on the last <a href="https://beselufri.github.io/RforISG/datamanagement.html">page</a>. You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing you. All the operations can be solved with the tidyverse/dplyr grammar from before.</p></li>
+<li>This page is for you to practice the data management techniques you learned on the last <a href="https://beselufri.github.io/RforISG/datamanagement.html">page</a>. You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing new. All the operations can be solved with the tidyverse/dplyr grammar from before.</li>
+<li><p>To be fair, there are three new functions (all from the tidyverse or base R): <code>bind_rows()</code>, <code>str_replace()</code>, and <code>paste()</code>. We will explain the orally in the example below. If in doubt, try <code>?function.name</code> or google ;)</p></li>
 <li><p>Your task is to gather several variables from Eurostat. To make matters a bit more difficult, you have to colelct the data twice: Once on the country level and once on the region (NUTS2) level.</p></li>
 <li><p>The only new thing is that we now use an API to download the data (see next section).</p></li>
 </ul>
@@ -622,29 +623,35 @@ data_b &lt;- data_b %&gt;%
 <li><p>Don’t forget to recode values if they are supposed to become a variable</p></li>
 <li><p>E.g. if in the column size_emp one value is called “From 0 to 9 persons employed” and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): <code>.... %&gt;% mutate (size_emp = recode(size_emp, &quot;From 0 to 9 persons employed&quot; = &quot;empsize_verysmall&quot;))</code></p></li>
 </ul>
-<pre class="r"><code># Unemployment rates
+<pre class="r"><code># A. Employment rate by sex and age
+
+## Countries: **lfsa_ergaed** Employment rates by sex, age and educational attainment level 
+
+## Belgium: **lfst_r_lfe2emprtn** Employment rates by sex, age, educational attainment level, citizenship and NUTS 2 regions----
+
+## Rbind a and b: empl_educ
+
+
+# B. Unemployment rates
 
 ## Unemployment rates by sex, age and citizenship (%) [lfsa_urgan]
 
 ## Unemployment rates by sex, age, ((, country of birth)) and NUTS 2 regions (%) [lfst_r_lfu3rt AND lfst_r_lfur2gac]
+
+#&#39; There is only one single data management task for you here: 
+#&#39; * Somewhat randomly, Unemployment data for Youth and working age population exist but in different datasets:
+#&#39;   + lfst_r_lfur2gac has 15-64
+#*   + lfst_r_lfu3rt has 15-24
+#&#39; * Accordingly, we load and manipulate both data seperately and merge them
+
 
 ## Rbind a and b: unempl
 
 
 
 
-# Total Employment
 
-## Employment and activity by sex and age  - annual data  [lfsi_emp_a]
-
-## Employment by sex, age and NUTS 2 regions (1 000) [lfst_r_lfe2emp]
-
-## Rbind a and b: totemp
-
-
-
-
-# Nominal GDP per capita
+# C. Nominal GDP per capita
 
 ## Gross domestic product at market prices tec00001
 
@@ -655,9 +662,13 @@ data_b &lt;- data_b %&gt;%
 
 
 
-# Investment Rate
+# D. Investment Rate
 
 ## Annual enterprise statistics for special aggregates of activities (NACE Rev. 2) [sbs_na_sca_r2]
+#&#39; * Only Data for country level
+#&#39; * getting data for the variables:
+#&#39;   + Investment rate (investment/value added at factors cost) - percentage
+#&#39;   + Investment per person employed - milliers deuros
 
 ## Only data for country level available
 

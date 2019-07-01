@@ -6,7 +6,7 @@ title: "Objects and Data Frames"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata.R).
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata_clean.R).
 
 ***
 
@@ -60,11 +60,14 @@ For example, function names in R are really symbol objects that point to functio
 
 <span style="color:red">Task</span> <u>**Try to understand the different meanigs of x!**</u>
 ```{r, eval=FALSE}
+# Basic object creation
 x <- 1
 x
 
+# Not working why
 x(2)
 
+# Making it work
 x <- function(i) i^2
 
 x
@@ -96,7 +99,7 @@ b <- a + 1
 b
 ```
 
-R is object-oriented programming --> accordingly, it follows average math rules.
+R is object-oriented programming --> accordingly, it follows standard math rules.
 ```{r}
 c <- sqrt(a + b * 2)
 c
@@ -201,7 +204,7 @@ kicker.skills
 
 # Indices by number:
 kicker.skills[_] # GIVE second entry
-kicker.skills[_:4] # SELECT 2nd to fourth entry
+kicker.skills[_:4] # SELECT 2nd to 4th entry
 
 # Indices by name:
 kicker.skills["Marco"] # WHAT is the level of Katja's kicker skills? 

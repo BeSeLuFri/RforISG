@@ -6,7 +6,7 @@ title: "Datamanagement"
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R)
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_clean.R)
 
 # Preliminary:
 
@@ -44,7 +44,7 @@ There are many different file types and with R you can open all of them.
 
 Here, we'll focus on two file types (csv and dta). Different data files require different approaches but  - **as always** - information can be easily accessed in the CRAN documentation/stackoverflow. 
 
-Let's first open the csv fiel "soep_europ.csv". 
+Let's first open the csv file "soep_europ.csv". 
 
 **Remember**: 
 
@@ -52,7 +52,7 @@ Let's first open the csv fiel "soep_europ.csv".
 
 * A good rule of thumb is to save all your data in a separate "data" folder within your R environment: E.g. "data**/**soep_europ.csv"
 
-* Don't use the backslash but always the forward slash(/). +#
+* Don't use the backslash but always the forward slash(/). 
 
 ## .csv
 
@@ -139,7 +139,7 @@ data <- data %>% # remember the pipe?
   select(______) # fill in the missing names
 ```
 
-`select()` is from the tidyverse, namely the package `dplyr`. "dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges" [check this out](https://dplyr.tidyverse.org/)
+`select()` is from the tidyverse, namely the package `dplyr`. "dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges." For more information about dplyr, [check this out](https://dplyr.tidyverse.org/).
 
 ***
 
@@ -271,7 +271,7 @@ data <- data %>%
  
  Several things to note here:
  
- * Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 20). 
+ * Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10). 
  
  * Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
  
@@ -343,6 +343,7 @@ data <- data %>%
   mutate(
     inc.quant = case_when(
       netinc < quantile(netinc, na.rm = TRUE)[2] ~ "Q1",
+      
       netinc >= quantile(netinc, na.rm = TRUE)[2] &
         netinc < quantile(netinc, na.rm = TRUE)[3] ~ "Q2",
       
@@ -494,7 +495,7 @@ data2 <- data %>%
 
 ```
 
-Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:
+Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below: 
 
 ![](Files/dplyr_joins.png)
 

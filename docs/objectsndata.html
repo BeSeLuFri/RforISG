@@ -464,7 +464,7 @@ div.tocify {
 </div>
 
 
-<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata.R">here</a>.</p>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata_clean.R">here</a>.</p>
 <hr />
 <div id="objects-in-r-basic-calculations" class="section level1">
 <h1><span class="header-section-number">1</span> Objects in R: Basic Calculations</h1>
@@ -493,11 +493,14 @@ rm(list=ls()) # all objects are removed</code></pre>
 <p>Coming from excel or stata, you might think that objects are objects storing data. However, everything in R is an object: functions, symbols, and even R expressions: functions, symbols, and even R expressions (see <a href="https://www.oreilly.com/library/view/r-in-a/9781449358204/ch05s06.html">R in a Nutshell</a>).</p>
 <p>For example, function names in R are really symbol objects that point to function objects. (That relationship is, in turn, stored in an environment object.) You can assign a symbol to refer to a numeric object and then change the symbol to refer to a function:</p>
 <p><span style="color:red">Task</span> <u><strong>Try to understand the different meanigs of x!</strong></u></p>
-<pre class="r"><code>x &lt;- 1
+<pre class="r"><code># Basic object creation
+x &lt;- 1
 x
 
+# Not working why
 x(2)
 
+# Making it work
 x &lt;- function(i) i^2
 
 x
@@ -517,7 +520,7 @@ a &lt;- c(1, 2, 3, 4)</code></pre>
 <pre class="r"><code>b &lt;- a + 1
 b</code></pre>
 <pre><code>## [1] 2 3 4 5</code></pre>
-<p>R is object-oriented programming –&gt; accordingly, it follows average math rules.</p>
+<p>R is object-oriented programming –&gt; accordingly, it follows standard math rules.</p>
 <pre class="r"><code>c &lt;- sqrt(a + b * 2)
 c</code></pre>
 <pre><code>## [1] 2.236068 2.828427 3.316625 3.741657</code></pre>
@@ -596,7 +599,7 @@ kicker.skills
 
 # Indices by number:
 kicker.skills[_] # GIVE second entry
-kicker.skills[_:4] # SELECT 2nd to fourth entry
+kicker.skills[_:4] # SELECT 2nd to 4th entry
 
 # Indices by name:
 kicker.skills[&quot;Marco&quot;] # WHAT is the level of Katja&#39;s kicker skills? 

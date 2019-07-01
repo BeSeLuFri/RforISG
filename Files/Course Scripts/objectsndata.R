@@ -6,7 +6,7 @@
 knitr::opts_chunk$set(echo = TRUE)
 
 #' 
-#' Download the script here [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata.R).
+#' Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata.R).
 #' 
 #' ***
 #' 
@@ -51,6 +51,32 @@ rm(list=ls()) # all objects are removed
 
 #' 
 #' ***
+#' 
+#' # Everything in R Is an Object
+#' Coming from excel or stata, you might think that objects are objects storing data. However, everything in R is an object: functions, symbols, and even R expressions: functions, symbols, and even R expressions (see [R in a Nutshell](https://www.oreilly.com/library/view/r-in-a/9781449358204/ch05s06.html)).
+#' 
+#' For example, function names in R are really symbol objects that point to function objects. (That relationship is, in turn, stored in an environment object.) You can assign a symbol to refer to a numeric object and then change the symbol to refer to a function:
+#' 
+#' 
+#' <span style="color:red">Task</span> <u>**Try to understand the different meanigs of x!**</u>
+## ---- eval=FALSE---------------------------------------------------------
+## # Basic object creation
+## x <- 1
+## x
+## 
+## # Not working why
+## x(2)
+## 
+## # Making it work
+## x <- function(i) i^2
+## 
+## x
+## 
+## x(2)
+
+#' 
+#' 
+#' ***
 #' # Vectors
 #' For statistical calculations, we obviously need to work with data sets including many numbers of instead of scalars. The simplest way to collect many numbers (or other
 #' types of information) is called a vector in R terminology (you have already been familiarized with vectors on the page before). 
@@ -73,7 +99,7 @@ b <- a + 1
 b
 
 #' 
-#' R is object-oriented programming --> accordingly, it follows average math rules.
+#' R is object-oriented programming --> accordingly, it follows standard math rules.
 ## ------------------------------------------------------------------------
 c <- sqrt(a + b * 2)
 c
@@ -170,7 +196,7 @@ typeof(int_var)
 ## kicker.skills <- c(0.2, 4, 3, 10, 5,-2)
 ## 
 ## # Create a string vector of names:
-## players <- c("Katja", "Hans", "Theresa", "Sabine", "Kathrin", "Marco")
+## players <- c("Katja", "Hans", "Theresa", "Sabine", "Katrin", "Marco")
 ## 
 ## # Assign names to vector and display vector:
 ## names(kicker.skills) <- players
@@ -178,7 +204,7 @@ typeof(int_var)
 ## 
 ## # Indices by number:
 ## kicker.skills[_] # GIVE second entry
-## kicker.skills[_:4] # SELECT 2nd to fourth entry
+## kicker.skills[_:4] # SELECT 2nd to 4th entry
 ## 
 ## # Indices by name:
 ## kicker.skills["Marco"] # WHAT is the level of Katja's kicker skills?
@@ -205,6 +231,8 @@ x <- c(3, 2, 2, 3, 1, 2, 3, 2, 1, 2)
 xf1 <- factor(x, labels = c("bad", "okay", "good"), ordered = TRUE)
 xf2 <- factor(x, labels = c("bad", "okay", "good"))
 
+#' 
+#' If they are ordered, factors can be seen as an ordinal variable (e.g. in the latter case, values are ranked). Under the hood, factors behave like integers. 
 #' 
 #' <span style="color:red">Task</span> <u>**Practice more **</u>
 ## ---- eval=FALSE---------------------------------------------------------
@@ -240,7 +268,7 @@ xf2 <- factor(x, labels = c("bad", "okay", "good"))
 ## A.col <- ______
 ## 
 ## # Giving names to rows and columns:
-## colnames(A.col) <- c("Kathrin", "Hans")
+## colnames(A.col) <- c("Katrin", "Hans")
 ## rownames(A.col) <- c("Monday", "Wednesday", "Friday")
 ## A.col
 
@@ -255,11 +283,11 @@ xf2 <- factor(x, labels = c("bad", "okay", "good"))
 ## # GIVE all meal choices from Hans:
 ## A.col[ , ]
 ## 
-## # WHAT does Kathrin have for lunch on Monday? call Kathrin and Monday by name
+## # WHAT does Katrin have for lunch on Monday? call Katrin and Monday by name
 ## A.col[_ , _]
 ## 
 ## 
-## # WHAT does Kathrin have on Monday and Friday?
+## # WHAT does Katrin have on Monday and Friday?
 ## A.col[_ , c(_ , _)]
 
 #' 

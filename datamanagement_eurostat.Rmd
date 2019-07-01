@@ -6,14 +6,15 @@ title: "Datamanagement: Eurostat Example"
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R)
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat_clean.R)
 
-Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_eurostat.R). But seriously - try to work through this without the solutions, first! You will feel far more at ease with the basics of data manipulation if you write your own code. 
+Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/soloutions_datamanagement_eurostat.R). But seriously - try to work through this without the solutions, first! You will feel far more at ease with the basics of data manipulation if you write your own code. 
 
 # General
 
-* This page is for you to practice the data management techniques you learned on the last [page](https://beselufri.github.io/RforISG/datamanagement.html). You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing you. All the operations can be solved with the tidyverse/dplyr grammar from before.
-
+* This page is for you to practice the data management techniques you learned on the last [page](https://beselufri.github.io/RforISG/datamanagement.html). You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing new. All the operations can be solved with the tidyverse/dplyr grammar from before.
+   + To be fair, there are three new functions (all from the tidyverse or base R): `bind_rows()`, `str_replace()`, and `paste()`. We will explain the orally in the example below. If in doubt, try `?function.name` or google ;)
+  
 * Your task is to gather several variables from Eurostat. To make matters a bit more difficult, you have to colelct the data twice: Once on the country level and once on the region (NUTS2) level. 
 
 * The only new thing is that we now use an API to download the data (see next section).
@@ -179,30 +180,35 @@ empl_educ <- bind_rows(data_a, data_b)
 
 
 ```{r}
+# A. Employment rate by sex and age
 
-# Unemployment rates
+## Countries: **lfsa_ergaed** Employment rates by sex, age and educational attainment level 
+
+## Belgium: **lfst_r_lfe2emprtn** Employment rates by sex, age, educational attainment level, citizenship and NUTS 2 regions----
+
+## Rbind a and b: empl_educ
+
+
+# B. Unemployment rates
 
 ## Unemployment rates by sex, age and citizenship (%) [lfsa_urgan]
 
 ## Unemployment rates by sex, age, ((, country of birth)) and NUTS 2 regions (%) [lfst_r_lfu3rt AND lfst_r_lfur2gac]
+
+#' There is only one single data management task for you here: 
+#' * Somewhat randomly, Unemployment data for Youth and working age population exist but in different datasets:
+#'   + lfst_r_lfur2gac has 15-64
+#*   + lfst_r_lfu3rt has 15-24
+#' * Accordingly, we load and manipulate both data seperately and merge them
+
 
 ## Rbind a and b: unempl
 
 
 
 
-# Total Employment
 
-## Employment and activity by sex and age  - annual data  [lfsi_emp_a]
-
-## Employment by sex, age and NUTS 2 regions (1 000) [lfst_r_lfe2emp]
-
-## Rbind a and b: totemp
-
-
-
-
-# Nominal GDP per capita
+# C. Nominal GDP per capita
 
 ## Gross domestic product at market prices tec00001
 
@@ -213,9 +219,13 @@ empl_educ <- bind_rows(data_a, data_b)
 
 
 
-# Investment Rate
+# D. Investment Rate
 
 ## Annual enterprise statistics for special aggregates of activities (NACE Rev. 2) [sbs_na_sca_r2]
+#' * Only Data for country level
+#' * getting data for the variables:
+#'   + Investment rate (investment/value added at factors cost) - percentage
+#'   + Investment per person employed - milliers deuros
 
 ## Only data for country level available
 

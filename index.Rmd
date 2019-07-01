@@ -63,9 +63,7 @@ We have two days, 4 hours per day.
 ## Why R
 R is a powerful programming language that is especially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Data Science and Applied Statistics.
 
-It is **free** and **constantly extended by a large user community** - guaranteeing that latest innovations from visualizationsto machine learning are always up to date in the R universe. There are over 15.000 approved R packages (reusable R functions, see below) and the number is growing [exponentially](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368). At the same time, the R-Foundation (supported by Microsoft and Google) gives credibility to the continuance of base R itself.
-
-As it is free and extremely popular, the 
+It is **free** and **constantly extended by a large user community** - guaranteeing that latest innovations from vizualizations to machine learning are always up to date in the R universe. There are over 15.000 approved R packages (reusable R functions, see below) and the number is growing [exponentially](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368). At the same time, the R-Foundation (supported by Microsoft and Google) gives credibility to the continuance of base R itself.
 
 Finally, this might be relevant in our context: Visualizations are way prettier and user friendlier than anything Stata or SPSS even remotely have to offer (see the [R-Graph Gallery](https://www.r-graph-gallery.com/) for a quick glimpse into what is possible).  
 
@@ -126,7 +124,7 @@ Follow the instructions. Either create the project in a new directory or in an a
 
 This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.
 
-My advise is to create two folders within the project directory right away. One folder for scripts (called scripts) and another folder for data (called data).
+**My advise is to create two folders within the project directory right away. One folder for scripts (called scripts) and another folder for data (called data).**
 
 When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved. 
 

@@ -464,7 +464,7 @@ div.tocify {
 </div>
 
 
-<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement.R">here</a></p>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_clean.R">here</a></p>
 <div id="preliminary" class="section level1">
 <h1><span class="header-section-number">1</span> Preliminary:</h1>
 <ul>
@@ -492,12 +492,12 @@ library(tidyverse)</code></pre>
 <h1><span class="header-section-number">3</span> Loading the dataset</h1>
 <p>Step 1 of Data Management is about “reading” the data into the R environment. There are many different file types and with R you can open all of them.</p>
 <p>Here, we’ll focus on two file types (csv and dta). Different data files require different approaches but - <strong>as always</strong> - information can be easily accessed in the CRAN documentation/stackoverflow.</p>
-<p>Let’s first open the csv fiel “soep_europ.csv”.</p>
+<p>Let’s first open the csv file “soep_europ.csv”.</p>
 <p><strong>Remember</strong>:</p>
 <ul>
 <li><p>You have to write down the path where the file is saved relative to the root.directory of your RProject.</p></li>
 <li><p>A good rule of thumb is to save all your data in a separate “data” folder within your R environment: E.g. “data<strong>/</strong>soep_europ.csv”</p></li>
-<li><p>Don’t use the backslash but always the forward slash(/). +#</p></li>
+<li><p>Don’t use the backslash but always the forward slash(/).</p></li>
 </ul>
 <div id="csv" class="section level2">
 <h2><span class="header-section-number">3.1</span> .csv</h2>
@@ -549,7 +549,7 @@ library(tidyverse)</code></pre>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u> Notice that after typing the first two or three characters of each variable, RStudio gives you a drop down menu.</p>
 <pre class="r"><code>data &lt;- data %&gt;% # remember the pipe?
   select(______) # fill in the missing names</code></pre>
-<p><code>select()</code> is from the tidyverse, namely the package <code>dplyr</code>. “dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges” <a href="https://dplyr.tidyverse.org/">check this out</a></p>
+<p><code>select()</code> is from the tidyverse, namely the package <code>dplyr</code>. “dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges.” For more information about dplyr, <a href="https://dplyr.tidyverse.org/">check this out</a>.</p>
 <hr />
 </div>
 <div id="explore-the-data-structure" class="section level2">
@@ -643,7 +643,7 @@ data &lt;- data %&gt;%
   )</code></pre>
 <p>Several things to note here:</p>
 <ul>
-<li><p>Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 20).</p></li>
+<li><p>Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).</p></li>
 <li><p>Within <code>mutate()</code> we can - in a tidy way - work on multiple variables (e.g. over and netinc)</p></li>
 <li><p>Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).</p></li>
 </ul>
@@ -694,6 +694,7 @@ table(data$over,
   mutate(
     inc.quant = case_when(
       netinc &lt; quantile(netinc, na.rm = TRUE)[2] ~ &quot;Q1&quot;,
+      
       netinc &gt;= quantile(netinc, na.rm = TRUE)[2] &amp;
         netinc &lt; quantile(netinc, na.rm = TRUE)[3] ~ &quot;Q2&quot;,
       
