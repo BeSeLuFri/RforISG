@@ -818,7 +818,7 @@ data &lt;- data %&gt;% # remember the pipe?
 data2 &lt;- data %&gt;%
   left_join(data.origin[,c(&quot;hhnr&quot;, &quot;tp0101&quot;)], by=c(&quot;hhnr&quot;))</code></pre>
 <p>Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:</p>
-<p><img src="Files/dplyr_joins.png" /></p>
+<p><img src="Files/dplyr_joins.PNG" /></p>
 <p>Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn’t work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with <code>any(duplicated(data$hhnr))</code>.</p>
 <p>We therefore need a second variable to join them by. In our case, this second variable is persnr.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -835,7 +835,7 @@ data2 &lt;- data %&gt;%
 <li><p>Long data has in one column all the variable names and in another column the respective values.</p></li>
 </ul>
 <p>Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: <code>spread()</code> and <code>gather()</code></p>
-<p><img src="Files/dplyr_reshape.png" /></p>
+<p><img src="Files/dplyr_reshape.PNG" /></p>
 <p>At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:</p>
 <pre class="r"><code>data.long &lt;- data %&gt;%
   gather(key=key, value = value, -c(hhnr, persnr))</code></pre>

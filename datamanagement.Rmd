@@ -497,7 +497,7 @@ data2 <- data %>%
 
 Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:  
 
-![](Files/dplyr_joins.png) 
+![](Files/dplyr_joins.PNG) 
 
 Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn't work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with `any(duplicated(data$hhnr))`. 
 
@@ -522,7 +522,7 @@ A reminder of the difference between long and wide data:
 
 Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` 
 
-![](Files/dplyr_reshape.png)
+![](Files/dplyr_reshape.PNG)
 
 At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:
 
