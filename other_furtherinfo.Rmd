@@ -174,7 +174,7 @@ Books are ordered by complexity, beginning with user-friendly books on learning 
   <td>
   
   <td>
-  <a href="http://ggplot2.org/book/"><img border="0" alt="W3Schools" src="http://t1.gstatic.com/images?q=tbn:ANd9GcQNvhEpXp9OwvqVosEh-UecM3TNbhdb1eVZp3LywUcXGeVC3scQ" height="180" width="120" ></a>
+  <a href="https://www.springer.com/de/book/9780387981413"><img border="0" alt="W3Schools" src="http://t1.gstatic.com/images?q=tbn:ANd9GcQNvhEpXp9OwvqVosEh-UecM3TNbhdb1eVZp3LywUcXGeVC3scQ" height="180" width="120" ></a>
   <td>  
   
     <td>
@@ -210,7 +210,7 @@ Books are ordered by complexity, beginning with user-friendly books on learning 
   <td>
   
   <td>
-  <a href="www.rcpp.org/"><img border="0" alt="W3Schools" src="http://t3.gstatic.com/images?q=tbn:ANd9GcSO9T6JQYtpQgcaCXudbqMB-fnvTjGowsnmeh9-BQku3zveR4-J" height="180" width="120" ></a>
+  <a href="http://www.rcpp.org/book/"><img border="0" alt="W3Schools" src="http://t3.gstatic.com/images?q=tbn:ANd9GcSO9T6JQYtpQgcaCXudbqMB-fnvTjGowsnmeh9-BQku3zveR4-J" height="180" width="120" ></a>
   <td>
   
   <td>
@@ -226,11 +226,6 @@ Books are ordered by complexity, beginning with user-friendly books on learning 
   <td>
   <a href="http://r-pkgs.had.co.nz/"><img border="0" alt="W3Schools" src="http://t3.gstatic.com/images?q=tbn:ANd9GcQdwOQxaWZnTc2s55ltS2NL8jpxbnD0sEC6QNPiHKPrIM-AHmAB" height="180" width="120" ></a>
   <td>
-  
-  <td>
-  <a href="https://images-na.ssl-images-amazon.com/images/I/41eCbcQARTL._SX342_BO1,204,203,200_.jpg"><img border="0" alt="W3Schools" src="https://images-na.ssl-images-amazon.com/images/I/41eCbcQARTL._SX342_BO1,204,203,200_.jpg" height="180" width="120" ></a>
-  <td>
-
   
 </table>
  
