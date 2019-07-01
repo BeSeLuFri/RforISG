@@ -1,4 +1,4 @@
-geo_code;time;unemp_youth_t;gdp_gr;inv_per_empl;population_total_t;unemp_workagepop_t;emmigration_t;immigration_t;location;geo_name
+geo_code;time;unemp_youth_t;gdp_gr;inv_per_empl;population_total_t;unemp_workagepop_t;emigration_t;immigration_t;location;geo_name
 AT;1995; 5,9;NA;NA;NA; 4,4;NA;NA;Central;Austria
 AT;1996; 6,9;NA;NA;NA; 5,3;NA;NA;Central;Austria
 AT;1997; 7,6;NA;NA;NA; 5,2;NA;NA;Central;Austria

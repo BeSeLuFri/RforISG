@@ -16,3 +16,8 @@ purl(input = "datamanagement_eurostat.Rmd",
 purl(input = "dataviz.Rmd",
      output = "Files/Course Scripts/dataviz.R",
      documentation = 2)
+
+
+purl(input = "dataviz_eurostat.Rmd",
+     output = "Files/Course Scripts/dataviz_eurostat1.R",
+     documentation = 1)

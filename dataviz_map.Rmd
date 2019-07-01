@@ -11,7 +11,7 @@ Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
 
 # Intro
 
-Creating maps with ggplot is easy. You just have to supply longitudial data as the x variable and lattitudial data as the y variable and additionally give a group variable (so that R knows, which rows are to be filled together). 
+Creating maps with ggplot is easy. You just have to supply longitudinal data as the x variable and latitudinal data as the y variable and additionally give a group variable (so that R knows, which rows are to be filled together). 
 
 This kind of data (long, lat, group) is something which you can get from external sources (we present two options below). Then you have to merge this data with your values (e.g. what you want to fill into the map). So in addition, you need a fourth variable (like the code or the name of the geography). 
 
@@ -41,7 +41,7 @@ eurost2 <- inner_join(x=eurost, y=mpdta, by=c("geo_name" = "region"))
 ```
 
 
-The basic ggplot can be done with `geom_polygon`. As we said, you supply longitude as x and lattitudial as y data, group them according to the group indicator and fill in your variable of interest (youth unemployment.)
+The basic ggplot can be done with `geom_polygon`. As we said, you supply longitude as x and latitude as y data, group them according to the group indicator and fill in your variable of interest (youth unemployment.)
 
 That's it.
 ```{r}
@@ -61,7 +61,7 @@ P2 <- P+
         axis.text.x = element_blank(),
         axis.text.y = element_blank(), axis.ticks.x = element_blank(),
         axis.ticks.y = element_blank(), axis.title = element_blank())+
-   scale_fill_gradient(name = "Youth Umemployment", 
+   scale_fill_gradient(name = "Youth Unemployment", 
                       low = rgb(207,233, 238, maxColorValue = 255),
                       high = rgb(79, 129, 189, maxColorValue = 255))+
   labs(title = "Map of youth unemployment per country in Europe (2014)",
@@ -75,7 +75,7 @@ P2
 
 # NUTS2 level plots with eurostat
 
-The eurstat package, which you already know by now, has the function `get_eurostat_geospatial` which allows you to retrieve a data frame with longitudial, lattitudial, and group data for maps on different levels of agglomeration. 
+The eurstat package, which you already know by now, has the function `get_eurostat_geospatial` which allows you to retrieve a data frame with longitudinal, latitudinal, and group data for maps on different levels of agglomeration. 
 
 The overall procedure is the same as above. Once we have data on long, lat, and group, we merge it with our data of interest. 
 
@@ -126,7 +126,7 @@ new2 <- new+
         axis.text.x = element_blank(),
         axis.text.y = element_blank(), axis.ticks.x = element_blank(),
         axis.ticks.y = element_blank(), axis.title = element_blank())+
-   scale_fill_gradient(name = "Youth Umemployment", 
+   scale_fill_gradient(name = "Youth Unemployment", 
                       low = rgb(207,233, 238, maxColorValue = 255),
                       high = rgb(79, 129, 189, maxColorValue = 255))+
   coord_map(xlim = c(-30, 45), ylim = c(30, 75))+

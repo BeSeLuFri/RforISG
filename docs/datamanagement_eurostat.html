@@ -338,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -496,35 +494,27 @@ div.tocify {
 <div id="important-data-management-decisions" class="section level2">
 <h2><span class="header-section-number">3.2</span> Important Data Management Decisions</h2>
 <ul>
-<li>For Belgium regions the following geo identifiers have been used
-<ul>
+<li>For Belgium regions the following geo identifiers have been used</li>
 <li><strong>BE1</strong> Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest –&gt; ATTENTION BE10 seems to be identical</li>
 <li><strong>BE2</strong> Vlaams Gewest</li>
 <li><strong>BE3</strong> Région wallonne</li>
-</ul></li>
-<li>Youth and working age population
-<ul>
+<li>Youth and working age population</li>
 <li>Youth defined as “From 15 to 24 years”</li>
 <li>Working age populations as “From 15 to 64 years”,</li>
-</ul></li>
 </ul>
 <hr />
 </div>
 <div id="the-data-management-structure" class="section level2">
 <h2><span class="header-section-number">3.3</span> The data management structure</h2>
 <ul>
-<li>Each variable/group of related variables has its own header and is downloaded and manipulated in the same fashion:
-<ul>
+<li>Each variable/group of related variables has its own header and is downloaded and manipulated in the same fashion:</li>
 <li>There are three code chunks: one for a) all countries, b) Belgian regions and c) merging a and b</li>
-</ul></li>
 <li><ol style="list-style-type: lower-alpha">
 <li>and b) themselves have the same order:</li>
-</ol>
-<ul>
+</ol></li>
 <li>Download data via API with get_eurostat</li>
 <li>Label all codes (for easier readability) with label_eurostat</li>
 <li>Filter, select and spread the data</li>
-</ul></li>
 <li>The first variable (Employment) has extensive comments to ease the understanding of the code</li>
 <li>To retrieve the eurostat codes for datasets check the subchapter “Search for Eurostat codes”</li>
 </ul>
@@ -534,22 +524,18 @@ div.tocify {
 <h2><span class="header-section-number">3.4</span> Search for Eurostat codes</h2>
 <ul>
 <li>Eurostat codes for data tables can be retrieved via search_eurostat</li>
-<li>An example (looking for all data containing the name employment in the title):
-<ul>
-<li><code>query &lt;- search_eurostat("Employment", type = "all")</code></li>
+<li>An example (looking for all data containing the name employment in the title):</li>
+<li><code>query &lt;- search_eurostat(&quot;Employment&quot;, type = &quot;all&quot;)</code></li>
 <li>You can then inspect the query via <code>View(query)</code></li>
-</ul></li>
 </ul>
 </div>
 </div>
 <div id="setup-the-script" class="section level1">
 <h1><span class="header-section-number">4</span> Setup the script</h1>
 <ul>
-<li><p>Remember: You should clean the environment and load the necessary packages.</p>
-<ul>
+<li><p>Remember: You should clean the environment and load the necessary packages.</p></li>
 <li><p>If packages aren’t installed yet, do so.</p></li>
 <li><p>We need the tidyverse and the eurostat package.</p></li>
-</ul></li>
 </ul>
 <p><span style="color:red">Task</span> <u><strong>Clean the environment and load the packages</strong></u></p>
 </div>
@@ -634,7 +620,7 @@ data_b &lt;- data_b %&gt;%
 <li><p>Below you get all the eurostat codes you need as well as the name you should give each respective variable.</p></li>
 <li><p>Once you have all variables, we want to merge them by their geo_code and time identification.</p></li>
 <li><p>Don’t forget to recode values if they are supposed to become a variable</p></li>
-<li><p>E.g. if in the column size_emp one value is called “From 0 to 9 persons employed” and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): <code>.... %&gt;% mutate (size_emp = recode(size_emp, "From 0 to 9 persons employed" = "empsize_verysmall"))</code></p></li>
+<li><p>E.g. if in the column size_emp one value is called “From 0 to 9 persons employed” and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): <code>.... %&gt;% mutate (size_emp = recode(size_emp, &quot;From 0 to 9 persons employed&quot; = &quot;empsize_verysmall&quot;))</code></p></li>
 </ul>
 <pre class="r"><code># Unemployment rates
 

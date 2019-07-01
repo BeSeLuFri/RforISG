@@ -9,7 +9,7 @@ Of course, this page provided only a glimpse into the basics of coding with R.
 
 Nevertheless, I am fairly confident that this page is a good basis for all standard data tasks (data management, visualizations, regressions) within ISG and that >80% of all of those tasks are covered by the packages and functions which are on this page. 
 
-There are seemingly endless possibilities to go on from here. To provide some orientation, this page lists a couple of (free online) ressources (see below).
+There are seemingly endless possibilities to go on from here. To provide some orientation, this page lists a couple of (free online) resources (see below).
 
 ## If we had a little more time...
 
@@ -21,7 +21,7 @@ If we had an additional day or so, I would have covered the topics in the list b
 
 - [Shiny](https://shiny.rstudio.com/articles/basics.html): Intro into shiny - learn it from the developers. Shiny is a R package that makes it easy to build interactive web apps straight from R. 
 
-# A glimps into new stuff
+# A glimpse into new stuff
 
 Something which might be of special interest to ISG - word clouds. 
 Credits to Georg, who made this word cloud example based on the ISG staff pages. 
@@ -90,7 +90,7 @@ token <- text %>%
   mutate(lower = str_to_lower(words, locale = "de")) %>%
   anti_join(stopwords_de, by = c("lower" = "words"))
 
-# aggregrate words / filter freqs
+# aggregate words / filter freqs
 wordcounts <- token %>%
   count(words) %>%
   arrange(desc(n)) %>%
@@ -105,9 +105,9 @@ wordcloud2(wordcounts, shuffle = FALSE, color = "blue")
 
 </div>
 
-# Important Ressources
+# Important Resources
 
-As you cannot emphasize this enought, here again a list of ressources to help you in your workflow. 
+As you cannot emphasize this enough, here again a list of resources to help you in your workflow. 
 
 [Stackoverflow](https://www.stackoverflow.com/):
 A general discussion forum for programmers, including many R users.
@@ -135,7 +135,7 @@ If you have any questions, one of the following might help:
 
 * `?functionname` (and press enter) to retrieve the official documentation
 
-* google (make sure to type r somewhere into your query; stackoverflow results are preferrable)
+* google (make sure to type r somewhere into your query; stackoverflow results are preferable)
 
 * Ask us ;) 
 

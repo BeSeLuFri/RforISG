@@ -32,11 +32,15 @@ openxlsx::write.xlsx(econ2, "data/soep.xlsx")
 eurost <- read_csv2(file = "data/offline/data_uptodate.csv")
 
 eurost <- eurost %>%
+  mutate(emigration_t = emmigration_t) %>%
   filter(!geo_code %in% c("BE1", "BE2", "BE3", "EA19", "EE", "EU15", "EU28", "EA12", "EU27_2019", "DE_TOT", "EEA30", "EEA31", "EEA28",
                           "EA18", "EU",   "EU27", "EA17", "RS", "MK", "TR", "ME", "AZ", "BY", "EA", "EFTA", "FX", "AL", "BA", "XK", 
                           "LI", "US", "AZ", "GE", "UA", "MD", "RU", "AD", "AM", "MC", "SM")) %>%
   select(geo_code, time, unemp_youth_t, gdp_gr, inv_per_empl, population_total_t, unemp_workagepop_t,
-         emmigration_t, immigration_t)
+         emigration_t, immigration_t)
+
+
+# channge emmigration to emigration
 
 
 a <- data.frame(geo_code = c("AT", "BE", "BG", "CH","CY","CZ","DE","DK","EL","ES","FI",

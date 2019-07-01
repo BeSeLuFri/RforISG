@@ -12,7 +12,7 @@ Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
 # Info
 
 We practice with the Eurostat data again. 
-However, to spare us the time of datamanagement, now we already have a prepared daset at hand. 
+However, to spare us the time of datamanagement, now we already have a prepared dataset at hand. 
 
 ***
 
@@ -61,7 +61,7 @@ ggplot(
   mapping = aes(
     x = unemp_youth_t,
     y = gdp_gr,
-    color = emmigration_t / immigration_t)
+    color = emigration_t / immigration_t)
 ) +
   geom_point(
     aes(size = inv_per_empl)
@@ -72,7 +72,7 @@ ggplot(
        subtitle = "Correlation between lower growth rate and higher youth unemployment",
        caption = "Source: Eurostat",
        size = "Investment p. person\n employed (in Mill. €)",
-       color= "Ratio of Emmigration \n to Immigration")+
+       color= "Ratio of Emigration \n to Immigration")+
   geom_smooth(method="lm", se=FALSE, color="black")+
   theme_classic()
 ```
@@ -82,7 +82,7 @@ ggplot(
 
 * y = gdp_gr
 
-* color = emmigration_t / immigration_t
+* color = emigration_t / immigration_t
 
 * size = inv_per_empl
 
@@ -109,7 +109,7 @@ ggplot(
              size = 3) +
   labs(
     title = "Unemployment levels of youth and total working age population",
-    subtitle = "In most European countires youth unemployment is almost twice as big",
+    subtitle = "In most European countries youth unemployment is almost twice as big",
     x = "Countries",
     y = "Unemployment (in Pct.)",
     fill = "Youth unemployment",
@@ -128,7 +128,7 @@ ggplot(
 
 * fill = unemp_youth_t
 
-* In the function for the bars, remember to use `stat = identity`. Play a bit with the widht of the bars.
+* In the function for the bars, remember to use `stat = identity`. Play a bit with the width of the bars.
 
 * Crucially, we add points which relate to unemp_workagepop_t. You need to write a new aes() in the point function and assign the color "red". Outside of the aes() argument, adjust the size of the points to 3. 
 
@@ -139,7 +139,7 @@ ggplot(
 
 ## geom_hist
 
-Here, we first do some some data management. We reload the data (but save them as *eurost2*), filter for some countries and the time period 1990-2015. Furhtermore, we create two new columns which copy the values of (youth) unemployment ONLY in the year of 2015. 
+Here, we first do some some data management. We reload the data (but save them as *eurost2*), filter for some countries and the time period 1990-2015. Furthermore, we create two new columns which copy the values of (youth) unemployment ONLY in the year of 2015. 
 
 ```{r, message=FALSE, warning=FALSE}
 eurost2 <- read_csv2("data/eurostat_data.csv") %>%
@@ -178,7 +178,7 @@ ggplot(data = eurost2,
 
 * What we are doing then is using two seperate `geom_violin`  and two seperate `geom_point` functions
 
-  + Both violin functions use the argument `alpha = 0.5` to inrease the transparency of the violin plots
+  + Both violin functions use the argument `alpha = 0.5` to increase the transparency of the violin plots
   
   + One violin function has`y=unemp_youth_t` and the other`y = unemp_workagepop_t`. Use the appropriate colors
   
@@ -199,11 +199,11 @@ If you have any questions, one of the following might help:
 
 * `?functionname` (and press enter) to retrieve the official documentation
 
-* google (make sure to type r somewhere into your query; stackoverflow results are preferrable)
+* google (make sure to type r somewhere into your query; stackoverflow results are preferable)
 
 * Ask us ;) 
 
-All the exercises will use the first plot. To make our lifes easier, we safe this plot as main_plot
+All the exercises will use the first plot. To make our lives easier, we safe this plot as main_plot
 
 ```{r}
 main_plot <- ggplot(
@@ -211,7 +211,7 @@ main_plot <- ggplot(
   mapping = aes(
     x = unemp_youth_t,
     y = gdp_gr,
-    color = emmigration_t / immigration_t)
+    color = emigration_t / immigration_t)
 ) +
   geom_point(
     aes(size = inv_per_empl)
@@ -222,7 +222,7 @@ main_plot <- ggplot(
        subtitle = "Correlation between lower growth rate and higher youth unemployment",
        caption = "Source: Eurostat",
        size = "Investment p. person\n employed (in Mill. €)",
-       color= "Ratio of Emmigration \n to Immigration")+
+       color= "Ratio of Emigration \n to Immigration")+
   geom_smooth(method="lm", se=FALSE, color="black")+
   theme_classic()
 ```
@@ -260,7 +260,7 @@ main_plot+
 
 ## Adding labels to points
 
-We want to have labels with the country codes next to our points. ggplot has a propietary function for this, but a cleaner and more efficient function comes from the ggrepel package (e.g. install ggrepel). 
+We want to have labels with the country codes next to our points. ggplot has a proprietary function for this, but a cleaner and more efficient function comes from the ggrepel package (e.g. install ggrepel). 
 
 ```{r, echo=FALSE}
 main_plot+
@@ -283,7 +283,7 @@ You can add a facets (e.g. the same plotting relationship in many windows repres
 ```{r, echo=FALSE}
 main_plot+
   facet_wrap(~location)+
-  labs(caption = "Source: Eurostat + location is manully defined by the site's creator")
+  labs(caption = "Source: Eurostat + location is manually defined by the site's creator")
 
 ```
 

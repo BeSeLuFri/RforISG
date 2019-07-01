@@ -39,7 +39,7 @@ Actually, it only takes 12 lines of code (of which 5 are only related to the tex
 
   + We study the **grammar of plotting**
   
-  + step by step, we will replicate the graph above (but with some lengthy digressions to learn about different ggplot options inbetween. 
+  + step by step, we will replicate the graph above (but with some lengthy digressions to learn about different ggplot options in-between. 
 
 This site heavily builds upon [The R Bootcamp](https://therbootcamp.github.io/) who employ the widely used mpg dataset and the accompanying coding instructions (see for example (see for example [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)) for their data visualization tutorial. 
 
@@ -58,7 +58,7 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 
 # Base R Plotting
 
-Base R has several functions for data visualization. Crucially, you need sepearte functions for each type of plot. Some examples:
+Base R has several functions for data visualization. Crucially, you need separate functions for each type of plot. Some examples:
 
 ```{r}
 hist(x=mpg$displ)
@@ -253,7 +253,7 @@ ggplot(data = mpg,
 
 ### Labels
 
-This is largely self explanatory. 
+This is largely self-explanatory. 
 
 ```{r}
 ggplot(data = mpg, 
@@ -407,7 +407,7 @@ final_plot <- ggplot(data = mpg,
   theme_bw()
 ```
 
-We can then add stuff to the the ggplot object in the usual way.
+We can then add stuff to the ggplot object in the usual way.
 
 Suppose, we want to add a fat vertical line (x=3) again:
 
@@ -461,12 +461,12 @@ ggsave(plot = final_plot,
 ***
 # Addenda II
 
-Below, find information on how to create a likert scale type of graph and the basics on how to create an individual theme.
+Below, find information on how to create a Likert scale type of graph and the basics on how to create an individual theme.
 
 ## Likert scale
 Let's create fake Likert scale data. Let's pretend that the different types of transmissions are the levels of a Likert scale and that car classes are the Likert items. 
 
-Before we can plot this fake likert scale, we have to do some data transformation:
+Before we can plot this fake Likert scale, we have to do some data transformation:
 
 ```{r}
 mpg2 <- mpg %>%
@@ -491,7 +491,7 @@ ggplot(data = mpg2,
 
 * Use the `geom_bar()` function.
 
-  + use stat="identity" to indicate that the height of the bars should represent values in the data (default is stat = "bin" which simply counts the number of occurences of the x aestehetic)
+  + use stat="identity" to indicate that the height of the bars should represent values in the data (default is stat = "bin" which simply counts the number of occurrences of the x aesthetic)
   
   + use widht = 0.7 to reduce the bar widht a bit
 
@@ -549,9 +549,9 @@ ggplot(data = mpg,
 
 ***
 
-# Some ressources for ggplot2
+# Some resources for ggplot2
 
 
 [Tutorial](https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html#aesthetic_mapping) on replicating a graph from The Economist from Harvard Data Science Services. 
 
-[Book](http://socviz.co/index.html#preface) on Data Visualizaton by Kieran Healy, freely available online
+[Book](http://socviz.co/index.html#preface) on Data Vizualizaton by Kieran Healy, freely available online
