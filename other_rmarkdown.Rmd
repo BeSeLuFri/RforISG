@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ***
 
 # Setup
-The cheat sheet offers a pretty good introduction:
+The cheat sheet offers a pretty good introduction: 
  
 ![](Files/rmarkdown-screenshot.png)
 
