@@ -471,10 +471,12 @@ div.tocify {
 <p><img src="dataviz_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Actually, it only takes 12 lines of code (of which 5 are only related to the text captions) and some pretty straight forward logic.</p>
 <ul>
-<li><p>To get there, we first get a glimpse into <strong>base R plotting</strong>.</p></li>
-<li><p>Then, we move on the much more powerful <strong>ggplot2 package</strong> (part of the tidyverse).</p></li>
-<li><p>We study the <strong>grammar of plotting</strong></p></li>
-<li><p>step by step, we will replicate the graph above (but with some lengthy digressions to learn about different ggplot options in-between.</p></li>
+<li>To get there, we first get a glimpse into <strong>base R plotting</strong>.</li>
+<li>Then, we move on the much more powerful <strong>ggplot2 package</strong> (part of the tidyverse).
+<ul>
+<li>We study the <strong>grammar of plotting</strong></li>
+<li>step by step, we will replicate the graph above (but with some lengthy digressions to learn about different ggplot options in-between.</li>
+</ul></li>
 </ul>
 <p>This site heavily builds upon <a href="https://therbootcamp.github.io/">The R Bootcamp</a> who employ the widely used mpg dataset and the accompanying coding instructions (see for example (see for example <a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data Science</a>) for their data visualization tutorial.</p>
 <hr />
@@ -501,9 +503,9 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <div id="disadvantages-of-base-r" class="section level2">
 <h2><span class="header-section-number">3.1</span> Disadvantages of Base R</h2>
 <ul>
-<li><p>Pretty outdated looking plots</p></li>
-<li><p>Requires a lot of code and not very flexible</p></li>
-<li><p>Plot objects cannot be stored and modified in a tidy way</p></li>
+<li>Pretty outdated looking plots</li>
+<li>Requires a lot of code and not very flexible</li>
+<li>Plot objects cannot be stored and modified in a tidy way</li>
 </ul>
 <p>Solution: <strong>ggplot2</strong></p>
 <hr />
@@ -582,8 +584,8 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <h4><span class="header-section-number">5.2.1.1</span> Boxplot</h4>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <ul>
-<li><p>Change the Axis as displayed in the plot. Use no color variable.</p></li>
-<li><p>Use the <code>geom_boxplot()</code> function</p></li>
+<li>Change the Axis as displayed in the plot. Use no color variable.</li>
+<li>Use the <code>geom_boxplot()</code> function</li>
 </ul>
 <hr />
 </div>
@@ -591,8 +593,8 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <h4><span class="header-section-number">5.2.1.2</span> Violin Plot</h4>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <ul>
-<li><p>Change the Axis as displayed in the plot. Use no color variable.</p></li>
-<li><p>Use the <code>geom_violin()</code> function</p></li>
+<li>Change the Axis as displayed in the plot. Use no color variable.</li>
+<li>Use the <code>geom_violin()</code> function</li>
 </ul>
 <hr />
 </div>
@@ -604,8 +606,8 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
   geom_density()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ul>
-<li><p>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</p></li>
-<li><p>Use the <code>geom_density()</code> function</p></li>
+<li>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</li>
+<li>Use the <code>geom_density()</code> function</li>
 </ul>
 <hr />
 </div>
@@ -622,8 +624,8 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <h4><span class="header-section-number">5.2.1.5</span> Bar Plot</h4>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ul>
-<li><p>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</p></li>
-<li><p>Use the <code>geom_bar()</code> function</p></li>
+<li>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</li>
+<li>Use the <code>geom_bar()</code> function</li>
 </ul>
 <hr />
 </div>
@@ -631,9 +633,9 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <h4><span class="header-section-number">5.2.1.6</span> Numer of observations per location</h4>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <ul>
-<li><p>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</p></li>
-<li><p>Use the <code>geom_count()</code> function</p></li>
-<li><p>Can you tell the difference to <code>geom_point()</code>?</p></li>
+<li>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</li>
+<li>Use the <code>geom_count()</code> function</li>
+<li>Can you tell the difference to <code>geom_point()</code>?</li>
 </ul>
 <hr />
 </div>
@@ -826,11 +828,13 @@ ggplot(data = mpg,
   coord_flip()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <ul>
-<li><p>Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)</p></li>
-<li><p>Use the <code>geom_bar()</code> function.</p></li>
-<li><p>use stat=“identity” to indicate that the height of the bars should represent values in the data (default is stat = “bin” which simply counts the number of occurrences of the x aesthetic)</p></li>
-<li><p>use widht = 0.7 to reduce the bar widht a bit</p></li>
-<li><p>Use <code>+coord_flip()</code> ?</p></li>
+<li>Use class as x-axis and percentage.trans as y axis. fill=trans (different color for different trans levels)</li>
+<li>Use the <code>geom_bar()</code> function.
+<ul>
+<li>use stat=“identity” to indicate that the height of the bars should represent values in the data (default is stat = “bin” which simply counts the number of occurrences of the x aesthetic)</li>
+<li>use widht = 0.7 to reduce the bar widht a bit</li>
+</ul></li>
+<li>Use <code>+coord_flip()</code> ?</li>
 </ul>
 <hr />
 </div>
@@ -839,15 +843,15 @@ ggplot(data = mpg,
 <p>As indicated above, here is an example of a manually (ridiculously) adjusted theme.</p>
 <p>Some random ideas for the theme (through the function <code>theme'()</code>:</p>
 <ul>
-<li><p>Set background color to pink: <code>panel.background = element_rect(fill = &quot;pink&quot;)</code></p></li>
-<li><p>Change color of horizontal gridlines to green: <code>panel.grid.major.y = element_line(colour = &quot;green&quot;), panel.grid.minor.y = element_line(colour = &quot;green&quot;)</code></p></li>
-<li><p>Move the legend to the bottom: <code>legend.position = &quot;bottom&quot;</code></p></li>
-<li><p>Add a box around the plot: <code>panel.border = element_rect(color=&quot;orange&quot;, fill = NA, size=5)</code></p></li>
+<li>Set background color to pink: <code>panel.background = element_rect(fill = &quot;pink&quot;)</code></li>
+<li>Change color of horizontal gridlines to green: <code>panel.grid.major.y = element_line(colour = &quot;green&quot;), panel.grid.minor.y = element_line(colour = &quot;green&quot;)</code></li>
+<li>Move the legend to the bottom: <code>legend.position = &quot;bottom&quot;</code></li>
+<li>Add a box around the plot: <code>panel.border = element_rect(color=&quot;orange&quot;, fill = NA, size=5)</code></li>
 </ul>
 <p>Additionally, outside of theme, we also want to add even more beautiful stuff:</p>
 <ul>
-<li><p>add a fat vertical line at 3: <code>+geom_vline(xintercept = 3, size=5)</code></p></li>
-<li><p>Add ticks for every 0.5 on the x-axis: <code>+scale_x_continuous(breaks = seq(1,8, by=0.5)</code></p></li>
+<li>add a fat vertical line at 3: <code>+geom_vline(xintercept = 3, size=5)</code></li>
+<li>Add ticks for every 0.5 on the x-axis: <code>+scale_x_continuous(breaks = seq(1,8, by=0.5)</code></li>
 </ul>
 <p><span style="color:red">Task</span> <u><strong>Reproduce the plot below and follow the instructions from above!</strong></u></p>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>

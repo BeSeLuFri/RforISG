@@ -476,11 +476,13 @@ div.tocify {
 <div id="packages-and-script-set-up" class="section level1">
 <h1><span class="header-section-number">2</span> Packages and script set-up</h1>
 <ul>
-<li><p>To make sure that your R environment is clear, remember to use <code>rm(list=ls())</code> in the beginning.</p></li>
-<li><p>As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions.</p></li>
-<li><p>Therefore, you should always load the packages you need in the beginning, too.</p></li>
-<li><p>When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.</p></li>
-<li><p>Throughout this page, we’ll introduce the powerful <a href="https://www.tidyverse.org/">tidyverse</a>) - a collection of very useful packages.</p></li>
+<li>To make sure that your R environment is clear, remember to use <code>rm(list=ls())</code> in the beginning.</li>
+<li>As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions.
+<ul>
+<li>Therefore, you should always load the packages you need in the beginning, too.</li>
+<li>When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.</li>
+<li>Throughout this page, we’ll introduce the powerful <a href="https://www.tidyverse.org/">tidyverse</a>) - a collection of very useful packages.</li>
+</ul></li>
 </ul>
 <p>This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages</p>
 <pre class="r"><code>rm(list = ls())
@@ -615,12 +617,14 @@ data &lt;- data %&gt;%
 <h2><span class="header-section-number">5.1</span> More mutate</h2>
 <p>The benefit of <code>mutate()</code> is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
 <ul>
-<li><p>want to recode the binary variable tp72 (Work Overtime) into three levels:</p></li>
-<li><p>10 Yes</p></li>
-<li><p>20 No</p></li>
-<li><p>0 Everything else</p></li>
-<li><p>Apply those changes to tp72 by creating the new variable over</p></li>
-<li><p>Do something similar with tp7602 (recreate as netinc, change specific values to NA)</p></li>
+<li>want to recode the binary variable tp72 (Work Overtime) into three levels:
+<ul>
+<li>10 Yes</li>
+<li>20 No</li>
+<li>0 Everything else</li>
+</ul></li>
+<li>Apply those changes to tp72 by creating the new variable over</li>
+<li>Do something similar with tp7602 (recreate as netinc, change specific values to NA)</li>
 </ul>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code>data &lt;- data %&gt;%
@@ -643,9 +647,10 @@ data &lt;- data %&gt;%
   )</code></pre>
 <p>Several things to note here:</p>
 <ul>
-<li><p>Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).</p></li>
-<li><p>Within <code>mutate()</code> we can - in a tidy way - work on multiple variables (e.g. over and netinc)</p></li>
-<li><p>Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).</p></li>
+<li>Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).<br />
+</li>
+<li>Within <code>mutate()</code> we can - in a tidy way - work on multiple variables (e.g. over and netinc)</li>
+<li>Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).</li>
 </ul>
 <p>Let’s check whether the data manipulation worked:</p>
 <pre class="r"><code>table(data$over)
@@ -828,8 +833,8 @@ data2 &lt;- data %&gt;%
 <p>The last section for now!</p>
 <p>A reminder of the difference between long and wide data:</p>
 <ul>
-<li><p>Wide data has each different variable in a separate column.</p></li>
-<li><p>Long data has in one column all the variable names and in another column the respective values.</p></li>
+<li>Wide data has each different variable in a separate column.</li>
+<li>Long data has in one column all the variable names and in another column the respective values.</li>
 </ul>
 <p>Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: <code>spread()</code> and <code>gather()</code></p>
 <div class="figure">

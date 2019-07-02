@@ -279,6 +279,5 @@ panel_object <- plm(unemp_workagepop_t~gdp_gr,
 For further information on panel regressions, I recommend
 
 * the [slides](https://www.princeton.edu/~otorres/Panel101R.pdf) by Oscar Torres-Reyna
-
 * the [Chapter 13](http://www.urfie.net/read/mobile/index.html#p=208) from the Econometrics with R book
 

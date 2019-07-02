@@ -38,22 +38,22 @@ This makes life easier for everybody coding with data as the data can be readily
 
 ## Important Data Management Decisions
 * For Belgium regions the following geo identifiers have been used
-  + **BE1** Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest --> ATTENTION BE10 seems to be identical
-  + **BE2** Vlaams Gewest
+    + **BE1** Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest --> ATTENTION BE10 seems to be identical
+    + **BE2** Vlaams Gewest
   + **BE3** Région wallonne
 * Youth and working age population
-  + Youth defined as "From 15 to 24 years"
-  + Working age populations as "From 15 to 64 years",
+    + Youth defined as "From 15 to 24 years"
+    + Working age populations as "From 15 to 64 years",
   
 ***
   
 ## The data management structure
 * Each variable/group of related variables has its own header and is downloaded and manipulated in the same fashion:
-  + There are three code chunks: one for a) all countries, b) Belgian regions and c) merging a and b
-* a) and b) themselves have the same order:
-  + Download data via API with get_eurostat
-  + Label all codes (for easier readability) with label_eurostat
-  + Filter, select and spread the data
+    + There are three code chunks: one for a) all countries, b) Belgian regions and c) merging a and b
+* .a) and b) themselves have the same order:
+    + Download data via API with get_eurostat
+    + Label all codes (for easier readability) with label_eurostat
+    + Filter, select and spread the data
 * The first variable (Employment) has extensive comments to ease the understanding of the code
 * To retrieve the eurostat codes for datasets check the subchapter "Search for Eurostat codes"
   
@@ -62,15 +62,13 @@ This makes life easier for everybody coding with data as the data can be readily
 ## Search for Eurostat codes
 * Eurostat codes for data tables can be retrieved via search_eurostat
 * An example (looking for all data containing the name employment in the title):
-  + `query <- search_eurostat("Employment", type = "all")`
-  + You can then inspect the query via `View(query)`
+    + `query <- search_eurostat("Employment", type = "all")`
+    + You can then inspect the query via `View(query)`
 
 # Setup the script
 * Remember: You should clean the environment and load the necessary packages. 
-
-  + If packages aren't installed yet, do so. 
-  
-  + We need the tidyverse and the eurostat package.
+    + If packages aren't installed yet, do so. 
+    + We need the tidyverse and the eurostat package.
 
 <span style="color:red">Task</span> <u>**Clean the environment and load the packages**</u>
 ```{r, eval=FALSE}
@@ -164,19 +162,13 @@ empl_educ <- bind_rows(data_a, data_b)
 
 # Time to practice!
  
- * You can now work on your own. 
- 
- * I would highly recommend you to follow the structure of
- 
-  + a) get and manipulate data for all countries, b) get and manipulate data for Belgian regions and c) merge a and b
- 
- * Below you get all the eurostat codes you need as well as the name you should give each respective variable.
- 
- * Once you have all variables, we want to merge them by their geo_code and time identification. 
- 
- * Don't forget to recode values if they are supposed to become a variable
- 
-  + E.g. if in the column size_emp one value is called "From 0 to 9 persons employed" and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): `.... %>% mutate (size_emp = recode(size_emp, "From 0 to 9 persons employed" = "empsize_verysmall"))`
+* You can now work on your own. 
+* I would highly recommend you to follow the structure of
+    + a) get and manipulate data for all countries, b) get and manipulate data for Belgian regions and c) merge a and b
+* Below you get all the eurostat codes you need as well as the name you should give each respective variable.
+* Once you have all variables, we want to merge them by their geo_code and time identification. 
+* Don't forget to recode values if they are supposed to become a variable
+    + E.g. if in the column size_emp one value is called "From 0 to 9 persons employed" and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): `.... %>% mutate (size_emp = recode(size_emp, "From 0 to 9 persons employed" = "empsize_verysmall"))`
 
 
 ```{r}

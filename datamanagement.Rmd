@@ -19,14 +19,10 @@ Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/m
 # Packages and script set-up 
 
 * To make sure that your R environment is clear, remember to use `rm(list=ls())` in the beginning. 
-
 * As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions. 
-
-  + Therefore, you should always load the packages you need in the beginning, too. 
-  
-  + When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.
-  
-  + Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages.
+    + Therefore, you should always load the packages you need in the beginning, too. 
+    + When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.
+    + Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages.
 
 This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages  
 ```{r, message=FALSE}
@@ -235,15 +231,10 @@ Great, by now you basically have the main logic of dplyr at hand. In the section
 The benefit of `mutate()` is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
 
 * want to recode the binary variable tp72 (Work Overtime) into three levels: 
-
-  + 10 Yes
-  
-  + 20 No
-  
-  + 0 Everything else
-
+    + 10 Yes
+    + 20 No
+    + 0 Everything else
 * Apply those changes to tp72 by creating the new variable over
-
 * Do something similar with tp7602 (recreate as netinc, change specific values to NA)
 
 <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
@@ -271,11 +262,9 @@ data <- data %>%
  
  Several things to note here:
  
- * Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10). 
- 
- * Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
- 
- * Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).
+*  Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).  
+* Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
+* Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).
  
 Let's check whether the data manipulation worked:
 
@@ -517,7 +506,6 @@ The last section for now!
 A reminder of the difference between long and wide data:
 
 * Wide data has each different variable in a separate column. 
-
 * Long data has in one column all the variable names and in another column the respective values.
 
 Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: `spread()` and `gather()` 

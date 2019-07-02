@@ -33,31 +33,23 @@ We have two days, 4 hours per day.
 **Day 1**
 
 * R Basics, Workflow in R Studio and Objects (1.5h)
-
 * Data Management and tidyverse (2h)
+    + Quick Intro into the tidyverse and it's data management tools
+    + Eurostat Example
 
-  + Quick Intro into the tidyverse and it's data management tools
-  
-  + Eurostat Example
-  
+
 
 **Day 2** 
 
 * Data visualizationsand the tidyverse (2.5h)
-
-  + Quick intro into ggplot
-  
-  + Eurostat Example
-  
-  + Maps
+    + Quick intro into ggplot
+    + Eurostat Example
+    + Maps
   
 * Other (1h)
-
-  + Regressions
-  
-  + knitr, R Notebooks 
-  
-  + Further Information
+    + Regressions
+    + knitr, R Notebooks 
+    + Further Information
 
 
 ## Why R
@@ -235,9 +227,7 @@ If you want to avoid DataCamp, [here](https://docs.google.com/spreadsheets/d/1Lt
 Cheat Sheets are a great way to get a concise overview over the functionality and logic of the R topic they cover. to the best of my knowledge, all major packages have one. Some examples
 
 * [Cheat Sheet Base R](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)
-
 * [Cheat Sheet dplyr](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
-
 * [Cheat Sheet ggplot](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 
 ## Individual Trouble Shooting
@@ -247,7 +237,5 @@ Learning how to find out about stuff in R by yourself is one of the key techniqu
 If you have any questions, one of the following might help:
 
 * `?functionname` (and press enter) to retrieve the official documentation
-
 * google (make sure to type r somewhere into your query; stackoverflow results are preferrable)
-
 * Ask us ;) 

@@ -4,6 +4,7 @@ title: "About This Website"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ***
 
 The first pages of this site (Intro and Objects and Data) as well as the regressions page build upon [Econometrics with R](https://schliebs.github.io/Applied_Econometrics_with_R) - a tutorial for students at Zeppelin University. Credits go to [Marcel Schliebs](https://github.com/schliebs) with whom I designed and lead this class. 
