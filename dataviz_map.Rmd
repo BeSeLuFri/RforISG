@@ -1,13 +1,14 @@
 ---
-title: "Datamanagement: Map with Eurostat Data"
+title: "Data Viz: Map with Eurostat Data"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map.R)
-Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map_clean.R)
+
+Download the data [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv) (same data as on the [DataViz Eurostat page](https://beselufri.github.io/RforISG/dataviz_eurostat.html))
 
 # Intro
 

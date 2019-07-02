@@ -2,54 +2,42 @@
 
 
 # Setup----
-
-#' What do we always do first? (We only need the tidyverse)
 rm(list = ls())
 library(tidyverse)
 
 
-#' ***
 # Read and explore the data ----
 
-#' Read the data (eurostat_data.csv) and store them as eurost.
+#' Read the data (eurostat_data.csv) and 
+#' store them as eurost.
 
 
 
-#' There is only one single data management task for you here: 
-#' For now, we only want to use the year (denoted by the variable 
-#' time in the dataset) 2014 (time==2014). Please, filter accordingly.
+#' We only want to use the year (denoted by the variable 
+#' time in the dataset) 2014 (time==2014). 
+#' Please, filter accordingly.
 
-eurost <-
+eurost <- ______
 
 
 
-#' You might want to explore the data first.
-#' Remember, you can use some of those 
-#' str(), head(), summary(), table(), quantile(), and View().
-
-  
-  
-#' ***
 # Reproduce Plots ----
 
 
 #' Reproduce these three plots. 
 #' Below the graphs you can find some information.
 
+
+
 ## geom_point----
 
 
 
 #' * x = unemp_youth_t
-#' 
 #' * y = gdp_gr
-#' 
 #' * color = emmigration_t / immigration_t
-#' 
 #' * size = inv_per_empl
-#' 
 #' * Use theme_classic()
-#' 
 #' * You might realize that the label symbols of size are a bit 
 #'    weird as soon as you add the regression line. This is because 
 #'    the function to create the regression line interacts 
@@ -57,64 +45,43 @@ eurost <-
 #'    Therefore, as soon as you add the regression function, 
 #'    move the size argument to geom_point. 
 #'    But don't forget that the size argument has to be put within aes()!
-#' 
 #'   + Here is an important learning: aes() can be passed to either ggplot()
 #'      or to a specific layer (e.g. geom_). Aesthetics specified to ggplot()
 #'      are used as defaults for every layer, while aes() passed to a 
 #'      specific layer a used as default for that layer only. 
-#' 
 #' * Furthermore, add this line 
 #'    + scale_color_manual(values = c("red"), labels = c(" "))`. 
 #'      Do you understand what it does?
 #' 
-#' *** 
-#' 
-#' ## geom_bar
-#' 
-#' 
-## ---- echo=FALSE---------------------------------------------------------
-ggplot(
-  data = eurost,
-  mapping = aes(x = geo_code, y = unemp_youth_t, fill = unemp_youth_t)
-) +
-  geom_bar(stat = "identity", width = 0.7) +
-  geom_point(mapping = aes(y = unemp_workagepop_t, color = "red"),
-             size = 3) +
-  labs(
-    title = "Unemployment levels of youth and total working age population",
-    subtitle = "In most European countires youth unemployment is almost twice as big",
-    x = "Countries",
-    y = "Unemployment (in Pct.)",
-    fill = "Youth unemployment",
-    color = "Total unemployment",
-    caption = "Source: Eurostat, Data from 2014"
-  ) +
-  scale_color_manual(values = c("red"), labels = c(" ")) +
-  ggthemes::theme_economist()
 
-#' 
+
+
+## geom_bar ----
+
+
 #' * use theme_economist()
-#' 
 #' * x = geo_code
-#' 
 #' * y = unemp_youth_t
-#' 
 #' * fill = unemp_youth_t
+#' * In the function for the bars, remember to use `stat = identity`.
+#'    Play a bit with the widht of the bars.
+#' * Crucially, we add points which relate to unemp_workagepop_t. 
+#'    You need to write a new aes() in the point function and 
+#'    assign the color "red". Outside of the aes() argument, a
+#'    djust the size of the points to 3. 
 #' 
-#' * In the function for the bars, remember to use `stat = identity`. Play a bit with the widht of the bars.
-#' 
-#' * Crucially, we add points which relate to unemp_workagepop_t. You need to write a new aes() in the point function and assign the color "red". Outside of the aes() argument, adjust the size of the points to 3. 
-#' 
-#' * Rename the axes accordingly. Note that although the y axis is actually just related to youth unemployment, we simply rename it as Unemployment because the total unemployment (e.g. the points) are within the same scale. 
-#' 
-#' 
-#' ***
-#' 
-#' ## geom_hist
-#' 
-#' Here, we first do some some data management. We reload the data (but save them as *eurost2*), filter for some countries and the time period 1990-2015. Furhtermore, we create two new columns which copy the values of (youth) unemployment ONLY in the year of 2015. 
-#' 
-## ---- message=FALSE, warning=FALSE---------------------------------------
+#' * Rename the axes accordingly. Note that although 
+#'   the y axis is actually just related to youth unemployment, 
+#'   we simply rename it as Unemployment because the total 
+#'   unemployment (e.g. the points) are within the same scale. 
+
+
+
+## geom_hist ----
+
+
+#' Here, we first do some some data management. 
+
 eurost2 <- read_csv2("data/eurostat_data.csv") %>%
   filter(geo_code %in% c("DE", "IT", "EL", "ES", "UK"),
          time>=1990,
@@ -122,63 +89,28 @@ eurost2 <- read_csv2("data/eurostat_data.csv") %>%
   mutate(unemp_tod = if_else(time==2015, unemp_workagepop_t, NA_real_),
          unemp_youth_tod = if_else(time==2015, unemp_youth_t, NA_real_))
 
-#' 
-#' We use this data for the plot
-#' 
-## ---- echo=FALSE---------------------------------------------------------
-
-ggplot(data = eurost2,
-       mapping = aes(x = geo_code)) +
-  geom_violin(mapping = aes(y = unemp_youth_t, fill = "red"),
-              alpha = 0.5) +
-  geom_violin(mapping = aes(y = unemp_workagepop_t, fill = "blue"),
-              alpha = 0.5) +
-  geom_point(aes(y = unemp_tod), color = "black", size = 3) +
-  geom_point(aes(y = unemp_youth_tod), color = "black",  size = 3) +
-  theme_minimal() +
-  labs(
-    title = "Unemployment levels of youth and total working age population \n Histogram of values between 1990 and 2015)",
-    subtitle = "Germany is the only country (in comparison) where youth unemployment and \n total unemployment have moved within the same corridor historically",
-    x = "Countries",
-    y = "Unemployment (in Pct.)",
-    fill = "Unemployment \n (2015 as point)",
-    caption = "Source: Eurostat"
-  )+
-  scale_fill_manual(values = c("red", "blue"), labels = c("Total Unemployment", "Youth Unemployment"))
-
-#' 
-#' * As aesthetic in the principle `ggplot()` function, just use x = geo_code
-#' 
-#' * What we are doing then is using two seperate `geom_violin`  and two seperate `geom_point` functions
-#' 
-#'   + Both violin functions use the argument `alpha = 0.5` to inrease the transparency of the violin plots
-#'   
-#'   + One violin function has`y=unemp_youth_t` and the other`y = unemp_workagepop_t`. Use the appropriate colors
-#'   
-#'   + One point function has `y = unemp_tod` and the other `y = unemp_youth_tod`. Use `color = "black", size = 3` outside of the aesthetic. 
-#' 
+#' * As aesthetic in the principle `ggplot()` function, 
+#' just use x = geo_code
+#' * What we are doing then is using two seperate `geom_violin` 
+#'   and two seperate `geom_point` functions
+#'   + Both violin functions use the argument `alpha = 0.5` 
+#'     to inrease the transparency of the violin plots
+#'   + One violin function has`y=unemp_youth_t` and 
+#'     the other`y = unemp_workagepop_t`. Use the appropriate colors
+#'   + One point function has `y = unemp_tod` and the other 
+#'     `y = unemp_youth_tod`. Use `color = "black", size = 3` 
+#'      outside of the aesthetic. 
 #' * Use `theme_minimal()`
-#' 
-#' * Add this line: `scale_fill_manual(values = c("red", "blue"), labels = c("Total Unemployment", "Youth Unemployment"))`
-#' 
-#' ***
-#' 
-#' # New Stuff 
-#' In this section, we cover some new functions within ggplot2. However, as the ggplot logic is so straight forward, try to learn these new techniques yourself (nevertheless, there are some hints). 
-#' 
-#' Learning how to find out about stuff in R by yourself is one of the key techniques for smooth coding. 
-#' 
-#' If you have any questions, one of the following might help:
-#' 
-#' * `?functionname` (and press enter) to retrieve the official documentation
-#' 
-#' * google (make sure to type r somewhere into your query; stackoverflow results are preferrable)
-#' 
-#' * Ask us ;) 
-#' 
-#' All the exercises will use the first plot. To make our lifes easier, we safe this plot as main_plot
-#' 
-## ------------------------------------------------------------------------
+#' * Add this line: 
+#'   `scale_fill_manual(values = c("red", "blue"), labels = c("Total Unemployment", "Youth Unemployment"))`
+
+
+
+# New Stuff ----
+
+#' All the exercises will use the first plot. 
+#' To make our lifes easier, we safe this plot as main_plot
+
 main_plot <- ggplot(
   data = eurost,
   mapping = aes(
@@ -199,83 +131,52 @@ main_plot <- ggplot(
   geom_smooth(method="lm", se=FALSE, color="black")+
   theme_classic()
 
-#' 
-## ------------------------------------------------------------------------
+
 main_plot
 
-#' 
-#' ***
-#' 
-#' ## Adjusting colors
-#' 
-#' First of all, the colors of this main_plot are not so nice. 
-#' 
-#' There are hundreds of ways to change the colors of all the components of a ggplot. You might want to check out his [page](https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/) for more information.
-#' 
-#' Try to replicate this plot:
-## ---- echo=FALSE---------------------------------------------------------
-main_plot+
-   scale_color_gradient2(
-    midpoint = 1,
-    low = "blue",
-    mid = "lightgrey",
-    high = "red",
-    space = "Lab"
-    )
-
-#' 
-#' * Remember, we just saved the first plot as main_plot. So you do not need to rewrite everything from this plot but only ....
-#' 
-#' * In this case, use the function `scale_color_gradient2()` to get the colors. 
-#'   + Use `?scale_color_gradient2()` to understand the arguments you need to use to replicate the plot
-#' 
-#' ***
-#' 
-#' ## Adding labels to points
-#' 
-#' We want to have labels with the country codes next to our points. ggplot has a propietary function for this, but a cleaner and more efficient function comes from the ggrepel package (e.g. install ggrepel). 
-#' 
-## ---- echo=FALSE---------------------------------------------------------
-main_plot+
-  ggrepel::geom_text_repel(mapping = aes(label=geo_code))
 
 
-#' 
-#' 
+## Adjusting colors ----
+
+#' * Remember, we just saved the first plot as main_plot. 
+#'   So you do not need to rewrite everything from this plot but 
+#'   only ....
+#' * In this case, use the function `scale_color_gradient2()` 
+#'   to get the colors. 
+#'   + Use `?scale_color_gradient2()` to understand the 
+#'     arguments you need to use to replicate the plot
+
+
+
+## Adding labels to points ----
+
+
+
 #' * Again, use main_plot as the base
-#' 
-#' * The function from ggrepel we want to use is `geom_text_repel`. Use geo_code as the label within the `aes()` argument of `geom_text_repel`.
-#' 
-#' ***
-#' 
-#' ## Facets and more
-#' 
-#' You can add a facets (e.g. the same plotting relationship in many windows representing different variables such as different years) with the function `+facet_wrap(~FACETS_VARIABLE_NAME)`. Make facets using our main graph, using time as a facets variable. 
-#' 
-#' 
-## ---- echo=FALSE---------------------------------------------------------
-main_plot+
-  facet_wrap(~location)+
-  labs(caption = "Source: Eurostat + location is manully defined by the site's creator")
+#' * The function from ggrepel we want to use is `geom_text_repel`.
+#'   Use geo_code as the label within the `aes()` argument of `geom_text_repel`.
 
 
-#' 
+
+## Facets and more ----
+
+
+#' * You can add a facets (e.g. the same plotting relationship 
+#'  in many windows representing different variables such as 
+#'  different years) with the function 
+#'  `+facet_wrap(~FACETS_VARIABLE_NAME)`. Make facets using 
+#'  our main graph, using löcation as a facets variable. 
 #' * Use location as the facet variable.
-#' 
-#' ***
-#' 
-#' # Interactive Graph
-#' 
+
+
+
+# Interactive Graph ----
+ 
 #' With the plotly package, we can actually build interactive graphs.
-#' 
-#' The easiest way is to simply use the `ggplotly()` function and parse a ggplot object to the `p` argument:
-#' 
-## ---- message=FALSE------------------------------------------------------
-# Download the plotly package:
+#' The easiest way is to simply use the `ggplotly()` function and 
+#' parse a ggplot object to the `p` argument:
 
 library(plotly)
 
 ggplotly(p = main_plot)
 
-
-#' 

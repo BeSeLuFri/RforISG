@@ -3,8 +3,12 @@ title: "Regressions"
 ---
 
 ```{r echo = F}
-knitr::opts_chunk$set(echo = F)
+knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/other_regressions_clean.R)
+
+Download the data [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv) (same data as on the [DataViz Eurostat page](https://beselufri.github.io/RforISG/dataviz_eurostat.html))
 
 # Tl;dr
 
@@ -262,4 +266,19 @@ Specify the folder and file were your table should be saved as `"path/name.type"
 # Panel Regression
 
 Just a very quick glimpse into panel regressions with plm. 
+
+```{r}
+library(plm)
+panel_object <- plm(unemp_workagepop_t~gdp_gr, 
+             data = eur_data, index=c("geo_code", "time"), 
+             model="within", 
+             effect= "twoways") # for two-ways fixed effect regressions
+```
+
+
+For further information on panel regressions, I recommend
+
+* the [slides](https://www.princeton.edu/~otorres/Panel101R.pdf) by Oscar Torres-Reyna
+
+* the [Chapter 13](http://www.urfie.net/read/mobile/index.html#p=208) from the Econometrics with R book
 

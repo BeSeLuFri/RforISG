@@ -339,8 +339,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -488,26 +486,20 @@ div.tocify {
 <p><strong>Day 1</strong></p>
 <ul>
 <li><p>R Basics, Workflow in R Studio and Objects (1.5h)</p></li>
-<li><p>Data Management and tidyverse (2h)</p>
-<ul>
+<li><p>Data Management and tidyverse (2h)</p></li>
 <li><p>Quick Intro into the tidyverse and it’s data management tools</p></li>
 <li><p>Eurostat Example</p></li>
-</ul></li>
 </ul>
 <p><strong>Day 2</strong></p>
 <ul>
-<li><p>Data visualizationsand the tidyverse (2.5h)</p>
-<ul>
+<li><p>Data visualizationsand the tidyverse (2.5h)</p></li>
 <li><p>Quick intro into ggplot</p></li>
 <li><p>Eurostat Example</p></li>
 <li><p>Maps</p></li>
-</ul></li>
-<li><p>Other (1h)</p>
-<ul>
+<li><p>Other (1h)</p></li>
 <li><p>Regressions</p></li>
 <li><p>knitr, R Notebooks</p></li>
 <li><p>Further Information</p></li>
-</ul></li>
 </ul>
 </div>
 <div id="why-r" class="section level2">
@@ -548,7 +540,10 @@ div.tocify {
 <p><strong>Always</strong> use projects - they make your life much easier. RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.</p>
 <p>It is - especially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: <strong>You need to designate one folder in your explorer system within which everything related to your very first project is saved.</strong></p>
 <p>Let’s do it now: To create a new project, use the Create Project command (available on the Projects menu and on the global toolbar). Follow the instructions. Either create the project in a new directory or in an already existing one. For this tutorial, choose/create one directory where you can conveniently store all files/scripts throughout the tutorial.</p>
-<p><img src="Files/projects_new.png" /></p>
+<div class="figure">
+<img src="Files/projects_new.png" />
+
+</div>
 <p>This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.</p>
 <p><strong>My advise is to create two folders within the project directory right away. One folder for scripts (called scripts) and another folder for data (called data).</strong></p>
 <p>When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved.</p>
@@ -608,6 +603,7 @@ mean(c(1:5))</code></pre>
 <pre class="r"><code># And here comes the power of the pipe:
 # install.packages(magrittr) # remove the hashtag in the beginning of the line
 library(magrittr)</code></pre>
+<pre><code>## Warning: package &#39;magrittr&#39; was built under R version 3.5.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;magrittr&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:purrr&#39;:

@@ -19,5 +19,13 @@ purl(input = "dataviz.Rmd",
 
 
 purl(input = "dataviz_eurostat.Rmd",
-     output = "Files/Course Scripts/dataviz_eurostat1.R",
-     documentation = 1)
+     output = "Files/Course Scripts/dataviz_eurostat.R",
+     documentation = 2)
+
+purl(input = "dataviz_map.Rmd",
+     output = "Files/Course Scripts/dataviz_map.R",
+     documentation = 2)
+
+purl(input = "other_regressions.Rmd",
+     output = "Files/Course Scripts/other_regressions.R",
+     documentation = 2)

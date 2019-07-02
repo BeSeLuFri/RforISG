@@ -7,7 +7,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz.R).
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_clean.R).
 
 # Intro
 

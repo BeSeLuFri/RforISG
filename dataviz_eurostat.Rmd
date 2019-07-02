@@ -1,13 +1,14 @@
 ---
-title: "Datamanagement: Eurostat Example"
+title: "Data Viz: Eurostat Example"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_eurostat.R)
-Download the data [here](xxxxxxxxxxxxxxxxxxxxxx. )
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_eurostat_clean.R)
+
+Download the data [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv)
 
 # Info
 
@@ -26,7 +27,7 @@ library(tidyverse)
 ***
 
 # Read and explore the data
-Read the data ( [eurostat_data.csv](XXXXXX)) and store them as `eurost`.
+Read the data ( [eurostat_data.csv](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv)) and store them as `eurost`.
 
 There is only one single data management task for you here: For now, we only want to use the year (denoted by the variable *time* in the dataset) 2014. Please, <u>filter accordingly</u>. 
 
@@ -277,7 +278,7 @@ main_plot+
 
 ## Facets and more
 
-You can add a facets (e.g. the same plotting relationship in many windows representing different variables such as different years) with the function `+facet_wrap(~FACETS_VARIABLE_NAME)`. Make facets using our main graph, using time as a facets variable. 
+You can add a facets (e.g. the same plotting relationship in many windows representing different variables such as different years) with the function `+facet_wrap(~FACETS_VARIABLE_NAME)`. Make facets using our main graph, using location as a facets variable. 
 
 
 ```{r, echo=FALSE}
