@@ -27,6 +27,8 @@ By the end of tomorrow, everybody of you will not only understand the basic func
 
 Die Seite ist in Englisch, weil alle meine anderen R Tutorien/Kurse auch in Englisch waren - please forgive me.
 
+***
+
 ##  Agenda
 We have two days, 4 hours per day. 
 
@@ -51,6 +53,7 @@ We have two days, 4 hours per day.
     + knitr, R Notebooks 
     + Further Information
 
+***
 
 ## Why R
 R is a powerful programming language that is especially well-suited for statistical analyses and the creation of graphics. It is one of the most widely used software packages in Data Science and Applied Statistics.
@@ -170,6 +173,8 @@ One more thing...
 
 R itself can operate only very basic tasks. Even within todays tutorial you will soon discover that you need extensions to run your stuff. These extensions are called packages: "Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data." ([R packages](http://r-pkgs.had.co.nz/)) They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official "Comprehensive R Archive Network" (CRAN). 
 
+Referring to our kitchen analogy: "Packages are like tools - when you need to use a saucepan you go out and buy one that someone has already designed and made" instead of building the saucepan yourself. 
+
 You only have to install packages once on your computer - all you need is a simple line of code. After having installed it once, you have to "access" it every time you begin a new project/task.
 
 ```{r eval=FALSE}
@@ -179,30 +184,8 @@ install.packages("package name")
 library(packagename)
 ```
 
-Let's introduce only one small package for now to understand the package functionality. 
-The pipe ```%>%``` operator from the magrittr package (which in turn is part of the [tidyverse](https://www.tidyverse.org/)).
 
-
-The Pipe operator pipes the last element of something into the first one of the next: ```f(x)``` becomes ```x %>% f()``` 
-
-
-```{r}
-# Lets say we want to collect many numbers, perhaps all numbers from 1 to 5.
-# How do we do that? With a vector.
-# You can tell R to collect numbers in a vector with c(number, number, number)
-c(1, 2, 3, 4, 5)
-
-# A cooler way to write this is:
-c(1:5)
-
-# Now lets say, we want to get the mean from that list
-mean(c(1:5))
-
-# And here comes the power of the pipe:
-# install.packages(magrittr) # remove the hashtag in the beginning of the line
-library(magrittr)
-c(1, 2, 3, 5) %>% mean()
-```	
+We will learn the functions and workings of packages over the next pages. 
 
 # Style
 Arguably not the most important thing right now as we are just getting started. Nevertheless, it is important to have consistent and clean code. So you may want to circle back to this section once you get started writing your own code independently. 

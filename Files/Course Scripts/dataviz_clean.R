@@ -84,7 +84,6 @@ ggplot(data = ___,
 #' * Can you tell the difference to `geom_point()`?
 
 
-## Additional Stuff ----
 
 ### Smoothed regression line ----
 
@@ -96,6 +95,8 @@ ggplot(data = mpg,
   geom_smooth(color = "blue", 
               method = "lm")
 
+
+## Additional Stuff ----
 
 ### Labels ----
 

@@ -338,6 +338,8 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -469,8 +471,10 @@ div.tocify {
 <div id="general" class="section level1">
 <h1><span class="header-section-number">1</span> General</h1>
 <ul>
-<li>This page is for you to practice the data management techniques you learned on the last <a href="https://beselufri.github.io/RforISG/datamanagement.html">page</a>. You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing new. All the operations can be solved with the tidyverse/dplyr grammar from before.</li>
-<li><p>To be fair, there are three new functions (all from the tidyverse or base R): <code>bind_rows()</code>, <code>str_replace()</code>, and <code>paste()</code>. We will explain the orally in the example below. If in doubt, try <code>?function.name</code> or google ;)</p></li>
+<li><p>This page is for you to practice the data management techniques you learned on the last <a href="https://beselufri.github.io/RforISG/datamanagement.html">page</a>. You have to collect, manipulate and merge multiple several variables (from different data sets) by your own. Code wise, there is nothing new. All the operations can be solved with the tidyverse/dplyr grammar from before.</p>
+<ul>
+<li>To be fair, there are three new functions (all from the tidyverse or base R): <code>bind_rows()</code>, <code>str_replace()</code>, and <code>paste()</code>. We will explain the orally in the example below. If in doubt, try <code>?function.name</code> or google ;)</li>
+</ul></li>
 <li><p>Your task is to gather several variables from Eurostat. To make matters a bit more difficult, you have to colelct the data twice: Once on the country level and once on the region (NUTS2) level.</p></li>
 <li><p>The only new thing is that we now use an API to download the data (see next section).</p></li>
 </ul>
@@ -499,8 +503,8 @@ div.tocify {
 <ul>
 <li><strong>BE1</strong> Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest –&gt; ATTENTION BE10 seems to be identical</li>
 <li><strong>BE2</strong> Vlaams Gewest</li>
-</ul></li>
 <li><strong>BE3</strong> Région wallonne</li>
+</ul></li>
 <li>Youth and working age population
 <ul>
 <li>Youth defined as “From 15 to 24 years”</li>
@@ -533,7 +537,7 @@ div.tocify {
 <li>Eurostat codes for data tables can be retrieved via search_eurostat</li>
 <li>An example (looking for all data containing the name employment in the title):
 <ul>
-<li><code>query &lt;- search_eurostat(&quot;Employment&quot;, type = &quot;all&quot;)</code></li>
+<li><code>query &lt;- search_eurostat("Employment", type = "all")</code></li>
 <li>You can then inspect the query via <code>View(query)</code></li>
 </ul></li>
 </ul>
@@ -634,7 +638,7 @@ data_b &lt;- data_b %&gt;%
 <li>Once you have all variables, we want to merge them by their geo_code and time identification.</li>
 <li>Don’t forget to recode values if they are supposed to become a variable
 <ul>
-<li>E.g. if in the column size_emp one value is called “From 0 to 9 persons employed” and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): <code>.... %&gt;% mutate (size_emp = recode(size_emp, &quot;From 0 to 9 persons employed&quot; = &quot;empsize_verysmall&quot;))</code></li>
+<li>E.g. if in the column size_emp one value is called “From 0 to 9 persons employed” and this value should become a column name, you should recode the value (while it is possible to have column names with spaces this is not very tidy): <code>.... %&gt;% mutate (size_emp = recode(size_emp, "From 0 to 9 persons employed" = "empsize_verysmall"))</code></li>
 </ul></li>
 </ul>
 <pre class="r"><code># A. Employment rate by sex and age

@@ -56,15 +56,14 @@ eurost <- ______
 
 
 
-## geom_bar ----
+## geom_col ----
 
 
 #' * use theme_economist()
 #' * x = geo_code
 #' * y = unemp_youth_t
 #' * fill = unemp_youth_t
-#' * In the function for the bars, remember to use `stat = identity`.
-#'    Play a bit with the widht of the bars.
+#' * Play a bit with the widht of the bars.
 #' * Crucially, we add points which relate to unemp_workagepop_t. 
 #'    You need to write a new aes() in the point function and 
 #'    assign the color "red". Outside of the aes() argument, a

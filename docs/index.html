@@ -339,6 +339,8 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -480,6 +482,7 @@ div.tocify {
 </ul>
 <p>~75% of our class will be hands-on - e.g. we solve coding problems from real life data (which are relevant for ISG) together. All code and necessary data can be downloaded from this site.</p>
 <p>Die Seite ist in Englisch, weil alle meine anderen R Tutorien/Kurse auch in Englisch waren - please forgive me.</p>
+<hr />
 <div id="agenda" class="section level2">
 <h2><span class="header-section-number">1.1</span> Agenda</h2>
 <p>We have two days, 4 hours per day.</p>
@@ -507,6 +510,7 @@ div.tocify {
 <li>Further Information</li>
 </ul></li>
 </ul>
+<hr />
 </div>
 <div id="why-r" class="section level2">
 <h2><span class="header-section-number">1.2</span> Why R</h2>
@@ -546,10 +550,7 @@ div.tocify {
 <p><strong>Always</strong> use projects - they make your life much easier. RStudio projects make it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents.</p>
 <p>It is - especially in the beginning - the most convenient way to source all your data (and scripts) at one place. Important: <strong>You need to designate one folder in your explorer system within which everything related to your very first project is saved.</strong></p>
 <p>Let’s do it now: To create a new project, use the Create Project command (available on the Projects menu and on the global toolbar). Follow the instructions. Either create the project in a new directory or in an already existing one. For this tutorial, choose/create one directory where you can conveniently store all files/scripts throughout the tutorial.</p>
-<div class="figure">
-<img src="Files/projects_new.png" />
-
-</div>
+<p><img src="Files/projects_new.png" /></p>
 <p>This creates a project file (with an .Rproj extension) within the project directory. You can use this file in your folder as a shortcut to open the project.</p>
 <p><strong>My advise is to create two folders within the project directory right away. One folder for scripts (called scripts) and another folder for data (called data).</strong></p>
 <p>When you simply quit a project by closing RStudio or the project directly all files, code, .RData and RStudio settings are saved.</p>
@@ -588,38 +589,13 @@ div.tocify {
 <h1><span class="header-section-number">5</span> Packages</h1>
 <p>One more thing…</p>
 <p>R itself can operate only very basic tasks. Even within todays tutorial you will soon discover that you need extensions to run your stuff. These extensions are called packages: “Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data.” (<a href="http://r-pkgs.had.co.nz/">R packages</a>) They are developed by the large R users community and for free, too. If they meet certain quality criteria, they are published on the official “Comprehensive R Archive Network” (CRAN).</p>
+<p>Referring to our kitchen analogy: “Packages are like tools - when you need to use a saucepan you go out and buy one that someone has already designed and made” instead of building the saucepan yourself.</p>
 <p>You only have to install packages once on your computer - all you need is a simple line of code. After having installed it once, you have to “access” it every time you begin a new project/task.</p>
 <pre class="r"><code>install.packages(&quot;package name&quot;)
 # But installing a project implies just that you have saved it on your computer.
 # To make it useable for your session you still have to open it every time (e.g. you need the following line in your script:)
 library(packagename)</code></pre>
-<p>Let’s introduce only one small package for now to understand the package functionality. The pipe <code>%&gt;%</code> operator from the magrittr package (which in turn is part of the <a href="https://www.tidyverse.org/">tidyverse</a>).</p>
-<p>The Pipe operator pipes the last element of something into the first one of the next: <code>f(x)</code> becomes <code>x %&gt;% f()</code></p>
-<pre class="r"><code># Lets say we want to collect many numbers, perhaps all numbers from 1 to 5.
-# How do we do that? With a vector.
-# You can tell R to collect numbers in a vector with c(number, number, number)
-c(1, 2, 3, 4, 5)</code></pre>
-<pre><code>## [1] 1 2 3 4 5</code></pre>
-<pre class="r"><code># A cooler way to write this is:
-c(1:5)</code></pre>
-<pre><code>## [1] 1 2 3 4 5</code></pre>
-<pre class="r"><code># Now lets say, we want to get the mean from that list
-mean(c(1:5))</code></pre>
-<pre><code>## [1] 3</code></pre>
-<pre class="r"><code># And here comes the power of the pipe:
-# install.packages(magrittr) # remove the hashtag in the beginning of the line
-library(magrittr)</code></pre>
-<pre><code>## Warning: package &#39;magrittr&#39; was built under R version 3.5.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;magrittr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     set_names</code></pre>
-<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
-## 
-##     extract</code></pre>
-<pre class="r"><code>c(1, 2, 3, 5) %&gt;% mean()</code></pre>
-<pre><code>## [1] 2.75</code></pre>
+<p>We will learn the functions and workings of packages over the next pages.</p>
 </div>
 <div id="style" class="section level1">
 <h1><span class="header-section-number">6</span> Style</h1>

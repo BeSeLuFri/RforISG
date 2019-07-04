@@ -338,6 +338,8 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -532,7 +534,7 @@ library(tidyverse)</code></pre>
 <pre class="r"><code>data &lt;- haven::read_dta(&quot;data/soep.dta&quot;)</code></pre>
 <p>Same for SPSS files:</p>
 <pre class="r"><code>data &lt;- haven::read_sav(&quot;data/soep.sav&quot;)</code></pre>
-<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
+<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
 <pre class="r"><code>data &lt;- readxl::read_xlsx(&quot;data/soep.xlsx&quot;)</code></pre>
 <p>Enough on reading data for now, let’s use the European csv for now.</p>
 <pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)</code></pre>
@@ -541,8 +543,19 @@ library(tidyverse)</code></pre>
 </div>
 <div id="basic-data-management" class="section level1">
 <h1><span class="header-section-number">4</span> Basic Data Management</h1>
+<div id="the-pipe" class="section level2">
+<h2><span class="header-section-number">4.1</span> The Pipe %&gt;%</h2>
+<p>Before getting into the woods of data management, let’s understand the pipe first. The Pipe <code>%&gt;%</code> operator stems from the magrittr package (which in turn is part of the tidyverse - therefore it is already loaded.</p>
+<p>The Pipe operator pipes the last element of something into the first one of the next: <code>f(x)</code> becomes <code>x %&gt;% f()</code>.</p>
+<p>To give an example:</p>
+<pre class="r"><code>mean(c(1:5))
+# can be expressed with the pipe as
+c(1:5) %&gt;%
+  mean()</code></pre>
+<p>We will always use the pipe in the following subsections.</p>
+</div>
 <div id="select-the-relevant-variables" class="section level2">
-<h2><span class="header-section-number">4.1</span> Select the relevant variables</h2>
+<h2><span class="header-section-number">4.2</span> Select the relevant variables</h2>
 <p>Our data has 902 variables. Obviously, we do not need that many.</p>
 <p>Accordingly, we <code>select</code> the relevant ones:</p>
 <ul>
@@ -555,7 +568,7 @@ library(tidyverse)</code></pre>
 <hr />
 </div>
 <div id="explore-the-data-structure" class="section level2">
-<h2><span class="header-section-number">4.2</span> Explore the data structure</h2>
+<h2><span class="header-section-number">4.3</span> Explore the data structure</h2>
 <p>For a first overview over our data, we can use the base functions (e.g. those which are without any package installations part of R) <code>str()</code>, <code>head()</code>, <code>summary()</code>, <code>table()</code>, <code>quantile()</code>, and <code>View()</code>.</p>
 <p><span style="color:red">Task</span> <u><strong>Go through every function’s output and try to understand what it means!</strong></u></p>
 <pre class="r"><code>str(data)
@@ -567,7 +580,7 @@ View(data)</code></pre>
 <hr />
 </div>
 <div id="basic-recoding-and-mutate" class="section level2">
-<h2><span class="header-section-number">4.3</span> Basic recoding and mutate()</h2>
+<h2><span class="header-section-number">4.4</span> Basic recoding and mutate()</h2>
 <p>The dataset is from 2003. Compute the age accordingly by creating the new variable age</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code>data$age &lt;- 2003 - _____</code></pre>
@@ -578,7 +591,7 @@ View(data)</code></pre>
 <hr />
 </div>
 <div id="filtering" class="section level2">
-<h2><span class="header-section-number">4.4</span> Filtering</h2>
+<h2><span class="header-section-number">4.5</span> Filtering</h2>
 <p>If you only want to keep certain rows (observations) in which values of a variable match a certain criterion, you can <code>filter()</code>.</p>
 <p>Let’s say, we only want to keep those observations which are at least 18.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -588,7 +601,7 @@ View(data)</code></pre>
 <hr />
 </div>
 <div id="arrange" class="section level2">
-<h2><span class="header-section-number">4.5</span> Arrange</h2>
+<h2><span class="header-section-number">4.6</span> Arrange</h2>
 <p>Sometimes, we want to order data. We do so with <code>arrange()</code>. <code>desc(x)</code> sorts x in descending order.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code># Example 1
@@ -597,7 +610,7 @@ data &lt;- _____ %&gt;%
 <hr />
 </div>
 <div id="all-in-one" class="section level2">
-<h2><span class="header-section-number">4.6</span> All in one</h2>
+<h2><span class="header-section-number">4.7</span> All in one</h2>
 <p>By the way, we could have done all of this in one batch:</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;) # read data again.
@@ -817,10 +830,7 @@ data &lt;- data %&gt;% # remember the pipe?
 data2 &lt;- data %&gt;%
   left_join(data.origin[,c(&quot;hhnr&quot;, &quot;tp0101&quot;)], by=c(&quot;hhnr&quot;))</code></pre>
 <p>Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:</p>
-<div class="figure">
-<img src="Files/dplyr_joins.PNG" />
-
-</div>
+<p><img src="Files/dplyr_joins.PNG" /></p>
 <p>Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn’t work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with <code>any(duplicated(data$hhnr))</code>.</p>
 <p>We therefore need a second variable to join them by. In our case, this second variable is persnr.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -837,10 +847,7 @@ data2 &lt;- data %&gt;%
 <li>Long data has in one column all the variable names and in another column the respective values.</li>
 </ul>
 <p>Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: <code>spread()</code> and <code>gather()</code></p>
-<div class="figure">
-<img src="Files/dplyr_reshape.PNG" />
-
-</div>
+<p><img src="Files/dplyr_reshape.PNG" /></p>
 <p>At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:</p>
 <pre class="r"><code>data.long &lt;- data %&gt;%
   gather(key=key, value = value, -c(hhnr, persnr))</code></pre>

@@ -41,6 +41,13 @@ data <- read_csv2("data/soep_europ.csv")
 
 # Basic Data Management ----
 
+## The pipe %>% ----
+
+mean(c(1:5))
+# can be expressed with the pipe as
+c(1:5) %>%
+  mean()
+
 ## Select the relevant variables ----
 
 #' Accordingly, we `select` the relevant ones:

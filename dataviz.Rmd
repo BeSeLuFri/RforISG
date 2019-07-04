@@ -220,13 +220,11 @@ ggplot(data = mpg,
 
 ***
 
-## Additional Stuff
+### Smoothed regression line
 
 Back to business. Let's continue working on our replication. 
 
-### Smoothed regression line
-
-A smoothed regression line (standard OLS) can be added by adding `geom_smooth()`. Choose `method = "lm"` for standard OLS. 
+A smoothed regression line (standard OLS) can be added by adding `geom_smooth()`. Choose `method = "lm"` for standard OLS.
 
 ```{r, warning=FALSE, message=FALSE}
 ggplot(data = mpg,
@@ -238,7 +236,11 @@ ggplot(data = mpg,
               method = "lm")
 ```
 
+**A crucial learning** from this is that different geometric objects can be put within the same plot. 
+
 ***
+
+## Additional Stuff
 
 ### Labels
 

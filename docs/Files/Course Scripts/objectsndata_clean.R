@@ -1,4 +1,4 @@
-# Objects in R: Basic Calculations
+# Objects in R: Basic Calculations ----
 
 #' In order to assign the value of 5 to an object with name x do 
 
@@ -23,7 +23,7 @@ rm(x) # Deletes an object
 rm(list=ls()) # all objects are removed
 
 
-# Everything in R Is an Object
+# Everything in R Is an Object ----
 #' Try to understand the different meanigs of x!
 
 # Basic object creation
@@ -40,7 +40,7 @@ x
 
 x(2)
 
-# Vectors
+# Vectors ----
 
 # Examples
 a <- c(1, 2, 3, 4)
@@ -75,7 +75,7 @@ seq(50)
 5:15
 seq(4, 20, 2)
 
-## Logical Operators and Logical Vectors
+## Logical Operators and Logical Vectors ----
 #' Do you understand all of these operators?
 
 x <- 10
@@ -86,7 +86,7 @@ x > y  # x is bigger then y
 x  y # HOW DO YOU TYPE: x is smaller or equal to y
 x != y # x is NOT equal to y
 
-#' 
+
 #' The contents of R vectors do not need to be numeric. 
 #' A simple example of a different type are *character* vectors. 
 #' For handling them, the contents simply need to be
@@ -94,7 +94,7 @@ x != y # x is NOT equal to y
 cities = c("Friedrichshafen", "Paris", "Tokio", "Tettnang", "Mailand")
 cities
 
-#' 
+
 #' Another useful type are **logical vectors**. 
 #' Each element can only take one of two values: "TRUE" or "FALSE". 
 #' Internally, "FALSE" corresponds to 0 and "TRUE" to 1. 
@@ -128,7 +128,7 @@ typeof(dbl_var)
 int_var <- c(1L, 6L, 10L)
 typeof(int_var)
 
-## Naming and Indexing Vectors
+## Naming and Indexing Vectors ----
 
 #' Complete the empty spaces!
 
@@ -156,114 +156,39 @@ kicker.skills[kicker.skills __ _ ]
 # Who is the worst kicker player?
 kicker.skills[_ == min(_)] # DO you understand every part of this line?
 
-# Factors
-#' What is the difference between xf1 and xf2?**</u>
-
-# Costumer Ratings
-x <- c(3, 2, 2, 3, 1, 2, 3, 2, 1, 2)
-
-xf1 <- factor(x, labels = c("bad", "okay", "good"), ordered = TRUE)
-xf2 <- factor(x, labels = c("bad", "okay", "good"))
-
-#' Practice more 
-# Create  variable gender with 20 "male" entries and 30 "female" entries
-gender <- c(rep("male", _ ), rep(_, 30)_  # COMPLETE MISSING PARTS
-gender <- _    # CREATE gender as factor
-
-summary(gender)
-
-# Matrices
-#' Complete the empty spaces!
-
-# GENERATE matrix A from one vector with two rows
-v <- c("AG.5", "G2", "AG.5", "G1", "AG.5", "G3")
-A <- matrix(v, _ = 2)
-
-# GENERATE matrix A.row in binding vec1 and vec2 AND generate matrix A.col in 
-binding column wise:
-vec1 <- c("AG.5", "AG.5", "AG.5")
-vec2 <- c("G2", "G1", "G3")
-
-A.row <- _____(vec1, vec2)
-A.col <- ______
-
-# Giving names to rows and columns:
-colnames(A.col) <- c("Katrin", "Hans")
-rownames(A.col) <- c("Monday", "Wednesday", "Friday")
-A.col
-
-#' Complete the empty spaces!
-# EXTRACT value of first column and 2nd row
-A.col[_ , _]
-
-# GIVE all meal choices from Hans:
-A.col[ , ]
-
-# WHAT does Katrin have for lunch on Monday? call Katrin and Monday by name
-A.col[_ , _]
-
-
-# WHAT does Katrin have on Monday and Friday?
-A.col[_ , c(_ , _)]
-
-
-#' Some quick matrix algebra: 
-
-# Element wise multiplication (not matrix multiplication but multiplying elements at same place)
-A <- matrix(c(2, -4, -1, 5, 7, 0), nrow = 2)
-B <- matrix(c(2, 1, 0, 3, -1, 5), nrow = 2)
-A * B
-
-# Matrix multiplication:
-(D <- A %*% C)
-
-# Transpose:
-(C <- t(B))
-
-# Inverse:
-solve(D)
-
-# Lists ----
-
-# Generate a list object:
-mylist <- list(A = seq(8, 36, 4),
-               product = "Fruechtekorb",
-               idm = diag(3))
-
-# Print whole list:
-mylist
-
-# Vector of names:
-names(mylist)
-
-# Print component "A":
-mylist$A
-
-
 # Data Frames ----
-#' Complete the empty spaces!
 
-# Define one x vector for all:
+# Define one x vector for the days:
 days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
 # When are Eugen, Julia, and Lena in the office?
 Eugen <-
   c(0, 0, 1, 1, 0)
 Julia <- c(1, 1, 0, 0, 1)
-Lena <- c(0, 0, 0, 1, "k")
+Lena <- c(0, 0, 0, 1, 1)
 
-# CBIND Eugen, Julia and Lena
-presence.mat <- _____
+presence <- data.frame(days, Eugen, Julia, Lena)
 
-# ASSIGN the rownames
-rownames(presence.mat) <- ___
+#' To index certain entries in a data frame use `[]` behind the
+#'  name of a data frame object. 
+#'  Specifically: `data.frame.name[ROWnumber(s) , COLUMN-number/-name(s)]`. 
+#' Complete the empty spaces!
 
-# The matrix looks like this:
-presence.mat
+# Show the entry in the 4th row and the second column of presence
+presence[__ , __]
 
-# Create a data frame and display it:
-presence <- as.data.frame(presence.mat)
-presence
+# Show all entries in the third row 
+presence[__ , __]
+
+# Show all entries of the third column
+presence[__ , __]
+
+# Show all entries of the variable Julia
+presence[__ , __]
+
+# Show all entries of the variables days, Julia and Lena
+presence[__ , __________]
+
 
 #' Complete the empty spaces!
 
@@ -290,3 +215,98 @@ presence$total.presence2 <- with(presence, Eugen+Julia+Lena)
 # Subset: all days in which Lena is present
 subset(presence, __==___)
 
+
+
+
+# Other ----
+
+## Factors ----
+
+#' What is the difference betwenn xf1 and xf2
+x <- c(3, 2, 2, 3, 1, 2, 3, 2, 1, 2)
+
+xf1 <- factor(x, labels = c("bad", "okay", "good"), ordered = TRUE)
+xf2 <- factor(x, labels = c("bad", "okay", "good"))
+
+#' Practice more
+
+# variable gender with 20 "male" entries and 30 "female" entries
+gender <- c(rep("male", _ ), rep(_, 30)_  # COMPLETE MISSING PARTS
+gender <- _    # CREATE gender as factor
+            
+            
+# R now treats gender as a nominal variable
+summary(gender) 
+
+
+
+## Matrices ----
+
+#' Complete the empty spaces
+v <- c("AG.5", "G2", "AG.5", "G1", "AG.5", "G3")
+A <- matrix(v, _ = 2)
+
+# GENERATE matrix A.row in binding vec1 and vec2 AND generate matrix A.col in binding column wise:
+vec1 <- c("AG.5", "AG.5", "AG.5")
+vec2 <- c("G2", "G1", "G3")
+
+A.row <- _____(vec1, vec2) 
+A.col <- ______
+
+# Giving names to rows and columns:
+colnames(A.col) <- c("Katrin", "Hans")
+rownames(A.col) <- c("Monday", "Wednesday", "Friday")
+A.col
+
+#' Core rule for indexing all two dimensional objects in R:  [row , column]
+#' Complete the empty spaces
+
+# EXTRACT value of first column and 2nd row 
+A.col[_ , _]
+
+# GIVE all meal choices from Hans:
+A.col[ , ]
+
+# WHAT does Katrin have for lunch on Monday? call Katrin and Monday by name
+A.col[_ , _]
+
+
+# WHAT does Katrin have on Monday and Friday?
+A.col[_ , c(_ , _)]
+
+
+#' Some quick matrix algebra
+
+# Element wise multiplication (not matrix multiplication but multiplying elements at same place)
+A <- matrix(c(2, -4, -1, 5, 7, 0), nrow = 2)
+B <- matrix(c(2, 1, 0, 3, -1, 5), nrow = 2)
+A * B
+
+# Matrix multiplication:
+(D <- A %*% C)
+
+# Transpose:
+(C <- t(B))
+
+# Inverse:
+solve(D)
+
+
+## Lists ----
+
+#' A list is a generic collection of objects. 
+#' Unlike vectors, components can be of different types.
+
+# Generate a list object:
+mylist <- list(A = seq(8, 36, 4),
+               product = "Fruechtekorb",
+               idm = diag(3))
+
+# Print whole list:
+mylist
+
+# Vector of names:
+names(mylist)
+
+# Print component "A":
+mylist$A

@@ -343,6 +343,8 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -491,12 +493,11 @@ div.tocify {
 <div class="fold s">
 <pre class="r"><code>library(&quot;tidyverse&quot;)
 library(&quot;rvest&quot;)
-library(&quot;tidytext&quot;)</code></pre>
-<pre><code>## Warning: package &#39;tidytext&#39; was built under R version 3.5.3</code></pre>
-<pre class="r"><code>library(&quot;SnowballC&quot;)
-library(&quot;wordcloud2&quot;)</code></pre>
-<pre><code>## Warning: package &#39;wordcloud2&#39; was built under R version 3.5.3</code></pre>
-<pre class="r"><code># get list via https://www.xml-sitemaps.com/
+library(&quot;tidytext&quot;)
+library(&quot;SnowballC&quot;)
+library(&quot;wordcloud2&quot;)
+
+# get list via https://www.xml-sitemaps.com/
 ma &lt;- c(&quot;jenny-bennett&quot;, 
         &quot;dr-dietrich-engels&quot;, 
         &quot;ferzaneh-fakdani&quot;, 
@@ -560,8 +561,8 @@ wordcounts &lt;- token %&gt;%
 
 # generate wordcloud
 wordcloud2(wordcounts, shuffle = FALSE, color = &quot;blue&quot;) </code></pre>
-<div id="htmlwidget-986fdaf875b0590c6505" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-986fdaf875b0590c6505">{"x":{"word":["Universität","ISG","Köln","Studium","Evaluation","Mitarbeiterin","Soziologie","Sozialforschung","Bereich","Berlin","ESF","Schwerpunkten","Bereichen","Forschungsinteressen","Mitarbeiter","Arbeitsmarkt","Europäischen","M.A","Sozialwissenschaften","Diplom","Institut","Monitoring","Dr","Duisburg","Essen","Maßnahmen","Sozialfonds","Hilfskraft","Rahmen","Volkswirtschaftslehre","Arbeitsmarktpolitik","Büro","Dissertation","Europäische","Forschungsschwerpunkte","Göttingen","Kunze","M.Sc","Methoden","Operationellen","Potsdam","Praktika","Programms","Sozialberichterstattung","Studiums","Arbeit","Arbeitsmarktforschung","Armuts","Aufgabenschwerpunkt","Berliner","Erstellung","Europa","Gerontologie","Jahr","Lehrstuhl","Menschen","Schwerpunkt","Studienbegleitend","Teilhabe","Thema","Ungleichheit","Wirtschafts","Wirtschaftsforschung","Wissensmanagement"],"freq":[35,34,23,18,16,16,15,12,11,11,11,11,10,10,9,8,8,8,8,7,7,7,6,6,6,6,6,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],"fontFamily":"Segoe UI","fontWeight":"bold","color":"blue","minSize":0,"weightFactor":5.14285714285714,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":false,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<div id="htmlwidget-5a4210d772b688260a82" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5a4210d772b688260a82">{"x":{"word":["Universität","ISG","Köln","Studium","Evaluation","Mitarbeiterin","Soziologie","Sozialforschung","Bereich","Berlin","ESF","Schwerpunkten","Bereichen","Forschungsinteressen","Mitarbeiter","Arbeitsmarkt","Europäischen","M.A","Sozialwissenschaften","Diplom","Institut","Monitoring","Dr","Duisburg","Essen","Maßnahmen","Sozialfonds","Hilfskraft","Rahmen","Volkswirtschaftslehre","Arbeitsmarktpolitik","Büro","Dissertation","Europäische","Forschungsschwerpunkte","Göttingen","Kunze","M.Sc","Methoden","Operationellen","Potsdam","Praktika","Programms","Sozialberichterstattung","Studiums","Arbeit","Arbeitsmarktforschung","Armuts","Aufgabenschwerpunkt","Berliner","Erstellung","Europa","Gerontologie","Jahr","Lehrstuhl","Menschen","Schwerpunkt","Studienbegleitend","Teilhabe","Thema","Ungleichheit","Wirtschafts","Wirtschaftsforschung","Wissensmanagement"],"freq":[35,34,23,18,16,16,15,12,11,11,11,11,10,10,9,8,8,8,8,7,7,7,6,6,6,6,6,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],"fontFamily":"Segoe UI","fontWeight":"bold","color":"blue","minSize":0,"weightFactor":5.14285714285714,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":false,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
 </div>
 </div>
 <div id="important-resources" class="section level1">
@@ -612,7 +613,7 @@ wordcloud2(wordcounts, shuffle = FALSE, color = &quot;blue&quot;) </code></pre>
 <td>
 <a href="https://www.springer.com/de/book/9780387981413"><img border="0" alt="W3Schools" src="http://t1.gstatic.com/images?q=tbn:ANd9GcQNvhEpXp9OwvqVosEh-UecM3TNbhdb1eVZp3LywUcXGeVC3scQ" height="180" width="120" ></a>
 <td>
-<pre><code>&lt;td&gt;</code></pre>
+<td>
 <a href="https://socviz.co/"><img border="0" alt="W3Schools" src="https://images-na.ssl-images-amazon.com/images/I/410TgmQuARL._SX398_BO1,204,203,200_.jpg" height="180" width="120" ></a>
 <td>
 <td>

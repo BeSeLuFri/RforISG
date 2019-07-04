@@ -122,6 +122,24 @@ data <- read_csv2("data/soep_europ.csv")
 
 # Basic Data Management
 
+## The Pipe %>%
+
+Before getting into the woods of data management, let's understand the pipe first.
+The Pipe ```%>%``` operator stems from the magrittr package (which in turn is part of the tidyverse - therefore it is already loaded. 
+
+The Pipe operator pipes the last element of something into the first one of the next: ```f(x)``` becomes ```x %>% f()```.
+
+To give an example:
+
+```{r, eval=FALSE}
+mean(c(1:5))
+# can be expressed with the pipe as
+c(1:5) %>%
+  mean()
+```
+
+We will always use the pipe in the following subsections.
+
 ## Select the relevant variables
 Our data has 902 variables. Obviously, we do not need that many. 
 
