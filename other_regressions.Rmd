@@ -6,25 +6,33 @@ title: "Regressions"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/other_regressions_clean.R)
+Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/other_regressions_clean.R). There are no exercises so this script contains all necessary code already.
 
 Download the data [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv) (same data as on the [DataViz Eurostat page](https://beselufri.github.io/RforISG/dataviz_eurostat.html))
+
+***
 
 # Tl;dr
 
 This is how standard OLS regressions are done:
 ```{r, eval=FALSE}
-ols_object <- lm(regressand ~ regressor1 + regressor2 + regressor3, 
-                data=data.frame)
+ols_object <- lm(regressand ~ regressor1 + regressor2 + regressor3,
+                 data = data.frame)
 ```
 
 
 This is how a (two-ways FE) panel regression is done
 ```{r, eval=FALSE}
 library(plm)
-panel_object <- plm(regressand ~ regressor1 + regressor2 + regressor3,
-                    index=c("unit", "time"), model="within", effect= "twoways", # for two-ways fixed effect regressions
-                    data=data.frame)
+panel_object <-
+   plm(
+      regressand ~ regressor1 + regressor2 + regressor3,
+      index = c("unit", "time"),
+      model = "within",
+      effect = "twoways",
+      # for two-ways fixed effect regressions
+      data = data.frame
+   )
 ```
 
 This is how you can get a summary of your regression:
@@ -48,7 +56,7 @@ stargazer(ols_object, panel_object,
 ## Workflow
 
 ```{r echo=FALSE}
-DiagrammeR::grViz("Files/lm-modelling.gv", width=800, height = 400)
+DiagrammeR::grViz("Files/lm-modelling.gv", width = 800, height = 400)
 ```
 
 ***
@@ -102,13 +110,13 @@ formula(y ~ a + b + a:b)
 - Crossing: `a * b ` is equivalent to `a + b + a:b`
 ```{r eval=FALSE, echo = TRUE}
 formula(y ~ a + b + a:b) # and
-formula(y ~ a*b) # are equivalent
+formula(y ~ a * b) # are equivalent
 ```
 
 
 - Transformations with `I()`
 ```{r eval=FALSE, echo = TRUE}
-formula(y ~ a + I(a^2)) # quadratic term must be in I() to evaluate correctly
+formula(y ~ a + I(a ^ 2)) # quadratic term must be in I() to evaluate correctly
 formula(y ~ log(a)) # log can stay by itself
 ```
     
@@ -161,10 +169,11 @@ Again, it is a best practice to look for missing values in your data prior to th
 ```{r echo=TRUE}
 eur_data <- read.csv2("data/eurostat_data.csv")
 
-m1 <- formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
-              subset = year == 2014)
-model<- lm(formula = m1,
-           data = eur_data)
+m1 <-
+   formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
+           subset = year == 2014)
+model <- lm(formula = m1,
+            data = eur_data)
 ```
 
 ***
@@ -245,13 +254,13 @@ stargazer::stargazer(model,
 ## Compare different Models
 
 ```{r echo=TRUE}
-model2 <- lm(unemp_workagepop_t~gdp_gr, 
+model2 <- lm(unemp_workagepop_t ~ gdp_gr,
              data = eur_data)
 ```
 
 
 ```{r, results="asis"}
-stargazer::stargazer(model, model2, 
+stargazer::stargazer(model, model2,
                      type = "html")
 ```
 
@@ -269,10 +278,13 @@ Just a very quick glimpse into panel regressions with plm.
 
 ```{r}
 library(plm)
-panel_object <- plm(unemp_workagepop_t~gdp_gr, 
-             data = eur_data, index=c("geo_code", "time"), 
-             model="within", 
-             effect= "twoways") # for two-ways fixed effect regressions
+panel_object <- plm(
+   unemp_workagepop_t ~ gdp_gr,
+   data = eur_data,
+   index = c("geo_code", "time"),
+   model = "within",
+   effect = "twoways"
+) # for two-ways fixed effect regressions
 ```
 
 

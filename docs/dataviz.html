@@ -467,6 +467,8 @@ div.tocify {
 
 
 <p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_clean.R">here</a>.</p>
+<p>Solutions can be downloaded <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_solutions.R">here</a> - but try to solve everything without the solutions first!</p>
+<hr />
 <div id="intro" class="section level1">
 <h1><span class="header-section-number">1</span> Intro</h1>
 <p>In this tutorial, we will learn how to produce this graph.</p>
@@ -493,13 +495,13 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <div id="base-r-plotting" class="section level1">
 <h1><span class="header-section-number">3</span> Base R Plotting</h1>
 <p>Base R has several functions for data visualization. Crucially, you need separate functions for each type of plot. Some examples:</p>
-<pre class="r"><code>hist(x=mpg$displ)</code></pre>
+<pre class="r"><code>hist(x = mpg$displ)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>boxplot(displ~year,
-  data=mpg)</code></pre>
+<pre class="r"><code>boxplot(displ ~ year,
+        data = mpg)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>plot(x=mpg$displ,
-     y=mpg$hwy)</code></pre>
+<pre class="r"><code>plot(x = mpg$displ,
+     y = mpg$hwy)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <div id="disadvantages-of-base-r" class="section level2">
@@ -560,8 +562,8 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <h2><span class="header-section-number">5.1</span> Data and Relationship</h2>
 <p>Select the data (<em>mpg</em>) and attach <em>displ</em> (the engine displacement) to the x axis, <em>hwy</em> (Highway miles per gallon) for the y axis and the <em>class</em> (car class) as the color variable.</p>
 <pre class="r"><code>ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class))</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Well, we don’t see much. The reason is that we have only specified the data and the relationship, so far. But we have not told ggplot, which kinds of objects it should plot.</p>
@@ -570,9 +572,9 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <div id="geometric-objects" class="section level2">
 <h2><span class="header-section-number">5.2</span> Geometric objects</h2>
 <pre class="r"><code>ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class))+
+       mapping = aes(x = displ,
+                     y = hwy,
+                     color = class)) +
   geom_point()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <hr />
@@ -603,8 +605,7 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <div id="density-plot-a" class="section level4">
 <h4><span class="header-section-number">5.2.1.3</span> Density Plot a)</h4>
 <pre class="r"><code>ggplot(data = mpg,
-  mapping = aes(x=hwy,
-                )) + 
+       mapping = aes(x = hwy,)) +
   geom_density()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ul>
@@ -631,8 +632,8 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 </ul>
 <hr />
 </div>
-<div id="numer-of-observations-per-location" class="section level4">
-<h4><span class="header-section-number">5.2.1.6</span> Numer of observations per location</h4>
+<div id="number-of-observations-per-location" class="section level4">
+<h4><span class="header-section-number">5.2.1.6</span> Number of observations per location</h4>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <ul>
 <li>Change the Axis as displayed in the plot (keep only x axis). Use no color variable.</li>
@@ -647,11 +648,11 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <p>Back to business. Let’s continue working on our replication.</p>
 <p>A smoothed regression line (standard OLS) can be added by adding <code>geom_smooth()</code>. Choose <code>method = "lm"</code> for standard OLS.</p>
 <pre class="r"><code>ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class))+
-  geom_point()+
-  geom_smooth(color = &quot;blue&quot;, 
+       mapping = aes(x = displ,
+                     y = hwy,
+                     color = class)) +
+  geom_point() +
+  geom_smooth(color = &quot;blue&quot;,
               method = &quot;lm&quot;)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p><strong>A crucial learning</strong> from this is that different geometric objects can be put within the same plot.</p>
@@ -663,19 +664,21 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <div id="labels" class="section level3">
 <h3><span class="header-section-number">5.3.1</span> Labels</h3>
 <p>This is largely self-explanatory.</p>
-<pre class="r"><code>ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+<pre class="r"><code>ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = &quot;blue&quot;, 
-              method = &quot;lm&quot;)+
-  labs(x = &quot;Engine Displacement in Liters&quot;,
-       y = &quot;Highway miles per gallon&quot;,
-       title = &quot;MPG data&quot;,
-       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
-       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
-       color = &quot;Car Classes&quot;)</code></pre>
+  geom_point() +
+  geom_smooth(col = &quot;blue&quot;,
+              method = &quot;lm&quot;) +
+  labs(
+    x = &quot;Engine Displacement in Liters&quot;,
+    y = &quot;Highway miles per gallon&quot;,
+    title = &quot;MPG data&quot;,
+    subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+    caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+    color = &quot;Car Classes&quot;
+  )</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <hr />
 </div>
@@ -688,19 +691,21 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <div id="serious-themes" class="section level4">
 <h4><span class="header-section-number">5.3.2.1</span> Serious themes</h4>
 <p>While you can adjust the theme as much as you want, the lazy but safer (e.g. plot designs which are deemed acceptable by more people than just yourself), you can rely on the large set of predesigned themes from ggplot2. Additionally, you can also make use of the ggthemes package, which offers even more themes.</p>
-<pre class="r"><code>ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+<pre class="r"><code>ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = &quot;blue&quot;, 
-              method = &quot;lm&quot;)+
-  labs(x = &quot;Engine Displacement in Liters&quot;,
-       y = &quot;Highway miles per gallon&quot;,
-       title = &quot;MPG data&quot;,
-       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
-       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
-       color = &quot;Car Classes&quot;)+
+  geom_point() +
+  geom_smooth(col = &quot;blue&quot;,
+              method = &quot;lm&quot;) +
+  labs(
+    x = &quot;Engine Displacement in Liters&quot;,
+    y = &quot;Highway miles per gallon&quot;,
+    title = &quot;MPG data&quot;,
+    subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+    caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+    color = &quot;Car Classes&quot;
+  ) +
   theme_classic()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>There are many more themes (for example, <code>theme_grey</code>, <code>theme_void</code>, <code>theme_dark</code>, <code>theme_minimal</code>)</p>
@@ -710,19 +715,21 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 <p>With the ggthemes packages, you have even more themes at hand:</p>
 <pre class="r"><code>library(ggthemes)
 
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = &quot;blue&quot;, 
-              method = &quot;lm&quot;)+
-  labs(x = &quot;Engine Displacement in Liters&quot;,
-       y = &quot;Highway miles per gallon&quot;,
-       title = &quot;MPG data&quot;,
-       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
-       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
-       color = &quot;Car Classes&quot;)+
+  geom_point() +
+  geom_smooth(col = &quot;blue&quot;,
+              method = &quot;lm&quot;) +
+  labs(
+    x = &quot;Engine Displacement in Liters&quot;,
+    y = &quot;Highway miles per gallon&quot;,
+    title = &quot;MPG data&quot;,
+    subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+    caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+    color = &quot;Car Classes&quot;
+  ) +
   theme_fivethirtyeight()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Other themes from the ggthemes package include <code>theme_economist</code> (The Economist style graphs), <code>theme_stata()</code> (for those who miss Stata), or <code>theme_tufte()</code>. It has also a cool functionality for creating color scales for color blind people.</p>
@@ -733,19 +740,21 @@ ggplot(data = mpg,
 <div id="finish" class="section level2">
 <h2><span class="header-section-number">5.4</span> Finish</h2>
 <p>… This still doesn’t look like the plot we wanted to create. Actually, the plot from above was build with the <code>theme_bw()</code></p>
-<pre class="r"><code>ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+<pre class="r"><code>ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = &quot;blue&quot;, 
-              method = &quot;lm&quot;)+
-  labs(x = &quot;Engine Displacement in Liters&quot;,
-       y = &quot;Highway miles per gallon&quot;,
-       title = &quot;MPG data&quot;,
-       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
-       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
-       color = &quot;Car Classes&quot;)+
+  geom_point() +
+  geom_smooth(col = &quot;blue&quot;,
+              method = &quot;lm&quot;) +
+  labs(
+    x = &quot;Engine Displacement in Liters&quot;,
+    y = &quot;Highway miles per gallon&quot;,
+    title = &quot;MPG data&quot;,
+    subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+    caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+    color = &quot;Car Classes&quot;
+  ) +
   theme_bw()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <hr />
@@ -757,24 +766,26 @@ ggplot(data = mpg,
 <h2><span class="header-section-number">6.1</span> Saving a ggplot object in the environment</h2>
 <p>Just to mention this, you can save a ggplot object in the environment like everything else (remember, everything in R is an object).</p>
 <p>Storing our final plot from above as final_plot</p>
-<pre class="r"><code>final_plot &lt;- ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class)) +
-  geom_point() + 
-  geom_smooth(col = &quot;blue&quot;, 
-              method = &quot;lm&quot;)+
-  labs(x = &quot;Engine Displacement in Liters&quot;,
-       y = &quot;Highway miles per gallon&quot;,
-       title = &quot;MPG data&quot;,
-       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
-       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
-       color = &quot;Car Classes&quot;)+
+<pre class="r"><code>final_plot &lt;- ggplot(data = mpg,
+                     mapping = aes(x = displ,
+                                   y = hwy,
+                                   color = class)) +
+  geom_point() +
+  geom_smooth(col = &quot;blue&quot;,
+              method = &quot;lm&quot;) +
+  labs(
+    x = &quot;Engine Displacement in Liters&quot;,
+    y = &quot;Highway miles per gallon&quot;,
+    title = &quot;MPG data&quot;,
+    subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+    caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+    color = &quot;Car Classes&quot;
+  ) +
   theme_bw()</code></pre>
 <p>We can then add stuff to the ggplot object in the usual way.</p>
 <p>Suppose, we want to add a fat vertical line (x=3) again:</p>
-<pre class="r"><code>final_plot+
-  geom_vline(xintercept = 3, size=5)</code></pre>
+<pre class="r"><code>final_plot +
+  geom_vline(xintercept = 3, size = 5)</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <hr />
 </div>
@@ -782,21 +793,23 @@ ggplot(data = mpg,
 <h2><span class="header-section-number">6.2</span> Integrating ggplot with other tidyverse functions</h2>
 <p>GGplot, being part of the tidyverse, can be perfectly integrated with other functions of the tidyverse.</p>
 <p>As an easy example, suppose, we only want to keep hwy values above 25:</p>
-<pre class="r"><code>mpg %&gt;% 
-  filter(hwy&gt;=25)%&gt;%
-  ggplot(                           # do not call data=mpg again here! 
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class)) +
-  geom_point() + 
-  geom_smooth(col = &quot;blue&quot;, 
-              method = &quot;lm&quot;)+
-  labs(x = &quot;Engine Displacement in Liters&quot;,
-       y = &quot;Highway miles per gallon&quot;,
-       title = &quot;MPG data&quot;,
-       subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
-       caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
-       color = &quot;Car Classes&quot;)+
+<pre class="r"><code>mpg %&gt;%
+  filter(hwy &gt;= 25) %&gt;%
+  ggplot(# do not call data=mpg again here!
+    mapping = aes(x = displ,
+                  y = hwy,
+                  color = class)) +
+  geom_point() +
+  geom_smooth(col = &quot;blue&quot;,
+              method = &quot;lm&quot;) +
+  labs(
+    x = &quot;Engine Displacement in Liters&quot;,
+    y = &quot;Highway miles per gallon&quot;,
+    title = &quot;MPG data&quot;,
+    subtitle = &quot;Cars with higher engine displacement tend to have lower highway mpg&quot;,
+    caption = &quot;Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp&quot;,
+    color = &quot;Car Classes&quot;
+  ) +
   theme_bw()</code></pre>
 <p><img src="dataviz_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <hr />

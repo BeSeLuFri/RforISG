@@ -466,8 +466,9 @@ div.tocify {
 </div>
 
 
-<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map_clean.R">here</a></p>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map_clean.R">here</a>. There are no exercises so this script contains all necessary code already.</p>
 <p>Download the data <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv">here</a> (same data as on the <a href="https://beselufri.github.io/RforISG/dataviz_eurostat.html">DataViz Eurostat page</a>)</p>
+<hr />
 <div id="intro" class="section level1">
 <h1><span class="header-section-number">1</span> Intro</h1>
 <p>Creating maps with ggplot is easy. You just have to supply longitudinal data as the x variable and latitudinal data as the y variable and additionally give a group variable (so that R knows, which rows are to be filled together).</p>
@@ -482,28 +483,46 @@ div.tocify {
 <pre class="r"><code>eurost &lt;- read_csv2(&quot;data/eurostat_data.csv&quot;)
 
 eurost &lt;- eurost %&gt;%
-  filter(time==2014)
+  filter(time == 2014)
 
 mpdta &lt;- map_data(&quot;world&quot;)
 
-eurost2 &lt;- inner_join(x=eurost, y=mpdta, by=c(&quot;geo_name&quot; = &quot;region&quot;))</code></pre>
+eurost2 &lt;-
+  inner_join(x = eurost,
+             y = mpdta,
+             by = c(&quot;geo_name&quot; = &quot;region&quot;))</code></pre>
 <p>The basic ggplot can be done with <code>geom_polygon</code>. As we said, you supply longitude as x and latitude as y data, group them according to the group indicator and fill in your variable of interest (youth unemployment.)</p>
 <p>That’s it.</p>
-<pre class="r"><code>P &lt;- ggplot()+ 
-  geom_polygon(data = eurost2, aes(x=long, y = lat, group = group, fill=unemp_youth_t),
-               colour = &quot;white&quot;, size = 0.1)
+<pre class="r"><code>P &lt;- ggplot() +
+  geom_polygon(
+    data = eurost2,
+    aes(
+      x = long,
+      y = lat,
+      group = group,
+      fill = unemp_youth_t
+    ),
+    colour = &quot;white&quot;,
+    size = 0.1
+  )
 P</code></pre>
 <p><img src="dataviz_map_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>Mapping is a normal ggplot operation like anything else. You can change the plot in the normal way.</p>
-<pre class="r"><code>P2 &lt;- P+
-  theme(panel.grid.minor = element_line(colour = NA), 
-        panel.background = element_rect(fill = NA, colour = NA),
-        axis.text.x = element_blank(),
-        axis.text.y = element_blank(), axis.ticks.x = element_blank(),
-        axis.ticks.y = element_blank(), axis.title = element_blank())+
-   scale_fill_gradient(name = &quot;Youth Unemployment&quot;, 
-                      low = rgb(207,233, 238, maxColorValue = 255),
-                      high = rgb(79, 129, 189, maxColorValue = 255))+
+<pre class="r"><code>P2 &lt;- P +
+  theme(
+    panel.grid.minor = element_line(colour = NA),
+    panel.background = element_rect(fill = NA, colour = NA),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title = element_blank()
+  ) +
+  scale_fill_gradient(
+    name = &quot;Youth Unemployment&quot;,
+    low = rgb(207, 233, 238, maxColorValue = 255),
+    high = rgb(79, 129, 189, maxColorValue = 255)
+  ) +
   labs(title = &quot;Map of youth unemployment per country in Europe (2014)&quot;,
        subtitle = &quot;notice the different way of changing the colors&quot;,
        caption = &quot;Source: Eurostat&quot;)
@@ -533,31 +552,46 @@ data_b2 &lt;-
                time_format = &quot;num&quot;)
 
 data_b2 &lt;- data_b2 %&gt;%
-  filter(age==&quot;Y15-24&quot;,
-         sex==&quot;T&quot;,
-         time==2014)  %&gt;%
-  subset(nchar(as.character(geo))&gt;3)
+  filter(age == &quot;Y15-24&quot;,
+         sex == &quot;T&quot;,
+         time == 2014)  %&gt;%
+  subset(nchar(as.character(geo)) &gt; 3)
 
-df2 &lt;- inner_join(data_b2, df, by=&quot;geo&quot;)</code></pre>
+df2 &lt;- inner_join(data_b2, df, by = &quot;geo&quot;)</code></pre>
 <p>And the plot in the exact same way.</p>
-<pre class="r"><code>new &lt;- ggplot()+ 
-  geom_polygon(data = df2, aes(x=long, y = lat, group = group, fill=values),
-               colour = &quot;white&quot;, size = 0.1)
+<pre class="r"><code>new &lt;- ggplot() +
+  geom_polygon(
+    data = df2,
+    aes(
+      x = long,
+      y = lat,
+      group = group,
+      fill = values
+    ),
+    colour = &quot;white&quot;,
+    size = 0.1
+  )
 
 new</code></pre>
 <p><img src="dataviz_map_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Again, we simply modify this chart. To zoom into the plot, we use the function <code>coord_map</code> which builds upon the mapproj package (which you have to install first).</p>
 <pre class="r"><code>library(mapproj)
-new2 &lt;- new+
-    theme(panel.grid.minor = element_line(colour = NA), 
-        panel.background = element_rect(fill = NA, colour = NA),
-        axis.text.x = element_blank(),
-        axis.text.y = element_blank(), axis.ticks.x = element_blank(),
-        axis.ticks.y = element_blank(), axis.title = element_blank())+
-   scale_fill_gradient(name = &quot;Youth Unemployment&quot;, 
-                      low = rgb(207,233, 238, maxColorValue = 255),
-                      high = rgb(79, 129, 189, maxColorValue = 255))+
-  coord_map(xlim = c(-30, 45), ylim = c(30, 75))+
+new2 &lt;- new +
+  theme(
+    panel.grid.minor = element_line(colour = NA),
+    panel.background = element_rect(fill = NA, colour = NA),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title = element_blank()
+  ) +
+  scale_fill_gradient(
+    name = &quot;Youth Unemployment&quot;,
+    low = rgb(207, 233, 238, maxColorValue = 255),
+    high = rgb(79, 129, 189, maxColorValue = 255)
+  ) +
+  coord_map(xlim = c(-30, 45), ylim = c(30, 75)) +
   labs(title = &quot;Map of youth unemployment per NUTS2 region in Europe (2014)&quot;,
        subtitle = &quot;We zoom into main continental Europe with `coord_map()` for better readability&quot;,
        caption = &quot;Source: Eurostat&quot;)

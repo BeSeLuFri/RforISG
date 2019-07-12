@@ -1,20 +1,20 @@
 ---
-title: "Data Viz: Map with Eurostat Data"
+title: "Example Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
+> The code chunk below is the only special code for R Notebooks: We want to make sure that every code chunk uses the working directory of the R Project (and not nessarily the path where the Notebook is saved). A special feature of R Notebook / Markdown is that it uses diverges from the working directory of the project. 
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_map_clean.R). There are no exercises so this script contains all necessary code already.
-
-Download the data [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv) (same data as on the [DataViz Eurostat page](https://beselufri.github.io/RforISG/dataviz_eurostat.html))
-
-***
 
 # Intro
 
-Creating maps with ggplot is easy. You just have to supply longitudinal data as the x variable and latitudinal data as the y variable and additionally give a group variable (so that R knows, which rows are to be filled together). 
+Creating maps with ggplot is easy. You just have to supply longitudial data as the x variable and lattitudial data as the y variable and additionally give a group variable (so that R knows, which rows are to be filled together). 
 
 This kind of data (long, lat, group) is something which you can get from external sources (we present two options below). Then you have to merge this data with your values (e.g. what you want to fill into the map). So in addition, you need a fourth variable (like the code or the name of the geography). 
 
@@ -47,7 +47,7 @@ eurost2 <-
 ```
 
 
-The basic ggplot can be done with `geom_polygon`. As we said, you supply longitude as x and latitude as y data, group them according to the group indicator and fill in your variable of interest (youth unemployment.)
+The basic ggplot can be done with `geom_polygon`. As we said, you supply longitude as x and lattitudial as y data, group them according to the group indicator and fill in your variable of interest (youth unemployment.)
 
 That's it.
 ```{r}
@@ -81,7 +81,7 @@ P2 <- P +
     axis.title = element_blank()
   ) +
   scale_fill_gradient(
-    name = "Youth Unemployment",
+    name = "Youth Umemployment",
     low = rgb(207, 233, 238, maxColorValue = 255),
     high = rgb(79, 129, 189, maxColorValue = 255)
   ) +
@@ -96,11 +96,11 @@ P2
 
 # NUTS2 level plots with eurostat
 
-The eurstat package, which you already know by now, has the function `get_eurostat_geospatial` which allows you to retrieve a data frame with longitudinal, latitudinal, and group data for maps on different levels of agglomeration. 
+The eurstat package, which you already know by now, has the function `get_eurostat_geospatial` which allows you to retrieve a data frame with longitudial, lattitudial, and group data for maps on different levels of agglomeration. 
 
 The overall procedure is the same as above. Once we have data on long, lat, and group, we merge it with our data of interest. 
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library("eurostat")
 
 df <- get_eurostat_geospatial(output_class = "df", 
@@ -161,7 +161,7 @@ new2 <- new +
     axis.title = element_blank()
   ) +
   scale_fill_gradient(
-    name = "Youth Unemployment",
+    name = "Youth Umemployment",
     low = rgb(207, 233, 238, maxColorValue = 255),
     high = rgb(79, 129, 189, maxColorValue = 255)
   ) +

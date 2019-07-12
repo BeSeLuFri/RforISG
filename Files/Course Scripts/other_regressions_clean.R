@@ -6,10 +6,11 @@
 ## Example Call of `lm` with Eurostat Data ----
 eur_data <- read.csv2("data/eurostat_data.csv")
 
-m1 <- formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
-              subset = year == 2014)
-model<- lm(formula = m1,
-           data = eur_data)
+m1 <-
+  formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
+          subset = year == 2014)
+model <- lm(formula = m1,
+            data = eur_data)
 
 
 ## Output of `lm` ----
@@ -44,10 +45,8 @@ stargazer::stargazer(model,
 
 ## Compare different Models ----
 
-model2 <- lm(unemp_workagepop_t~gdp_gr, 
+model2 <- lm(unemp_workagepop_t ~ gdp_gr,
              data = eur_data)
 
-stargazer::stargazer(model, model2, 
+stargazer::stargazer(model, model2,
                      type = "html")
-
-

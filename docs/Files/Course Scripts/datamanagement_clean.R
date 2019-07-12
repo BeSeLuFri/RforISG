@@ -39,6 +39,7 @@ data <- readxl::read_xlsx("data/soep.xlsx")
 
 data <- read_csv2("data/soep_europ.csv")
 
+
 # Basic Data Management ----
 
 ## The pipe %>% ----

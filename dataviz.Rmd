@@ -9,25 +9,31 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_clean.R).
 
+Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_solutions.R) - but try to solve everything without the solutions first!
+
+***
+
 # Intro
 
 In this tutorial, we will learn how to produce this graph.
 
 ```{r, echo=FALSE}
 library(ggplot2)
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes") + 
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
   theme_bw()
 ```
 
@@ -58,17 +64,17 @@ library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 Base R has several functions for data visualization. Crucially, you need separate functions for each type of plot. Some examples:
 
 ```{r}
-hist(x=mpg$displ)
+hist(x = mpg$displ)
 ```
 
 ```{r}
-boxplot(displ~year,
-  data=mpg)
+boxplot(displ ~ year,
+        data = mpg)
 ```
 
 ```{r}
-plot(x=mpg$displ,
-     y=mpg$hwy)
+plot(x = mpg$displ,
+     y = mpg$hwy)
 ```
 
 ***
@@ -104,8 +110,8 @@ Select the data (*mpg*) and attach *displ* (the engine displacement) to the x ax
 
 ```{r}
 ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class))
 ```
 
@@ -117,9 +123,9 @@ Well, we don't see much. The reason is that we have only specified the data and 
 
 ```{r}
 ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class))+
+       mapping = aes(x = displ,
+                     y = hwy,
+                     color = class)) +
   geom_point()
 ```
 
@@ -139,8 +145,8 @@ Follow the instructions about the mapping and the type of geom below each plot.
 
 ```{r, echo=FALSE}
 ggplot(data = mpg,
-  mapping = aes(x = class,
-                y = hwy)) + 
+       mapping = aes(x = class,
+                     y = hwy)) +
   geom_boxplot()
 ```
 
@@ -154,8 +160,8 @@ ggplot(data = mpg,
 
 ```{r, echo=FALSE}
 ggplot(data = mpg,
-  mapping = aes(x = class,
-                y = hwy)) + 
+       mapping = aes(x = class,
+                     y = hwy)) +
   geom_violin()
 ```
 
@@ -168,8 +174,7 @@ ggplot(data = mpg,
 
 ```{r}
 ggplot(data = mpg,
-  mapping = aes(x=hwy,
-                )) + 
+       mapping = aes(x = hwy,)) +
   geom_density()
 ```
 
@@ -182,8 +187,7 @@ ggplot(data = mpg,
 
 ```{r, echo=FALSE}
 ggplot(data = mpg,
-  mapping = aes(x=hwy,
-                )) + 
+       mapping = aes(x = hwy,)) +
   geom_histogram()
 ```
 
@@ -195,7 +199,7 @@ ggplot(data = mpg,
 
 ```{r, echo=FALSE}
 ggplot(data = mpg,
-  mapping = aes(x = class)) + 
+       mapping = aes(x = class)) +
   geom_bar()
 ```
 
@@ -205,12 +209,12 @@ ggplot(data = mpg,
 
 ***
 
-#### Numer of observations per location
+#### Number of observations per location
 
 ```{r, echo=FALSE}
 ggplot(data = mpg,
-  mapping = aes(x = displ,
-                y = hwy)) + 
+       mapping = aes(x = displ,
+                     y = hwy)) +
   geom_count()
 ```
 
@@ -228,11 +232,11 @@ A smoothed regression line (standard OLS) can be added by adding `geom_smooth()`
 
 ```{r, warning=FALSE, message=FALSE}
 ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class))+
-  geom_point()+
-  geom_smooth(color = "blue", 
+       mapping = aes(x = displ,
+                     y = hwy,
+                     color = class)) +
+  geom_point() +
+  geom_smooth(color = "blue",
               method = "lm")
 ```
 
@@ -247,19 +251,21 @@ ggplot(data = mpg,
 This is largely self-explanatory. 
 
 ```{r}
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  )
 ```
 
 ***
@@ -272,26 +278,31 @@ Further [below](https://beselufri.github.io/RforISG/dataviz.html#6_minor_addenda
 
 ```{r, echo=FALSE}
 
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
-  theme(panel.background = element_rect(fill = "pink"),
-        panel.grid.major.y = element_line(colour = "green"),
-        panel.grid.minor.y = element_line(colour = "green"),
-        legend.position = "bottom",
-        panel.border = element_rect(color="orange", fill = NA, size=5))+
-  scale_x_continuous(breaks = seq(1,8, by=0.5))+
-  geom_vline(xintercept = 3, size=5)
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
+  theme(
+    panel.background = element_rect(fill = "pink"),
+    panel.grid.major.y = element_line(colour = "green"),
+    panel.grid.minor.y = element_line(colour = "green"),
+    legend.position = "bottom",
+    panel.border = element_rect(color = "orange", fill = NA, size =
+                                  5)
+  ) +
+  scale_x_continuous(breaks = seq(1, 8, by = 0.5)) +
+  geom_vline(xintercept = 3, size = 5)
 ```
 
 
@@ -304,19 +315,21 @@ While you can adjust the theme as much as you want, the lazy but safer (e.g. plo
 
 
 ```{r}
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
   theme_classic()
 ```
 
@@ -329,19 +342,21 @@ With the ggthemes packages, you have even more themes at hand:
 ```{r}
 library(ggthemes)
 
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
   theme_fivethirtyeight()
 
 ```
@@ -355,19 +370,21 @@ Other themes from the ggthemes package include `theme_economist` (The Economist 
 ... This still doesn't look like the plot we wanted to create. Actually, the plot from above was build with the `theme_bw()`
 
 ```{r}
-ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy,
                      color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
   theme_bw()
 ```
 
@@ -382,19 +399,21 @@ Just to mention this, you can save a ggplot object in the environment like every
 Storing our final plot from above as final_plot
 
 ```{r}
-final_plot <- ggplot(data = mpg, 
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
+final_plot <- ggplot(data = mpg,
+                     mapping = aes(x = displ,
+                                   y = hwy,
+                                   color = class)) +
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
   theme_bw()
 ```
 
@@ -403,8 +422,8 @@ We can then add stuff to the ggplot object in the usual way.
 Suppose, we want to add a fat vertical line (x=3) again:
 
 ```{r}
-final_plot+
-  geom_vline(xintercept = 3, size=5)
+final_plot +
+  geom_vline(xintercept = 3, size = 5)
 ```
 
 ***
@@ -416,21 +435,23 @@ GGplot, being part of the tidyverse, can be perfectly integrated with other func
 As an easy example, suppose, we only want to keep hwy values above 25:
 
 ```{r}
-mpg %>% 
-  filter(hwy>=25)%>%
-  ggplot(                           # do not call data=mpg again here! 
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue", 
-              method = "lm")+
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
-       color = "Car Classes")+
+mpg %>%
+  filter(hwy >= 25) %>%
+  ggplot(# do not call data=mpg again here!
+    mapping = aes(x = displ,
+                  y = hwy,
+                  color = class)) +
+  geom_point() +
+  geom_smooth(col = "blue",
+              method = "lm") +
+  labs(
+    x = "Engine Displacement in Liters",
+    y = "Highway miles per gallon",
+    title = "MPG data",
+    subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+    caption = "Source: mpg data in ggplot2 \n Credits for the tutorial: TheRBootcamp",
+    color = "Car Classes"
+  ) +
   theme_bw()
   
 

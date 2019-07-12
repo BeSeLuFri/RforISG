@@ -8,6 +8,10 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
 
 Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_clean.R)
 
+Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_solutions.R) - but try to solve everything without the solutions first!
+
+***
+
 # Preliminary:
 
 * We use an old (2003) randomly changed and subsetted SOEP dataset with ~4.600 observations. 
@@ -49,6 +53,8 @@ Let's first open the csv file "soep_europ.csv".
 * A good rule of thumb is to save all your data in a separate "data" folder within your R environment: E.g. "data**/**soep_europ.csv"
 
 * Don't use the backslash but always the forward slash(/). 
+
+* In the follwing, we will read and save the practice data as `data`. Don't forget - everything in R is an object. Therefore, we could have used every name for the data frame we want. Instead of `data`, we could have also called it `isg`, `RisGreat`, or `blaBlablaBla345`. The names don't matter!
 
 ## .csv
 

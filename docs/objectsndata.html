@@ -467,6 +467,7 @@ div.tocify {
 
 
 <p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata_clean.R">here</a>.</p>
+<p>Solutions can be downloaded <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/objectsndata_solutions.R">here</a> - but try to solve everything without the solutions first!</p>
 <hr />
 <div id="objects-in-r-basic-calculations" class="section level1">
 <h1><span class="header-section-number">1</span> Objects in R: Basic Calculations</h1>
@@ -718,7 +719,7 @@ A.col[_ , _]
 
 
 # WHAT does Katrin have on Monday and Friday?
-A.col[_ , c(_ , _)]</code></pre>
+A.col[c(_ , _) , _]</code></pre>
 <p>Some quick matrix algebra:</p>
 <pre class="r"><code># Element wise multiplication (not matrix multiplication but multiplying elements at same place)
 A &lt;- matrix(c(2, -4, -1, 5, 7, 0), nrow = 2)

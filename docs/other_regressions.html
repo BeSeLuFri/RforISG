@@ -470,18 +470,25 @@ div.tocify {
 </div>
 
 
-<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/other_regressions_clean.R">here</a></p>
+<p>Download the script <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/other_regressions_clean.R">here</a>. There are no exercises so this script contains all necessary code already.</p>
 <p>Download the data <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv">here</a> (same data as on the <a href="https://beselufri.github.io/RforISG/dataviz_eurostat.html">DataViz Eurostat page</a>)</p>
+<hr />
 <div id="tldr" class="section level1">
 <h1><span class="header-section-number">1</span> Tl;dr</h1>
 <p>This is how standard OLS regressions are done:</p>
-<pre class="r"><code>ols_object &lt;- lm(regressand ~ regressor1 + regressor2 + regressor3, 
-                data=data.frame)</code></pre>
+<pre class="r"><code>ols_object &lt;- lm(regressand ~ regressor1 + regressor2 + regressor3,
+                 data = data.frame)</code></pre>
 <p>This is how a (two-ways FE) panel regression is done</p>
 <pre class="r"><code>library(plm)
-panel_object &lt;- plm(regressand ~ regressor1 + regressor2 + regressor3,
-                    index=c(&quot;unit&quot;, &quot;time&quot;), model=&quot;within&quot;, effect= &quot;twoways&quot;, # for two-ways fixed effect regressions
-                    data=data.frame)</code></pre>
+panel_object &lt;-
+   plm(
+      regressand ~ regressor1 + regressor2 + regressor3,
+      index = c(&quot;unit&quot;, &quot;time&quot;),
+      model = &quot;within&quot;,
+      effect = &quot;twoways&quot;,
+      # for two-ways fixed effect regressions
+      data = data.frame
+   )</code></pre>
 <p>This is how you can get a summary of your regression:</p>
 <pre class="r"><code>summary(ols_object, panel_object)</code></pre>
 <p>This is a nicer way for getting a summary and exporting (journal style)</p>
@@ -530,11 +537,11 @@ stargazer(ols_object, panel_object,
 <li>Crossing: <code>a * b</code> is equivalent to <code>a + b + a:b</code></li>
 </ul>
 <pre class="r"><code>formula(y ~ a + b + a:b) # and
-formula(y ~ a*b) # are equivalent</code></pre>
+formula(y ~ a * b) # are equivalent</code></pre>
 <ul>
 <li>Transformations with <code>I()</code></li>
 </ul>
-<pre class="r"><code>formula(y ~ a + I(a^2)) # quadratic term must be in I() to evaluate correctly
+<pre class="r"><code>formula(y ~ a + I(a ^ 2)) # quadratic term must be in I() to evaluate correctly
 formula(y ~ log(a)) # log can stay by itself</code></pre>
 <ul>
 <li>Include all variables in your data with <code>.</code></li>
@@ -577,10 +584,11 @@ formula(y ~ a + b + ... + z) # for a dataset with variables from a to z</code></
 <h2><span class="header-section-number">2.6</span> Example Call of <code>lm</code> with Eurostat Data</h2>
 <pre class="r"><code>eur_data &lt;- read.csv2(&quot;data/eurostat_data.csv&quot;)
 
-m1 &lt;- formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
-              subset = year == 2014)
-model&lt;- lm(formula = m1,
-           data = eur_data)</code></pre>
+m1 &lt;-
+   formula(unemp_workagepop_t ~ gdp_gr + inv_per_empl + immigration_t,
+           subset = year == 2014)
+model &lt;- lm(formula = m1,
+            data = eur_data)</code></pre>
 <hr />
 </div>
 <div id="output-of-lm" class="section level2">
@@ -683,9 +691,9 @@ model&lt;- lm(formula = m1,
 </div>
 <div id="compare-different-models" class="section level2">
 <h2><span class="header-section-number">2.10</span> Compare different Models</h2>
-<pre class="r"><code>model2 &lt;- lm(unemp_workagepop_t~gdp_gr, 
+<pre class="r"><code>model2 &lt;- lm(unemp_workagepop_t ~ gdp_gr,
              data = eur_data)</code></pre>
-<pre class="r"><code>stargazer::stargazer(model, model2, 
+<pre class="r"><code>stargazer::stargazer(model, model2,
                      type = &quot;html&quot;)</code></pre>
 <table style="text-align:center">
 <tr>
@@ -927,10 +935,13 @@ F Statistic
 <pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
 ## 
 ##     between, lag, lead</code></pre>
-<pre class="r"><code>panel_object &lt;- plm(unemp_workagepop_t~gdp_gr, 
-             data = eur_data, index=c(&quot;geo_code&quot;, &quot;time&quot;), 
-             model=&quot;within&quot;, 
-             effect= &quot;twoways&quot;) # for two-ways fixed effect regressions</code></pre>
+<pre class="r"><code>panel_object &lt;- plm(
+   unemp_workagepop_t ~ gdp_gr,
+   data = eur_data,
+   index = c(&quot;geo_code&quot;, &quot;time&quot;),
+   model = &quot;within&quot;,
+   effect = &quot;twoways&quot;
+) # for two-ways fixed effect regressions</code></pre>
 <p>For further information on panel regressions, I recommend</p>
 <ul>
 <li>the <a href="https://www.princeton.edu/~otorres/Panel101R.pdf">slides</a> by Oscar Torres-Reyna</li>

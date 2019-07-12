@@ -10,6 +10,10 @@ Download the script [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/m
 
 Download the data [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/eurostat_data.csv)
 
+Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/dataviz_eurostat_solutions.R) - but try to solve everything without the solutions first!
+
+***
+
 # Info
 
 We practice with the Eurostat data again. 
@@ -55,26 +59,27 @@ Reproduce these three plots. Below the graphs you can find some information.
 eurost <- read_csv2("data/eurostat_data.csv")
 
 eurost <- eurost %>%
-  filter(time==2014)
+  filter(time == 2014)
 
 ggplot(
   data = eurost,
   mapping = aes(
     x = unemp_youth_t,
     y = gdp_gr,
-    color = emigration_t / immigration_t)
+    color = emigration_t / immigration_t
+  )
 ) +
-  geom_point(
-    aes(size = inv_per_empl)
+  geom_point(aes(size = inv_per_empl)) +
+  labs(
+    x = "Share of Unemployed Youth (15-24) in Pct.",
+    y = "Real GDP growth rate (YOY)",
+    title = "GDP growth and youth unemployment in 2014",
+    subtitle = "Correlation between lower growth rate and higher youth unemployment",
+    caption = "Source: Eurostat",
+    size = "Investment p. person\n employed (in Mill. €)",
+    color = "Ratio of Emigration \n to Immigration"
   ) +
-  labs(x = "Share of Unemployed Youth (15-24) in Pct.",
-       y = "Real GDP growth rate (YOY)",
-       title = "GDP growth and youth unemployment in 2014",
-       subtitle = "Correlation between lower growth rate and higher youth unemployment",
-       caption = "Source: Eurostat",
-       size = "Investment p. person\n employed (in Mill. €)",
-       color= "Ratio of Emigration \n to Immigration")+
-  geom_smooth(method="lm", se=FALSE, color="black")+
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
   theme_classic()
 ```
 
@@ -132,10 +137,12 @@ Here, we first do some some data management. We reload the data (but save them a
 ```{r, message=FALSE, warning=FALSE}
 eurost2 <- read_csv2("data/eurostat_data.csv") %>%
   filter(geo_code %in% c("DE", "IT", "EL", "ES", "UK"),
-         time>=1990,
-         time<=2015) %>%
-  mutate(unemp_tod = if_else(time==2015, unemp_workagepop_t, NA_real_),
-         unemp_youth_tod = if_else(time==2015, unemp_youth_t, NA_real_))
+         time >= 1990,
+         time <= 2015) %>%
+  mutate(
+    unemp_tod = if_else(time == 2015, unemp_workagepop_t, NA_real_),
+    unemp_youth_tod = if_else(time == 2015, unemp_youth_t, NA_real_)
+  )
 ```
 
 We use this data for the plot
@@ -158,8 +165,11 @@ ggplot(data = eurost2,
     y = "Unemployment (in Pct.)",
     fill = "Unemployment \n (2015 as point)",
     caption = "Source: Eurostat"
-  )+
-  scale_fill_manual(values = c("red", "blue"), labels = c("Total Unemployment", "Youth Unemployment"))
+  ) +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    labels = c("Total Unemployment", "Youth Unemployment")
+  )
 ```
 
 * As aesthetic in the principle `ggplot()` function, just use x = geo_code
@@ -191,19 +201,20 @@ main_plot <- ggplot(
   mapping = aes(
     x = unemp_youth_t,
     y = gdp_gr,
-    color = emigration_t / immigration_t)
+    color = emigration_t / immigration_t
+  )
 ) +
-  geom_point(
-    aes(size = inv_per_empl)
+  geom_point(aes(size = inv_per_empl)) +
+  labs(
+    x = "Share of Unemployed Youth (15-24) in Pct.",
+    y = "Real GDP growth rate (YOY)",
+    title = "GDP growth and youth unemployment in 2014",
+    subtitle = "Correlation between lower growth rate and higher youth unemployment",
+    caption = "Source: Eurostat",
+    size = "Investment p. person\n employed (in Mill. €)",
+    color = "Ratio of Emigration \n to Immigration"
   ) +
-  labs(x = "Share of Unemployed Youth (15-24) in Pct.",
-       y = "Real GDP growth rate (YOY)",
-       title = "GDP growth and youth unemployment in 2014",
-       subtitle = "Correlation between lower growth rate and higher youth unemployment",
-       caption = "Source: Eurostat",
-       size = "Investment p. person\n employed (in Mill. €)",
-       color= "Ratio of Emigration \n to Immigration")+
-  geom_smooth(method="lm", se=FALSE, color="black")+
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
   theme_classic()
 ```
 
@@ -260,8 +271,8 @@ You can add a facets (e.g. the same plotting relationship in many windows repres
 
 
 ```{r, echo=FALSE}
-main_plot+
-  facet_wrap(~location)+
+main_plot +
+  facet_wrap( ~ location) +
   labs(caption = "Source: Eurostat + location is manually defined by the site's creator")
 
 ```

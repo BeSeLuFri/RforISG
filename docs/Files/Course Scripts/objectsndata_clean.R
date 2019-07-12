@@ -10,9 +10,10 @@ x = 5
 #' Assign the value of 10 to the object x
 x
 
-#' Multiply x with 5 and save it as bb <-
+#' Multiply x with 5 and save it as b
+b <-
 
-Print b by simply typing its name in the script**
+#' Print b by simply typing its name in the script**
 
 
 
@@ -154,7 +155,8 @@ kicker.skills["Marco"] # WHAT is the level of Katja's kicker skills?
 kicker.skills[kicker.skills __ _ ]
 
 # Who is the worst kicker player?
-kicker.skills[_ == min(_)] # DO you understand every part of this line?
+kicker.skills[_ == min(_)] # Do you understand every part of this line?
+
 
 # Data Frames ----
 
@@ -196,7 +198,7 @@ presence[__ , __________]
 presence$Eugen
 
 # GENERATE a new variable total.presence which sums up the total of people who 
-are present on each day:
+# are present on each day:
 presence$total.presence <- presence$Eugen + ______ + ______
 presence
 
@@ -272,7 +274,7 @@ A.col[_ , _]
 
 
 # WHAT does Katrin have on Monday and Friday?
-A.col[_ , c(_ , _)]
+A.col[c(_ , _), _]
 
 
 #' Some quick matrix algebra

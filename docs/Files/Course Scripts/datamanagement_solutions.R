@@ -10,22 +10,22 @@ library(tidyverse)
 ## .csv ----
  
 #'Complete the empty spaces! (soep_europ.csv)
-data <- read.csv("_______") # Looks weird....
+data <- read.csv("data/soep_europ.csv") # Looks weird....
 
 #' To read the data correctly, we have to add the argument "sep" to the function.
-data <- _____("data/soep_europ.csv", sep="_____") #
+data <- read.csv("data/soep_europ.csv", sep=";") #
 
  
 #' 2 Addenda: 
 
 #'1. Try out to to read a US style csv with soep_us.csv**
 
-data <-
+data <- read.csv("data/soep_us.csv")
   
 #' 2. An easier way to read European style csv files is to use read_csv2() from the tidyverse. 
 #'   (Accordingly, read_csv() is for US style csv files)
 
-data <-
+data <- read_csv2("data/soep_europ.csv")
 
 
 
@@ -57,7 +57,8 @@ c(1:5) %>%
 #' 
 
 data <- data %>% # remember the pipe?
-   select(______) # fill in the missing names
+  select(hhnr, persnr, gebjahr, sex, tp72, tp7001, 
+         tp7003 , tp0301, tp0302, tp7602) # fill in the missing names
 
  
 ## Explore the data structure ----
@@ -76,25 +77,25 @@ View(data)
 ## Basic recoding and mutate() ----
 
 #' The dataset is from 2003. Compute the age accordingly by creating the new variable age
-data$age <- 2003 - _____
+data$age <- 2003 - data$gebjahr
  
 #' There is also a dplyr way to do this: mutate(). 
 
-data <- ______ %>%
-   mutate(age = ______)
+data <- data %>%
+   mutate(age = 2003 - gebjahr)
 
 ## Filtering ----
 
 #' Let's say, we only want to keep those observations which are at least 18.
 data <- data %>%
-   filter(____ >= _____)
+  filter(age >= 18)
 
 ## Arrange ----
 #' Sometimes, we want to order data. 
 #' We do so with arrange(). desc(x) sorts x in descending order. 
 
-data <- _____ %>%
-   _____(desc(___))
+data <- data %>%
+  arrange(desc(age))
 # 
 
 ## All in one ----
@@ -104,9 +105,9 @@ data <- read_csv2("data/soep_europ.csv") # read data again.
 
 data <- data %>%
   select(hhnr, persnr, gebjahr, sex, tp72, tp7001, tp7003 , tp0301, tp0302, tp7602) %>%
-  mutate(age = 2003-_____) %>%
-  filter(______) %>% # only those who are at least 18
-  _____(____(____)) # Arrange the dataframe so that age is displayed in descending order
+  mutate(age = 2003 - gebjahr) %>%
+  filter(age >= 18) %>%
+  arrange(desc(age))
 
 
 
@@ -135,12 +136,12 @@ data <- data %>%
       .default = tp72
     ),
     over = over * 10,
-    netinc = ____(
-      _____,
-      "-3" = NA_real_, # remember the difference between integer and double?
+    netinc = recode(
+      tp7602,
+      "-3" = NA_real_,
       "-2" = NA_real_,
       "-1" = NA_real_,
-      .default = _____
+      .default = tp7602
     )
   )
 
@@ -159,8 +160,8 @@ table(data$over,
 #' As we have practiced before, we can factorize variables. 
 #' This is also possible within the dplyr world (mutate() again). Let's do that for sex.
 
-_____ <- _____ _____
-  ____(sex = factor(
+data <- data  %>%
+  mutate(sex = factor(
     sex ,
     levels = c(1, 2),
     labels = c("male", "female")
@@ -179,9 +180,9 @@ data <- data %>%
     contract =
       if_else(tp7001 < 0, NA_real_, tp7001),
     actual =
-      ____(__________________________________),
+      if_else(tp7003 < 0, NA_real_, tp7003),
     contract = contract / 10,
-    actual = _______________
+    actual = actual / 10
   )
 
 
@@ -194,14 +195,14 @@ data <- data %>%
   mutate(
     inc.quant = case_when(
       netinc < quantile(netinc, na.rm = TRUE)[2] ~ "Q1",
-
+      
       netinc >= quantile(netinc, na.rm = TRUE)[2] &
         netinc < quantile(netinc, na.rm = TRUE)[3] ~ "Q2",
-
-      netinc >= quantile(netinc, na.rm = TRUE)[__] &
-        netinc < _______(netinc, na.rm = TRUE)[__] ~ "Q3",
-
-      netinc ______________________________________
+      
+      netinc >= quantile(netinc, na.rm = TRUE)[3] &
+        netinc < quantile(netinc, na.rm = TRUE)[4] ~ "Q3",
+      
+      netinc >= quantile(netinc, na.rm = TRUE)[4] ~ "Q4"
     )
   )
 
@@ -286,8 +287,8 @@ data %>%
 
 
 data <- data %>%
-  _________ %>%
-  mutate(cohort.deviance = netinc - ______(_______, na.rm = TRUE))
+  group_by(age) %>%
+  mutate(cohort.deviance = netinc - mean(netinc, na.rm = TRUE)) 
 
 ## Filtering II ----
 
@@ -309,12 +310,12 @@ data2 <- data %>%
 data.origin <- read_csv2("data/soep_europ.csv")
 
 data2 <- data %>%
-  left_join(data.origin[,c("hhnr", "tp0101")], by=c("hhnr"))
+  left_join(data.origin[, c("hhnr", "tp0101")], by = c("hhnr"))
 
 
 
 data <- data %>%
-  left_join(data.origin[,c("hhnr", "tp0101", ____)], by=c("hhnr", ______))
+  left_join(data.origin[, c("hhnr", "tp0101", "persnr")], by = c("hhnr", "persnr"))
 
 ## Spread and Gather ----
 
@@ -323,11 +324,11 @@ data <- data %>%
 
 
 data.long <- data %>%
-  gather(key=key, value = value, -c(hhnr, persnr))
+  gather(key = key, value = value,-c(hhnr, persnr))
 
 
 #' Can you make data.long wide again?
 data.wide <- data.long %>%
-   spread(key=____, value=______)
+  spread(key = key, value = value)
 
 

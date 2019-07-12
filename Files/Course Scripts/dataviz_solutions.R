@@ -4,10 +4,9 @@ rm(list = ls())
 library(tidyverse) # We will now be using ggplot2 which is part of the tidyverse
 
 # Base R Plotting ----
-#' Base R has several functions for data visualization. 
-#' Crucially, you need separate functions for each type of plot. 
+#' Base R has several functions for data visualization.
+#' Crucially, you need separate functions for each type of plot.
 #' Some examples:
-
 
 hist(x = mpg$displ)
 
@@ -39,48 +38,65 @@ ggplot(data = mpg,
 
 ### Practice with different geoms ----
 
-#' Now, it is up to you: Reproduce the following plots! 
-#' 
-#' Follow the instructions about the mapping and the type of 
-#' geom below each plot. 
-#' 
+#' Now, it is up to you: Reproduce the following plots!
+#'
+#' Follow the instructions about the mapping and the type of
+#' geom below each plot.
+#'
 #### Boxplot
 
-ggplot(data = ___,
-       mapping = aes(x = ____,
-                y = ____)) + 
-  _____________
+ggplot(data = mpg,
+       mapping = aes(x = class,
+                     y = hwy)) +
+  geom_boxplot()
 
- 
-#' * Change the Axis as displayed in the plot. Use no color variable. 
+#' * Change the Axis as displayed in the plot. Use no color variable.
 #' * Use the `geom_boxplot()` function
 
 #### Violin Plot
 
-#' * Change the Axis as displayed in the plot. Use no color variable. 
+ggplot(data = mpg,
+       mapping = aes(x = class,
+                     y = hwy)) +
+  geom_violin()
+
+#' * Change the Axis as displayed in the plot. Use no color variable.
 #' * Use the `geom_violin()` function
 
-#### Density Plot 
+#### Density Plot
 
+ggplot(data = mpg,
+       mapping = aes(x = hwy,)) +
+  geom_density()
 
-#' * Change the Axis as displayed in the plot (keep only x axis). Use no color variable. 
+#' * Change the Axis as displayed in the plot (keep only x axis). Use no color variable.
 #' * Use the `geom_density()` function
 
 #### Histogram
 
+ggplot(data = mpg,
+       mapping = aes(x = hwy,)) +
+  geom_histogram()
 
-#' * Can you imagine how to plot the histogram? 
+#' * Can you imagine how to plot the histogram?
 
 #### Bar Plot
 
+ggplot(data = mpg,
+       mapping = aes(x = class)) +
+  geom_bar()
 
-#' * Change the Axis as displayed in the plot (keep only x axis). Use no color variable. 
+#' * Change the Axis as displayed in the plot (keep only x axis). Use no color variable.
 #' * Use the `geom_bar()` function
 
 #### Number of observations per location
 
+ggplot(data = mpg,
+       mapping = aes(x = displ,
+                     y = hwy)) +
+  geom_count()
 
-#' * Change the Axis as displayed in the plot (keep only x axis). Use no color variable. 
+#' * Change the Axis as displayed in the plot (keep only x axis). Use no color variable.
 #' * Use the `geom_count()` function
 #' * Can you tell the difference to `geom_point()`?
 
@@ -178,7 +194,6 @@ ggplot(data = mpg,
     color = "Car Classes"
   ) +
   theme_bw()
-
 
 # Minor Addenda ----
 

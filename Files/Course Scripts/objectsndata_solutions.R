@@ -8,13 +8,14 @@ x = 5
 
 
 #' Assign the value of 10 to the object x
-x
+x <- 10
 
 #' Multiply x with 5 and save it as b
-b <-
+b <- x * 5
+
 
 #' Print b by simply typing its name in the script**
-
+b
 
 
 #' If we want to delete certain objects we can do so with the function 
@@ -47,7 +48,7 @@ x(2)
 a <- c(1, 2, 3, 4)
 
 #' Do you remember a different (easier) way to build the vector a?
-a <-
+a <- c(1:5)
 
 #' What happens if we add 1 to a?
 b <- a + 1
@@ -84,7 +85,7 @@ y <- 9
 
 x == y # x is equal to y
 x > y  # x is bigger then y
-x  y # HOW DO YOU TYPE: x is smaller or equal to y
+x <=  y # HOW DO YOU TYPE: x is smaller or equal to y
 x != y # x is NOT equal to y
 
 
@@ -144,18 +145,18 @@ names(kicker.skills) <- players
 kicker.skills
 
 # Indices by number:
-kicker.skills[_] # GIVE second entry
-kicker.skills[_:4] # SELECT 2nd to 4th entry
+kicker.skills[2] # GIVE second entry
+kicker.skills[2:4] # SELECT 2nd to 4th entry
 
 # Indices by name:
 kicker.skills["Marco"] # WHAT is the level of Katja's kicker skills?
 
 # Logical indices:
 # SUBSET for an all-star team, only kicker players with skill level above 2
-kicker.skills[kicker.skills __ _ ]
+kicker.skills[kicker.skills >2]
 
 # Who is the worst kicker player?
-kicker.skills[_ == min(_)] # Do you understand every part of this line?
+kicker.skills[kicker.skills == min(kicker.skills)] # Do you understand every part of this line?
 
 
 # Data Frames ----
@@ -177,19 +178,19 @@ presence <- data.frame(days, Eugen, Julia, Lena)
 #' Complete the empty spaces!
 
 # Show the entry in the 4th row and the second column of presence
-presence[__ , __]
+presence[4, 2]
 
 # Show all entries in the third row 
-presence[__ , __]
+presence[3,]
 
 # Show all entries of the third column
-presence[__ , __]
+presence[,3]
 
 # Show all entries of the variable Julia
-presence[__ , __]
+presence[ , "Julia"]
 
 # Show all entries of the variables days, Julia and Lena
-presence[__ , __________]
+presence[ ,c("days", "Julia", "Lena")]
 
 
 #' Complete the empty spaces!
@@ -199,7 +200,7 @@ presence$Eugen
 
 # GENERATE a new variable total.presence which sums up the total of people who 
 # are present on each day:
-presence$total.presence <- presence$Eugen + ______ + ______
+presence$total.presence <- presence$Eugen + presence$Julia + presence$Lena
 presence
 
 # The same but using "with":
@@ -215,7 +216,7 @@ presence$total.presence2 <- with(presence, Eugen+Julia+Lena)
 #' Complete the empty spaces!
 
 # Subset: all days in which Lena is present
-subset(presence, __==___)
+subset(presence, Lena==1)
 
 
 
@@ -233,8 +234,8 @@ xf2 <- factor(x, labels = c("bad", "okay", "good"))
 #' Practice more
 
 # variable gender with 20 "male" entries and 30 "female" entries
-gender <- c(rep("male", _ ), rep(_, 30)_  # COMPLETE MISSING PARTS
-gender <- _    # CREATE gender as factor
+gender <- c(rep("male", 20 ), rep("female", 30)) # COMPLETE MISSING PARTS
+gender <- as.factor(gender)    # CREATE gender as factor
             
             
 # R now treats gender as a nominal variable
@@ -246,14 +247,14 @@ summary(gender)
 
 #' Complete the empty spaces
 v <- c("AG.5", "G2", "AG.5", "G1", "AG.5", "G3")
-A <- matrix(v, _ = 2)
+A <- matrix(v, nrow = 2)
 
 # GENERATE matrix A.row in binding vec1 and vec2 AND generate matrix A.col in binding column wise:
 vec1 <- c("AG.5", "AG.5", "AG.5")
 vec2 <- c("G2", "G1", "G3")
 
-A.row <- _____(vec1, vec2) 
-A.col <- ______
+A.row <- rbind(vec1, vec2) 
+A.col <- cbind(vec1, vec2)
 
 # Giving names to rows and columns:
 colnames(A.col) <- c("Katrin", "Hans")
@@ -264,17 +265,17 @@ A.col
 #' Complete the empty spaces
 
 # EXTRACT value of first column and 2nd row 
-A.col[_ , _]
+A.col[2, 1]
 
 # GIVE all meal choices from Hans:
-A.col[ , ]
+A.col[ , "Hans"]
 
 # WHAT does Katrin have for lunch on Monday? call Katrin and Monday by name
-A.col[_ , _]
+A.col["Wednesday" , "Katrin"]
 
 
 # WHAT does Katrin have on Monday and Friday?
-A.col[c(_ , _), _]
+A.col[c("Monday", "Friday") , "Katrin"]
 
 
 #' Some quick matrix algebra
