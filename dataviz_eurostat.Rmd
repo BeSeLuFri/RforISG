@@ -91,7 +91,7 @@ ggplot(
 * Use `theme_classic()`
 * You might realize that the label symbols of size are a bit weird as soon as you add the regression line. This is because the function to create the regression line interacts with the size argument within the `ggplot()` function. Therefore, as soon as you add the regression function, <u>move the size argument to `geom_point`</u>. But don't forget that the size argument has to be put within `aes()`!
     + Here is an important learning: **aes() can be passed to either ggplot() or to a specific layer (e.g. geom_)**. Aesthetics specified to ggplot() are used as defaults for every layer, while aes() passed to a specific layer a used as default for that layer only. 
-* Furthermore, add this line `+ scale_color_manual(values = c("red"), labels = c(" "))`. Do you understand what it does?
+
 
 *** 
 
@@ -126,6 +126,7 @@ ggplot(
 * Play a bit with the width of the bars.
 * Crucially, we add points which relate to unemp_workagepop_t. You need to write a new aes() in the point function and assign the color "red". Outside of the aes() argument, adjust the size of the points to 3. 
 * Rename the axes accordingly. Note that although the y axis is actually just related to youth unemployment, we simply rename it as Unemployment because the total unemployment (e.g. the points) are within the same scale. 
+* Furthermore, add this line `+ scale_color_manual(values = c("red"), labels = c(" "))`. Do you understand what it does?
 
 
 ***
