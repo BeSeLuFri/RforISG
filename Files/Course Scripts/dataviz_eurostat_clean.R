@@ -126,7 +126,7 @@ main_plot <- ggplot(
        subtitle = "Correlation between lower growth rate and higher youth unemployment",
        caption = "Source: Eurostat",
        size = "Investment p. person\n employed (in Mill. €)",
-       color= "Ratio of Emigration \n to Imigration")+
+       color= "Ratio of Emigration \n to Immigration")+
   geom_smooth(method="lm", se=FALSE, color="black")+
   theme_classic()
 

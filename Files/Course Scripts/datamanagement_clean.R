@@ -113,7 +113,7 @@ data <- data %>%
 
 # Advanced stuff ----
 
-## More mutate ----
+## Recode and mutltiple operations ----
 
 #' The benefit of mutate() is that you can easily apply more than one 
 #' operation (on the same variable) at once in a tidy way. For example, let's say we 
@@ -166,7 +166,7 @@ _____ <- _____ _____
     labels = c("male", "female")
   ))
 
-## Recode II ----
+## Recode II: if_else ----
  
 
 #' * tp7001(Contracted Working Hours): mutate to column "contract", 
@@ -177,7 +177,9 @@ _____ <- _____ _____
 data <- data %>%
   mutate(
     contract =
-      if_else(tp7001 < 0, NA_real_, tp7001),
+      if_else(condition = tp7001 < 0, 
+              true = NA_real_, 
+              false = tp7001),
     actual =
       ____(__________________________________),
     contract = contract / 10,
@@ -185,7 +187,7 @@ data <- data %>%
   )
 
 
-## Multiple if_else() statements ---- 
+## Multiple if_else: case_when ---- 
 
 #' Let's say, we want to build a character variable inc.quant which indicates 
 #' the quantile() (see above) of netinc. 
@@ -245,9 +247,13 @@ data <- data %>% # remember the pipe?
          ),    
          
          contract =
-           if_else(tp7001 < 0, NA_real_, tp7001),
+           if_else(condition = tp7001 < 0, 
+                   true = NA_real_, 
+                   false = tp7001),
          actual =
-           if_else(tp7003 < 0, NA_real_, tp7003),
+           if_else(condition = tp7003 < 0, 
+                   true = NA_real_, 
+                   false = tp7003),
          contract = contract / 10,
          actual = actual / 10,
 

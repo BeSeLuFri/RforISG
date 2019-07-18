@@ -12,7 +12,7 @@ Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/R
 
 ***
 
-# Preliminary:
+# Preliminary
 
 * We use an old (2003) randomly changed and subsetted SOEP dataset with ~4.600 observations. 
 
@@ -26,7 +26,8 @@ Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/R
 * As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions. 
     + Therefore, you should always load the packages you need in the beginning, too. 
     + When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.
-    + Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages.
+* Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages:
+    + TIDYVERSE EXPLANATION
 
 This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages  
 ```{r, message=FALSE}
@@ -220,7 +221,7 @@ Note for later (see Filtering II): When we filter for exactly one condition, we 
 ## Arrange
 Sometimes, we want to order data. We do so with `arrange()`. `desc(x)` sorts x in descending order. 
 
-<span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
+<span style="color:red">Task</span> <u>**Sort the data frame by age!**</u>
 ```{r, eval=FALSE}
 # Example 1
 data <- _____ %>%
@@ -251,10 +252,12 @@ Great, by now you basically have the main logic of dplyr at hand. In the section
 
 # Advanced stuff
 
-## More mutate
-The benefit of `mutate()` is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
+## Recode and mutltiple operations
+Often, we will want to recode single observations within a variable. `recode()` is the dplyr verb for this operation (see below).
 
-* want to recode the binary variable tp72 (Work Overtime) into three levels: 
+Furthermore,note that within `mutate()` (and any other dplyr verb) you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let's say we 
+
+* want to `recode` the binary variable tp72 (Work Overtime) into three levels: 
     + 10 Yes
     + 20 No
     + 0 Everything else
@@ -289,6 +292,8 @@ data <- data %>%
 *  Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).  
 * Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
 * Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).
+    + Check this [stackoverflow](sss) answer for a great overview over the different NAs. 
+    
  
 Let's check whether the data manipulation worked:
 
@@ -320,7 +325,7 @@ _____ <- _____ _____
 
 ***
 
-## Recode II
+## Recode II: if_else
 
 We can also recode values below a certain threshold at once (if it is numeric (either double or integer)): 
 
@@ -333,7 +338,9 @@ We can also recode values below a certain threshold at once (if it is numeric (e
 data <- data %>%
   mutate(
     contract =
-      if_else(tp7001 < 0, NA_real_, tp7001),
+      if_else(condition = tp7001 < 0, 
+              true = NA_real_, 
+              false = tp7001),
     actual =
       ____(__________________________________),
     contract = contract / 10,
@@ -343,7 +350,7 @@ data <- data %>%
 
 ***
 
-## Multiple if_else() statements: 
+## Multiple if_else: case_when
 
 `cases_when()` allows us to apply multiple `if_else()` statements. 
 
@@ -416,9 +423,13 @@ data <- data %>% # remember the pipe?
          ),    
          
          contract =
-           if_else(tp7001 < 0, NA_real_, tp7001),
+           if_else(condition = tp7001 < 0,
+                   true = NA_real_,
+                   false = tp7001),
          actual =
-           if_else(tp7003 < 0, NA_real_, tp7003),
+           if_else(condition = tp7003 < 0,
+                   true = NA_real_, 
+                   false = tp7003),
          contract = contract / 10,
          actual = actual / 10,
 
@@ -468,7 +479,7 @@ data %>%
 
 ```
 
-A bit more nuanced, let's say you want to create a variable cohort.deviance which gives you the deviation in netinc from the mean of all people of the same age
+A bit more nuanced: Let's say you want to create a variable cohort.deviance which gives you the deviation in netinc from the mean of all people of the same age. To do this, you first have to group by age (remember the dplyr verb?) and then subtract the mean of netinc from every single netinc value. 
 
 <span style="color:red">Task</span> <u>**Complete the empty spaces!**</u>
 ```{r, eval=FALSE}

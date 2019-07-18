@@ -125,7 +125,7 @@ ggplot(
 * fill = unemp_youth_t
 * Play a bit with the width of the bars.
 * Crucially, we add points which relate to unemp_workagepop_t. You need to write a new aes() in the point function and assign the color "red". Outside of the aes() argument, adjust the size of the points to 3. 
-* Rename the axes accordingly. Note that although the y axis is actually just related to youth unemployment, we simply rename it as Unemployment because the total unemployment (e.g. the points) are within the same scale. 
+* Rename the axes accordingly. Note that although the y axis is actually just related to youth unemployment, we simply rename it as Unemployment because the total unemployment (e.g. the points) are within the same scale.
 * Furthermore, add this line `+ scale_color_manual(values = c("red"), labels = c(" "))`. Do you understand what it does?
 
 
