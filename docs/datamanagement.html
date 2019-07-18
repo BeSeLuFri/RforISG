@@ -338,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -470,22 +468,27 @@ div.tocify {
 <p>Solutions can be downloaded <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/Files/Course%20Scripts/datamanagement_solutions.R">here</a> - but try to solve everything without the solutions first!</p>
 <hr />
 <div id="preliminary" class="section level1">
-<h1><span class="header-section-number">1</span> Preliminary:</h1>
+<h1><span class="header-section-number">1</span> Preliminary</h1>
 <ul>
 <li><p>We use an old (2003) randomly changed and subsetted SOEP dataset with ~4.600 observations.</p></li>
 <li><p>Please, <strong>download</strong> the two csv files (<a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_europ.csv">.soep_europ.csv</a> and <a href="https://raw.githubusercontent.com/BeSeLuFri/RforISG/master/data/soep_us.csv">soep_us.csv</a>) and the <a href="https://github.com/BeSeLuFri/RforISG/raw/master/data/soep.dta">soep.dta</a> file and save them locally within your R project directory.</p></li>
 </ul>
 <hr />
 </div>
-<div id="packages-and-script-set-up" class="section level1">
-<h1><span class="header-section-number">2</span> Packages and script set-up</h1>
+<div id="tidyverse-and-script-set-up" class="section level1">
+<h1><span class="header-section-number">2</span> Tidyverse and script set-up</h1>
 <ul>
 <li>To make sure that your R environment is clear, remember to use <code>rm(list=ls())</code> in the beginning.</li>
 <li>As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions.
 <ul>
 <li>Therefore, you should always load the packages you need in the beginning, too.</li>
 <li>When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.</li>
-<li>Throughout this page, we’ll introduce the powerful <a href="https://www.tidyverse.org/">tidyverse</a>) - a collection of very useful packages.</li>
+</ul></li>
+<li>Throughout this page, we’ll introduce the powerful <a href="https://www.tidyverse.org/">tidyverse</a>) - a collection of very useful packages:
+<ul>
+<li>“The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.”</li>
+<li>Almost all of the data tasks (from data management to data vizualisation) we’ll learn about in this tutorial are covered by packages from the tidyverse.</li>
+<li>In particular, for data management, we introduce the <code>dplyr</code> package and its functions (or verbs as they are often called in dplyr terminology).</li>
 </ul></li>
 </ul>
 <p>This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages</p>
@@ -537,7 +540,7 @@ library(tidyverse)</code></pre>
 <pre class="r"><code>data &lt;- haven::read_dta(&quot;data/soep.dta&quot;)</code></pre>
 <p>Same for SPSS files:</p>
 <pre class="r"><code>data &lt;- haven::read_sav(&quot;data/soep.sav&quot;)</code></pre>
-<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
+<p>We can also read excel (e.g. .xls and xlsx) files. These functions are part of a different package from the tidyverse.</p>
 <pre class="r"><code>data &lt;- readxl::read_xlsx(&quot;data/soep.xlsx&quot;)</code></pre>
 <p>Enough on reading data for now, let’s use the European csv for now.</p>
 <pre class="r"><code>data &lt;- read_csv2(&quot;data/soep_europ.csv&quot;)</code></pre>
@@ -606,7 +609,7 @@ View(data)</code></pre>
 <div id="arrange" class="section level2">
 <h2><span class="header-section-number">4.6</span> Arrange</h2>
 <p>Sometimes, we want to order data. We do so with <code>arrange()</code>. <code>desc(x)</code> sorts x in descending order.</p>
-<p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
+<p><span style="color:red">Task</span> <u><strong>Sort the data frame by age!</strong></u></p>
 <pre class="r"><code># Example 1
 data &lt;- _____ %&gt;%
   _____(desc(___)) </code></pre>
@@ -629,11 +632,12 @@ data &lt;- data %&gt;%
 </div>
 <div id="advanced-stuff" class="section level1">
 <h1><span class="header-section-number">5</span> Advanced stuff</h1>
-<div id="more-mutate" class="section level2">
-<h2><span class="header-section-number">5.1</span> More mutate</h2>
-<p>The benefit of <code>mutate()</code> is that you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
+<div id="recode-and-mutltiple-operations" class="section level2">
+<h2><span class="header-section-number">5.1</span> Recode and mutltiple operations</h2>
+<p>Often, we will want to recode single observations within a variable. <code>recode()</code> is the dplyr verb for this operation (see below).</p>
+<p>Furthermore,note that within <code>mutate()</code> (and any other dplyr verb) you can easily apply more than one operation (on the same variable) at once in a tidy way. For example, let’s say we</p>
 <ul>
-<li>want to recode the binary variable tp72 (Work Overtime) into three levels:
+<li>want to <code>recode</code> the binary variable tp72 (Work Overtime) into three levels:
 <ul>
 <li>10 Yes</li>
 <li>20 No</li>
@@ -666,7 +670,10 @@ data &lt;- data %&gt;%
 <li>Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).<br />
 </li>
 <li>Within <code>mutate()</code> we can - in a tidy way - work on multiple variables (e.g. over and netinc)</li>
-<li>Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).</li>
+<li>Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).
+<ul>
+<li>Check this <a href="https://stackoverflow.com/questions/46827631/are-there-different-types-of-nas">stackoverflow</a> answer for an overview over the different NAs.</li>
+</ul></li>
 </ul>
 <p>Let’s check whether the data manipulation worked:</p>
 <pre class="r"><code>table(data$over)
@@ -687,8 +694,8 @@ table(data$over,
   ))</code></pre>
 <hr />
 </div>
-<div id="recode-ii" class="section level2">
-<h2><span class="header-section-number">5.3</span> Recode II</h2>
+<div id="recode-ii-if_else" class="section level2">
+<h2><span class="header-section-number">5.3</span> Recode II: if_else</h2>
 <p>We can also recode values below a certain threshold at once (if it is numeric (either double or integer)):</p>
 <p><code>if_else(condition, true, false)</code></p>
 <ul>
@@ -698,7 +705,9 @@ table(data$over,
 <pre class="r"><code>data &lt;- data %&gt;%
   mutate(
     contract =
-      if_else(tp7001 &lt; 0, NA_real_, tp7001),
+      if_else(condition = tp7001 &lt; 0, 
+              true = NA_real_, 
+              false = tp7001),
     actual =
       ____(__________________________________),
     contract = contract / 10,
@@ -706,8 +715,8 @@ table(data$over,
   )</code></pre>
 <hr />
 </div>
-<div id="multiple-if_else-statements" class="section level2">
-<h2><span class="header-section-number">5.4</span> Multiple if_else() statements:</h2>
+<div id="multiple-if_else-case_when" class="section level2">
+<h2><span class="header-section-number">5.4</span> Multiple if_else: case_when</h2>
 <p><code>cases_when()</code> allows us to apply multiple <code>if_else()</code> statements.</p>
 <p>Let’s say, we want to build a character variable inc.quant which indicates the <code>quantile()</code> (see above) of netinc.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -769,9 +778,13 @@ data &lt;- data %&gt;% # remember the pipe?
          ),    
          
          contract =
-           if_else(tp7001 &lt; 0, NA_real_, tp7001),
+           if_else(condition = tp7001 &lt; 0,
+                   true = NA_real_,
+                   false = tp7001),
          actual =
-           if_else(tp7003 &lt; 0, NA_real_, tp7003),
+           if_else(condition = tp7003 &lt; 0,
+                   true = NA_real_, 
+                   false = tp7003),
          contract = contract / 10,
          actual = actual / 10,
 
@@ -806,7 +819,7 @@ data &lt;- data %&gt;% # remember the pipe?
   group_by(sex) %&gt;%
   summarise(mean = mean(age, na.rm = TRUE),
             sd = sd(age, na.rm = TRUE)) </code></pre>
-<p>A bit more nuanced, let’s say you want to create a variable cohort.deviance which gives you the deviation in netinc from the mean of all people of the same age</p>
+<p>A bit more nuanced: Let’s say you want to create a variable cohort.deviance which gives you the deviation in netinc from the mean of all people of the same age. To do this, you first have to group by age (remember the dplyr verb?) and then subtract the mean of netinc from every single netinc value.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
 <pre class="r"><code>data &lt;- data %&gt;%
   _________ %&gt;%
@@ -833,7 +846,10 @@ data &lt;- data %&gt;% # remember the pipe?
 data2 &lt;- data %&gt;%
   left_join(data.origin[,c(&quot;hhnr&quot;, &quot;tp0101&quot;)], by=c(&quot;hhnr&quot;))</code></pre>
 <p>Dplyr offers four different ways to joining two data sets - see screenshot from the dplyr cheat sheet (again, cheat sheets are amazing) below:</p>
-<p><img src="Files/dplyr_joins.PNG" /></p>
+<div class="figure">
+<img src="Files/dplyr_joins.PNG" />
+
+</div>
 <p>Second, you might have noticed when looking at the environment that data2 has ~900k rows. Obviously, something didn’t work. The culprit lies with the variable to join both data.frames: hhnr. hhnr contains many duplicates because often more than one member (persnr) from one household participated in the survey. We can check this with <code>any(duplicated(data$hhnr))</code>.</p>
 <p>We therefore need a second variable to join them by. In our case, this second variable is persnr.</p>
 <p><span style="color:red">Task</span> <u><strong>Complete the empty spaces!</strong></u></p>
@@ -850,7 +866,10 @@ data2 &lt;- data %&gt;%
 <li>Long data has in one column all the variable names and in another column the respective values.</li>
 </ul>
 <p>Often, we want to be able to switch between long and wide data. Dplyr has two easy functions: <code>spread()</code> and <code>gather()</code></p>
-<p><img src="Files/dplyr_reshape.PNG" /></p>
+<div class="figure">
+<img src="Files/dplyr_reshape.PNG" />
+
+</div>
 <p>At the moment, our data is in wide format (e.g. all the variables are in separate columns). Suppose, we would want to make the data long:</p>
 <pre class="r"><code>data.long &lt;- data %&gt;%
   gather(key=key, value = value, -c(hhnr, persnr))</code></pre>

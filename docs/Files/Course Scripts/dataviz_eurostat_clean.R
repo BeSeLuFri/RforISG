@@ -35,7 +35,7 @@ eurost <- ______
 
 #' * x = unemp_youth_t
 #' * y = gdp_gr
-#' * color = emmigration_t / immigration_t
+#' * color = emigration_t / immigration_t
 #' * size = inv_per_empl
 #' * Use theme_classic()
 #' * You might realize that the label symbols of size are a bit 
@@ -115,7 +115,7 @@ main_plot <- ggplot(
   mapping = aes(
     x = unemp_youth_t,
     y = gdp_gr,
-    color = emmigration_t / immigration_t)
+    color = emigration_t / immigration_t)
 ) +
   geom_point(
     aes(size = inv_per_empl)
@@ -126,7 +126,7 @@ main_plot <- ggplot(
        subtitle = "Correlation between lower growth rate and higher youth unemployment",
        caption = "Source: Eurostat",
        size = "Investment p. person\n employed (in Mill. €)",
-       color= "Ratio of Emmigration \n to Immigration")+
+       color= "Ratio of Emigration \n to Immigration")+
   geom_smooth(method="lm", se=FALSE, color="black")+
   theme_classic()
 

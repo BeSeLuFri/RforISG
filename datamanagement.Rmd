@@ -20,14 +20,16 @@ Solutions can be downloaded [here](https://raw.githubusercontent.com/BeSeLuFri/R
 
 ***
 
-# Packages and script set-up 
+# Tidyverse and script set-up 
 
 * To make sure that your R environment is clear, remember to use `rm(list=ls())` in the beginning. 
 * As explained before, R itself can operate only very basic tasks and needs packages to run more powerful functions. 
     + Therefore, you should always load the packages you need in the beginning, too. 
     + When you are writing a script and discover that you need a new package, make sure to scroll back to the beginning and (install and) open the package there.
 * Throughout this page, we'll introduce the powerful [tidyverse](https://www.tidyverse.org/)) - a collection of very useful packages:
-    + TIDYVERSE EXPLANATION
+    + "The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."
+    + Almost all of the data tasks (from data management to data vizualisation) we'll learn about in this tutorial are covered by packages from the tidyverse.
+    + In particular, for data management, we introduce the `dplyr` package and its functions (or verbs as they are often called in dplyr terminology). 
 
 This is how the beginning of every of your scripts should look like: 1. Clean environment and 2. load packages  
 ```{r, message=FALSE}
@@ -292,7 +294,7 @@ data <- data %>%
 *  Within the same function (mutate) using the same variable (over), we have applied to different functions (recode and multiplying the values by 10).  
 * Within `mutate()` we can - in a tidy way - work on multiple variables (e.g. over and netinc)
 * Why do we write an NA_real? Because R has to be explicitly told that the NA it should use as a replacement should be an of type double (see last page on the difference between double and integer).
-    + Check this [stackoverflow](sss) answer for a great overview over the different NAs. 
+    + Check this [stackoverflow](https://stackoverflow.com/questions/46827631/are-there-different-types-of-nas) answer for an overview over the different NAs. 
     
  
 Let's check whether the data manipulation worked:

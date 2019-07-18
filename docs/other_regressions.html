@@ -342,8 +342,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -501,8 +499,8 @@ stargazer(ols_object, panel_object,
 <h1><span class="header-section-number">2</span> Introduction</h1>
 <div id="workflow" class="section level2">
 <h2><span class="header-section-number">2.1</span> Workflow</h2>
-<div id="htmlwidget-a1da8778173108eb966e" style="width:800px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a1da8778173108eb966e">{"x":{"diagram":"digraph {\n\n  rankdir=LR\n\n  # a \"graph\" statement\n  node[shape = note margin=0.25]\n  graph [overlap = true, fontsize = 10]\n\n   formula [label = \"Model Formula\"]\n\n  node[shape = hexagon]\n    lm [label = \"Fit Model \\n lm()\"]\n  \n  node [shape = cylinder]\n    data [label = \"Data\"]\n    \n    out [label = \"lm - Output\"]\n    \n  node [shape = box]\n  \n    inspect [label = \"Inspect & Plot\"]\n    evaluate [label = \"Evaluate\"]\n    export [label = \"Display & Export\"]\n\n  data -> lm\n  formula -> lm\n  \n  lm -> out\n  \n  out -> evaluate\n  out -> inspect\n  out -> export\n\n\n  # several \"edge\" statements\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6c7e8c95a9c2affa3990" style="width:800px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6c7e8c95a9c2affa3990">{"x":{"diagram":"digraph {\n\n  rankdir=LR\n\n  # a \"graph\" statement\n  node[shape = note margin=0.25]\n  graph [overlap = true, fontsize = 10]\n\n   formula [label = \"Model Formula\"]\n\n  node[shape = hexagon]\n    lm [label = \"Fit Model \\n lm()\"]\n  \n  node [shape = cylinder]\n    data [label = \"Data\"]\n    \n    out [label = \"lm - Output\"]\n    \n  node [shape = box]\n  \n    inspect [label = \"Inspect & Plot\"]\n    evaluate [label = \"Evaluate\"]\n    export [label = \"Display & Export\"]\n\n  data -> lm\n  formula -> lm\n  \n  lm -> out\n  \n  out -> evaluate\n  out -> inspect\n  out -> export\n\n\n  # several \"edge\" statements\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <hr />
 </div>
 <div id="the-lm-function" class="section level2">
@@ -605,7 +603,7 @@ model &lt;- lm(formula = m1,
 <ul>
 <li><code>?lm()</code></li>
 <li><code>str(model)</code> where model is our saved output from <code>lm</code></li>
-<li>the <code>$</code> operator and <code>tab</code>, e.g. <code>model$...</code></li>
+<li>the <code>$</code> operator and <code>tab</code>, e.g. <code>model$...</code></li>
 </ul>
 <p>Lets look up our coefficients <span class="math inline">\(\beta\)</span>, fitted values <span class="math inline">\(\hat{y}\)</span> and OLS residuals <span class="math inline">\(\varepsilon\)</span></p>
 <pre class="r"><code>model$coefficients</code></pre>
@@ -918,7 +916,7 @@ F Statistic
 </td>
 </tr>
 </table>
-<p>Specify the folder and file were your table should be saved as <code>"path/name.type"</code></p>
+<p>Specify the folder and file were your table should be saved as <code>&quot;path/name.type&quot;</code></p>
 <ol style="list-style-type: decimal">
 <li>Output as <code>.html</code> : Open the file in your web browser and copy it into Word</li>
 <li>Output as <code>.tex</code> : Include in LaTeX</li>
@@ -930,6 +928,7 @@ F Statistic
 <h1><span class="header-section-number">3</span> Panel Regression</h1>
 <p>Just a very quick glimpse into panel regressions with plm.</p>
 <pre class="r"><code>library(plm)</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;plm&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:dplyr&#39;:

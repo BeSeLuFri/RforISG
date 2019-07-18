@@ -34,8 +34,8 @@ We have two days, 4 hours per day.
 
 **Day 1**
 
-* R Basics, Workflow in R Studio and Objects (1.5h)
-* Data Management and tidyverse (2h)
+* R Basics, Workflow in R Studio and Objects (2.5h)
+* Data Management and tidyverse (2.5h)
     + Quick Intro into the tidyverse and it's data management tools
     + Eurostat Example
 
@@ -43,7 +43,7 @@ We have two days, 4 hours per day.
 
 **Day 2** 
 
-* Data visualizationsand the tidyverse (2.5h)
+* Data visualizationsand the tidyverse (3.5h)
     + Quick intro into ggplot
     + Eurostat Example
     + Maps
